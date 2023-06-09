@@ -130,7 +130,7 @@ textarea:focus {
 }
 
 select {
-      width :auto ;
+      width :inherit ;
       padding-left: 20px;
       padding-right: 40px;
 }
@@ -197,15 +197,15 @@ input[type="submit"]:hover {
 
               // Generate department select element
               echo '<label for="department">Department:</label>';
-              echo '<select name="department" id="department" onchange="updatePositionSelect()">';
+              echo '<select style="margin-right: 80px;" name="department" id="department" onchange="updatePositionSelect()">';
               while ($row = $result->fetch_assoc()) {
                   echo '<option value="' . $row['departmentID'] . '">' . $row['departmentname'] . '</option>';
               }
               echo '</select>';
 
               // Generate position select element
-              echo '<label for="position">Position:</label>';
-              echo '<select name="position" id="position">';
+              echo '<label  for="position">Position:</label>';
+              echo '<select style="margin-right: 9%;" name="position" id="position">';
               echo '</select>';
 
               // Generate positionsByDepartment object
@@ -251,9 +251,16 @@ input[type="submit"]:hover {
 
                   // Call updatePositionSelect on page load to populate initial position options
                   updatePositionSelect();
-              </script><br>
+              </script>
               <label for="hiredate">Date of Hire:</label>
-              <input type="date" id="hiredate" name="hiredate">
+              <input type="date" id="hiredate" name="hiredate"><br>
+              <label style="margin-left: -5px;" for="eduction">education:</label>
+                <select id="status" name="status" >
+                    <option value="">-- choose an option --</option>
+                    <option value="msc">bsc</option>
+                    <option value="bsc">bsc</option>
+                    <option value="others">others</option>
+                </select>
               <label for="status">Employment Status:</label>
               <select id="status" style="margin-left: -10px;"name="status">
                 <option value="">--Please choose an option--</option>
@@ -261,64 +268,93 @@ input[type="submit"]:hover {
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
               </select>
-              <label for="salary">Salary:</label>
+              <label style="margin-left: -8px;" for="salary">Salary:</label>
               <input type="number" id="salary" name="salary">
              
              
-              <label for="eduction">education:</label>
-                <select id="status" name="status" onchange="updateStatus()">
-                    <option value="">--Please choose an option--</option>
-                    <option value="msc">bsc</option>
-                    <option value="bsc">bsc</option>
-                    <option value="others">others</option>
-                </select>
-
-                <div id="others-container" style="display: none;">
-                    <label for="others-text">Text:</label><br>
-                    <textarea id="others-text"></textarea><br>
-                </div><br>
+             
+      
                 <label for="others-photo">Photo:</label>
-                    <input type="file" id="others-photo" onchange="updatePhotoPreview()"><br>
-                    <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
-                <script>
-                    function updateStatus() {
-                        // Get selected status
-                        let statusSelect = document.getElementById("status");
-                        let selectedStatus = statusSelect.options[statusSelect.selectedIndex].value;
+                  <input type="file" id="others-photo" onchange="updatePhotoPreview()">
+                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
+                       
+                <label for="file-input">File:</label>
+                  <input type="file" id="file-input" onchange="updateFilePreview()">
+                  <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
+                  <div id="preview-dialog" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; overflow: auto; border: 1px solid #ccc; background-color: #fff;">
+                      <object id="pdf-preview" data="" type="application/pdf" width="100%" height="100%"></object>
+                      <button onclick="closePreviewDialog()">Close</button>
+                  </div>
+                  <script>
+                        function updateFilePreview() {
+                            // Get file
+                            let fileInput = document.getElementById("file-input");
+                            let file = fileInput.files[0];
 
-                        // Get others container element
-                        let othersContainer = document.getElementById("others-container");
+                            // Get preview button element
+                            let previewButton = document.getElementById("preview-button");
 
-                        // Show or hide others container based on selected status
-                        if (selectedStatus === "others") {
-                            othersContainer.style.display = "block";
-                        } else {
-                            othersContainer.style.display = "none";
-                        }
-                    }
-
-                    function updatePhotoPreview() {
-                        // Get photo file
-                        let photoInput = document.getElementById("others-photo");
-                        let photoFile = photoInput.files[0];
-
-                        // Get photo preview element
-                        let photoPreview = document.getElementById("photo-preview");
-
-                        // Update photo preview
-                        if (photoFile) {
-                            let reader = new FileReader();
-                            reader.onload = function(e) {
-                                photoPreview.src = e.target.result;
-                                photoPreview.style.display = "block";
+                            // Update preview button
+                            if (file) {
+                                previewButton.style.display = "inline";
+                            } else {
+                                previewButton.style.display = "none";
                             }
-                            reader.readAsDataURL(photoFile);
-                        } else {
-                            photoPreview.src = "";
-                            photoPreview.style.display = "none";
                         }
-                    }
-                </script>
+
+                        function openPreviewDialog() {
+                            // Get file
+                            let fileInput = document.getElementById("file-input");
+                            let file = fileInput.files[0];
+
+                            // Get PDF preview element
+                            let pdfPreview = document.getElementById("pdf-preview");
+
+                            // Update PDF preview
+                            if (file) {
+                                let reader = new FileReader();
+                                reader.onload = function(e) {
+                                    pdfPreview.data = e.target.result;
+                                }
+                                reader.readAsDataURL(file);
+                            } else {
+                                pdfPreview.data = "";
+                            }
+
+                            // Show preview dialog
+                            let previewDialog = document.getElementById("preview-dialog");
+                            previewDialog.style.display = "block";
+                        }
+
+                        function closePreviewDialog() {
+                            // Hide preview dialog
+                            let previewDialog = document.getElementById("preview-dialog");
+                            previewDialog.style.display = "none";
+                        }
+                        
+                      function updatePhotoPreview() {
+                          // Get photo file
+                          let photoInput = document.getElementById("others-photo");
+                          let photoFile = photoInput.files[0];
+
+                          // Get photo preview element
+                          let photoPreview = document.getElementById("photo-preview");
+
+                          // Update photo preview
+                          if (photoFile) {
+                              let reader = new FileReader();
+                              reader.onload = function(e) {
+                                  photoPreview.src = e.target.result;
+                                  photoPreview.style.display = "block";
+                              }
+                              reader.readAsDataURL(photoFile);
+                          } else {
+                              photoPreview.src = "";
+                              photoPreview.style.display = "none";
+                          }
+                      }
+                  </script>
+
 
         </div>
      </form>
