@@ -119,7 +119,7 @@ textarea {
 }
 
 input[type="file"] {
-      padding :0 ;
+      padding :10 ;
 }
 
 input:focus,
@@ -130,16 +130,19 @@ textarea:focus {
 }
 
 select {
-      width :50% ;
+      width :auto ;
+      padding-left: 20px;
+      padding-right: 40px;
 }
 
 textarea {
-      height :100px ;
+      height :auto ;
 }
 
 input[type="submit"]:hover {
       background-color:#0077cc ;
 }
+
 
   </style>
 </head>
@@ -165,106 +168,160 @@ input[type="submit"]:hover {
         <input type="text" id="middlename" name="middlename">
         <label for="lastname">Last Name:</label>
         <input type="text" id="lastname" name="lastname">
-        <label for="dateofbirth">Date of Birth:</label>
-        <input type="date" id="dateofbirth" name="dateofbirth">
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" style="width: fit-content;">
-          <option value="">--Please choose an option--</option>
+          <option value="">-choose an option-</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
         <label for="email">Email Address:</label>
         <input type="email" id="email" name="email">
+        <label for="dateofbirth">Date of Birth:</label>
+        <input type="date" id="dateofbirth" name="dateofbirth"><br>
         <label for="phone" class="phonestyle">primary Phone Number:</label>
         <input type="tel" id="phone" name="phonep">
         <label for="phone">secondary Phone Number:</label>
         <input type="tel" id="phone" name="phones">
-      </form>
-    </div>
+        </form>
 
-    <div class="form-section2">
-      <h3>Employment Information</h3>
+          <div class="form-section2">
+            <h3>Employment Information</h3>
 
-      <form id="employmentForm">
-      <?php
-        require_once "connection.php";
+            <form id="employmentForm">
+            <?php
+              require_once "connection.php";
 
-        // Query department table
-        $sql = "SELECT departmentID, departmentname FROM department";
-        $result = $conn->query($sql);
+              // Query department table
+              $sql = "SELECT departmentID, departmentname FROM department";
+              $result = $conn->query($sql);
 
-        // Generate department select element
-        echo '<label for="department">Department:</label>';
-        echo '<select name="department" id="department" onchange="updatePositionSelect()">';
-        while ($row = $result->fetch_assoc()) {
-            echo '<option value="' . $row['departmentID'] . '">' . $row['departmentname'] . '</option>';
-        }
-        echo '</select>';
+              // Generate department select element
+              echo '<label for="department">Department:</label>';
+              echo '<select name="department" id="department" onchange="updatePositionSelect()">';
+              while ($row = $result->fetch_assoc()) {
+                  echo '<option value="' . $row['departmentID'] . '">' . $row['departmentname'] . '</option>';
+              }
+              echo '</select>';
 
-        // Generate position select element
-        echo '<label for="position">Position:</label>';
-        echo '<select name="position" id="position">';
-        echo '</select>';
+              // Generate position select element
+              echo '<label for="position">Position:</label>';
+              echo '<select name="position" id="position">';
+              echo '</select>';
 
-        // Generate positionsByDepartment object
-        $positionsByDepartment = [];
-        $sql = "SELECT departmentID, positionname FROM position";
-        $result = $conn->query($sql);
-        while ($row = $result->fetch_assoc()) {
-            $departmentID = $row['departmentID'];
-            $positionname = $row['positionname'];
-            if (!isset($positionsByDepartment[$departmentID])) {
-                $positionsByDepartment[$departmentID] = [];
-            }
-            $positionsByDepartment[$departmentID][] = $positionname;
-        }
+              // Generate positionsByDepartment object
+              $positionsByDepartment = [];
+              $sql = "SELECT departmentID, positionname FROM position";
+              $result = $conn->query($sql);
+              while ($row = $result->fetch_assoc()) {
+                  $departmentID = $row['departmentID'];
+                  $positionname = $row['positionname'];
+                  if (!isset($positionsByDepartment[$departmentID])) {
+                      $positionsByDepartment[$departmentID] = [];
+                  }
+                  $positionsByDepartment[$departmentID][] = $positionname;
+              }
 
-        $conn->close();
-        ?>
+              $conn->close();
+              ?>
 
-        <script>
-            // Object to store department-position relationships
-            let positionsByDepartment = <?php echo json_encode($positionsByDepartment); ?>;
+              <script>
+                  // Object to store department-position relationships
+                  let positionsByDepartment = <?php echo json_encode($positionsByDepartment); ?>;
 
-            function updatePositionSelect() {
-                // Get selected department
-                let departmentSelect = document.getElementById("department");
-                let selectedDepartmentID = departmentSelect.options[departmentSelect.selectedIndex].value;
+                  function updatePositionSelect() {
+                      // Get selected department
+                      let departmentSelect = document.getElementById("department");
+                      let selectedDepartmentID = departmentSelect.options[departmentSelect.selectedIndex].value;
 
-                // Get position select element
-                let positionSelect = document.getElementById("position");
+                      // Get position select element
+                      let positionSelect = document.getElementById("position");
 
-                // Clear position options
-                positionSelect.innerHTML = "";
+                      // Clear position options
+                      positionSelect.innerHTML = "";
 
-                // Add new position options based on selected department
-                let positions = positionsByDepartment[selectedDepartmentID];
-                for (let i = 0; i < positions.length; i++) {
-                    let option = document.createElement("option");
-                    option.value = positions[i];
-                    option.text = positions[i];
-                    positionSelect.add(option);
-                }
-            }
+                      // Add new position options based on selected department
+                      let positions = positionsByDepartment[selectedDepartmentID];
+                      for (let i = 0; i < positions.length; i++) {
+                          let option = document.createElement("option");
+                          option.value = positions[i];
+                          option.text = positions[i];
+                          positionSelect.add(option);
+                      }
+                  }
 
-            // Call updatePositionSelect on page load to populate initial position options
-            updatePositionSelect();
-        </script>
+                  // Call updatePositionSelect on page load to populate initial position options
+                  updatePositionSelect();
+              </script><br>
+              <label for="hiredate">Date of Hire:</label>
+              <input type="date" id="hiredate" name="hiredate">
+              <label for="status">Employment Status:</label>
+              <select id="status" style="margin-left: -10px;"name="status">
+                <option value="">--Please choose an option--</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+              </select>
+              <label for="salary">Salary:</label>
+              <input type="number" id="salary" name="salary">
+             
+             
+              <label for="eduction">education:</label>
+                <select id="status" name="status" onchange="updateStatus()">
+                    <option value="">--Please choose an option--</option>
+                    <option value="msc">bsc</option>
+                    <option value="bsc">bsc</option>
+                    <option value="others">others</option>
+                </select>
 
-        <label for="position">Position:</label>
-        <input type="text" id="position" name="position">
-        <label for="hiredate">Date of Hire:</label>
-        <input type="date" id="hiredate" name="hiredate">
-        <label for="salary">Salary:</label>
-        <input type="number" id="salary" name="salary">
-        <label for="status">Employment Status:</label>
-        <select id="status" name="status">
-          <option value="">--Please choose an option--</option>
-          <option value="Full-time">Full-time</option>
-          <option value="Part-time">Part-time</option>
-          <option value="Contract">Contract</option>
-        </select>
-      </form>
+                <div id="others-container" style="display: none;">
+                    <label for="others-text">Text:</label><br>
+                    <textarea id="others-text"></textarea><br>
+                </div><br>
+                <label for="others-photo">Photo:</label>
+                    <input type="file" id="others-photo" onchange="updatePhotoPreview()"><br>
+                    <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
+                <script>
+                    function updateStatus() {
+                        // Get selected status
+                        let statusSelect = document.getElementById("status");
+                        let selectedStatus = statusSelect.options[statusSelect.selectedIndex].value;
+
+                        // Get others container element
+                        let othersContainer = document.getElementById("others-container");
+
+                        // Show or hide others container based on selected status
+                        if (selectedStatus === "others") {
+                            othersContainer.style.display = "block";
+                        } else {
+                            othersContainer.style.display = "none";
+                        }
+                    }
+
+                    function updatePhotoPreview() {
+                        // Get photo file
+                        let photoInput = document.getElementById("others-photo");
+                        let photoFile = photoInput.files[0];
+
+                        // Get photo preview element
+                        let photoPreview = document.getElementById("photo-preview");
+
+                        // Update photo preview
+                        if (photoFile) {
+                            let reader = new FileReader();
+                            reader.onload = function(e) {
+                                photoPreview.src = e.target.result;
+                                photoPreview.style.display = "block";
+                            }
+                            reader.readAsDataURL(photoFile);
+                        } else {
+                            photoPreview.src = "";
+                            photoPreview.style.display = "none";
+                        }
+                    }
+                </script>
+
+        </div>
+     </form>
     </div>
 
     <input type="submit" value="Submit">
