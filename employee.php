@@ -68,7 +68,7 @@
     box-sizing :border-box; 
 }
 .form-section2{
-    height :400px; 
+    height :350px; 
     margin-bottom :5px; 
     border :1px solid #ccc; 
     border-radius :4px; 
