@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Employee Data Input Form</title>
+  <title>manager Data Input Form</title>
   <style>
    body {
   margin: 0;
@@ -157,12 +157,12 @@ input[type="submit"]:hover {
   </div>
 
   <div class="form-container">
-    <h2>Employee Data Input Form</h2>
+    <h2>manager Data Input Form</h2>
 
     <div class="form-section">
       <h3>Personal Information</h3>
-      <form id="employeeForm" action="fillemployee.php" method="post">
-        <label for="firstname">First Name:</label>
+      <form id="employeeForm" action="fillmanager.php" method="post">
+      <label for="firstname">First Name:</label>
         <input type="text" id="firstname" name="firstname">
         <label for="middlename">Middle Name:</label>
         <input type="text" id="middlename" name="middlename">
@@ -272,13 +272,6 @@ input[type="submit"]:hover {
                     <option value="bsc">bsc</option>
                     <option value="others">others</option>
                 </select>
-              <label for="status">Employment Status:</label>
-              <select id="status" style="margin-left: -10px;"name="employmentstatus">
-                <option value="">--Please choose an option--</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-              </select>
               
               <label style="margin-left:-5px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()">
