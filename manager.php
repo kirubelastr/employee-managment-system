@@ -161,8 +161,8 @@ input[type="submit"]:hover {
 
     <div class="form-section">
       <h3>Personal Information</h3>
-      <form id="employeeForm" action="fillmanager.php" method="post">
-      <label for="firstname">First Name:</label>
+      <form id="employeeForm" action="fillmanager.php" method="post"enctype="multipart/form-data">
+        <label for="firstname">First Name:</label>
         <input type="text" id="firstname" name="firstname">
         <label for="middlename">Middle Name:</label>
         <input type="text" id="middlename" name="middlename">
@@ -182,27 +182,15 @@ input[type="submit"]:hover {
         <input type="tel" id="phone" name="phonep">
         <label for="phone">secondary Phone Number:</label>
         <input type="tel" id="phone" name="phones">
-        <label for="phone">address:</label>
-        <input type="text" id="address" name="address">
-        </form>
-
+        <label style="margin-top: -10px;"for="phone">address:</label>
+        <textarea rows="1" cols="30" type="text" id="address" name="address">
+        </textarea>
           <div class="form-section2">
             <h3>Employment Information</h3>
 
-            <form id="employmentForm">
-            <?php
+            <div id="employmentForm">
+              <?php
               require_once "connection.php";
-              // Query branch table
-              $sql = "SELECT branchID,branchname FROM branch";
-              $result = $conn->query($sql);
-
-              // Generate branch select element
-              echo '<label for="branch">branch:</label>';
-              echo '<select style="margin-right: 80px;" name="branch" id="branch" >';
-              while ($row = $result->fetch_assoc()) {
-                  echo '<option value="' . $row['branchID'] . '">' . $row['branchname'] . '</option>';
-              }
-              echo '</select>';
               // Query department table
               $sql = "SELECT departmentID, departmentname FROM department";
               $result = $conn->query($sql);
@@ -216,21 +204,21 @@ input[type="submit"]:hover {
               echo '</select>';
 
               // Generate position select element
-              echo '<label  for="position">Position:</label>';
+              echo '<label  style="margin-left:-55px"for="position">Position:</label>';
               echo '<select  name="position" id="position">';
               echo '</select>';
-
               // Generate positionsByDepartment object
               $positionsByDepartment = [];
-              $sql = "SELECT departmentID, positionname FROM position";
+              $sql = "SELECT departmentID, positionID, positionname FROM position";
               $result = $conn->query($sql);
               while ($row = $result->fetch_assoc()) {
                   $departmentID = $row['departmentID'];
+                  $positionID = $row['positionID'];
                   $positionname = $row['positionname'];
                   if (!isset($positionsByDepartment[$departmentID])) {
                       $positionsByDepartment[$departmentID] = [];
                   }
-                  $positionsByDepartment[$departmentID][] = $positionname;
+                  $positionsByDepartment[$departmentID][] = ['id' => $positionID, 'name' => $positionname];
               }
               $conn->close();
               ?>
@@ -254,18 +242,19 @@ input[type="submit"]:hover {
                       let positions = positionsByDepartment[selectedDepartmentID];
                       for (let i = 0; i < positions.length; i++) {
                           let option = document.createElement("option");
-                          option.value = positions[i];
-                          option.text = positions[i];
+                          option.value = positions[i].id; // Set value attribute to position ID
+                          option.text = positions[i].name;
                           positionSelect.add(option);
                       }
                   }
 
                   // Call updatePositionSelect on page load to populate initial position options
                   updatePositionSelect();
-              </script><br>
-              <label style="margin-left: -3px;" for="hiredate">Date of Hire:</label>
-              <input type="date" id="hiredate" name="hiredate">
-              <label style="margin-left: 2px;" for="eduction">education:</label>
+              </script>
+
+              <label  style="margin-left:55px"for="hiredate">Date of Hire:</label>
+              <input type="date" id="hiredate" name="hiredate"><br>
+              <label style="margin-left: -3px;" for="eduction">education:</label>
                 <select id="status" name="educationstatus" >
                     <option value="">-- choose an option --</option>
                     <option value="msc">bsc</option>
@@ -273,64 +262,38 @@ input[type="submit"]:hover {
                     <option value="others">others</option>
                 </select>
               
-              <label style="margin-left:-5px"for="file-input">File(resume):</label>
+              <label style="margin-left:-45px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()">
                   <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
-                  <div id="preview-dialog" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; overflow: auto; border: 1px solid #ccc; background-color: #fff;">
-                      <object id="pdf-preview" data="" type="application/pdf" width="100%" height="100%"></object>
-                      <button onclick="closePreviewDialog()">Close</button>
-                  </div>
+                  </div><br>
                 <label for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()">
                   <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
                        
                 
                   <script>
-                        function updateFilePreview() {
-                            // Get file
-                            let fileInput = document.getElementById("file-input");
-                            let file = fileInput.files[0];
-
-                            // Get preview button element
-                            let previewButton = document.getElementById("preview-button");
-
-                            // Update preview button
+                      function updateFilePreview() {
+                            // Get the selected file
+                            var file = document.getElementById("file-input").files[0];
                             if (file) {
-                                previewButton.style.display = "inline";
+                                // Show the preview button
+                                document.getElementById("preview-button").style.display = "inline-block";
                             } else {
-                                previewButton.style.display = "none";
+                                // Hide the preview button
+                                document.getElementById("preview-button").style.display = "none";
                             }
                         }
 
                         function openPreviewDialog() {
-                            // Get file
-                            let fileInput = document.getElementById("file-input");
-                            let file = fileInput.files[0];
-
-                            // Get PDF preview element
-                            let pdfPreview = document.getElementById("pdf-preview");
-
-                            // Update PDF preview
+                            // Get the selected file
+                            var file = document.getElementById("file-input").files[0];
                             if (file) {
-                                let reader = new FileReader();
-                                reader.onload = function(e) {
-                                    pdfPreview.data = e.target.result;
-                                }
-                                reader.readAsDataURL(file);
-                            } else {
-                                pdfPreview.data = "";
+                                // Create a URL for the file
+                                var fileURL = URL.createObjectURL(file);
+                                // Open the file in a new window
+                                var previewWindow = window.open(fileURL, "PDF Preview", "width=400,height=400");
                             }
-
-                            // Show preview dialog
-                            let previewDialog = document.getElementById("preview-dialog");
-                            previewDialog.style.display = "block";
-                        }
-
-                        function closePreviewDialog() {
-                            // Hide preview dialog
-                            let previewDialog = document.getElementById("preview-dialog");
-                            previewDialog.style.display = "none";
-                        }
+                        }        
                         
                       function updatePhotoPreview() {
                           // Get photo file
@@ -353,14 +316,14 @@ input[type="submit"]:hover {
                               photoPreview.style.display = "none";
                           }
                       }
+
                   </script>
-
-
-        </div>
+            </div>
+          </div>
+        <input type="submit" value="Submit">
      </form>
-    </div>
 
-    <input type="submit" value="Submit">
+    </div>
   </div>
 
 </body>
