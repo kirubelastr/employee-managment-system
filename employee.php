@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>manager Data Input Form</title>
+  <title>employee Data Input Form</title>
   <style>
    body {
   margin: 0;
