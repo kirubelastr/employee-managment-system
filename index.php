@@ -183,6 +183,37 @@
             ?>
          </tbody>
         </table>
+        <table>
+            <thead>
+            <tr>
+                <td>ID</td>
+                <td>MANAGER ID</td>
+                <td>DATE</td>
+                <td>TIMEIN</td>
+                <td>TIMEOUT</td>
+                <td>SHIFT NO</td>
+            </tr>    
+            </thead>
+         <tbody>
+            <?php
+            require_once "connection.php";
+            $sql = "SELECT * from attendance WHERE logdate=CURDATE()";
+            $query = $conn->query($sql);
+            while($row = $query->fetch_assoc()){
+            ?>
+                <tr>
+                    <td><?php echo $row['attendanceID']; ?></td>
+                    <td><?php echo $row['managerID']; ?></td>
+                    <td><?php echo $row['logdate']; ?></td>
+                    <td><?php echo $row['timein']; ?></td>
+                    <td><?php echo $row['timeout']; ?></td>
+                    <td><?php echo $row['shifttype']; ?></td>
+                </tr>
+            <?php
+               }
+            ?>
+         </tbody>
+        </table>
     </div> 
    
     <script type="text/javascript" src="javascript/instascan.min.js"></script>
