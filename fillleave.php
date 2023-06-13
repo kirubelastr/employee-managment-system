@@ -1,13 +1,5 @@
 <?php
 session_start();
-
-// Check if user is logged in
-if (!isset($_SESSION["userType"])) {
-    // Redirect to login page
-    header("Location: login.php");
-    exit;
-}
-
 require_once "connection.php";
 // Get form data
 $employeeID = $_POST["employeeID"];
@@ -27,10 +19,34 @@ if ($_SESSION["userType"] === "manager") {
 }
 
 // Insert data into database
-if ($conn->query($sql) === TRUE) {
-    echo "Leave request submitted successfully";
+if ($conn->query($sql) === TRUE ) {
+    if ($_SESSION["userType"] === "manager") {
+        echo '<script>
+        alert("Leave request submitted successfully.");
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "managerleave.php";
+        </script>';
+    } else {
+        echo '<script>
+        alert("Leave request submitted successfully.");
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "employeeleave.php";
+        </script>';
+    }
+    
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+   
+    echo ' echo "Error: " . $sql . "<br>" . $conn->error;<script>
+    alert("error while inserting the data.");
+    </script>';
+    $conn->close();
+    echo '<script>
+    window.location.href = "manager.php";
+    </script>';
 }
 
 $conn->close();

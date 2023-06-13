@@ -6,8 +6,7 @@ $_SESSION["userType"] = "employee";
 <html>
 <head>
   <title>leave</title>
-  <style>
-   body {
+  <style>   body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -48,7 +47,53 @@ $_SESSION["userType"] = "employee";
   background-color: #ddd;
   border-left-color: #09f;
 }
+.rightofsidebar{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.container {
+ max-width: 600px;
+ height: auto;
+ margin: 10px;
+ padding: 20px;
+ background-color: #fff;
+ box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+h3 {
+  margin-top: 0;
+ }
+ hr {
+ margin: 20px 0;
+ border: none;
+ border-top: 1px solid #ccc;
+}
 
+.employee-info {
+            text-align: center;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #000000;
+            background-color: #FFFFFF;
+         }
+         table {
+        border-collapse: collapse;
+        width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
 .form-container {
   flex: 1;
   padding: 20px;
@@ -146,17 +191,7 @@ textarea {
 input[type="submit"]:hover {
       background-color:#0077cc ;
 }
-table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+
   </style>
 </head>
 <body>
@@ -168,7 +203,8 @@ table {
     <a href="employeeattendance.php">attendance</a>
     <a href="employee.php">details</a>
   </div>
-<div>
+  <div class="rightofsidebar">
+<div class="container">
    <h1>Leave Request Form</h1>
    <form action="fillleave.php" method="post">
         <label for="userID">Your ID:</label>
@@ -190,7 +226,9 @@ table {
 
         <input type="submit" value="apply">
     </form>
-    <div>
+    </div>
+    <div class="container">
+     <div class="employee-info">
     <table>
             <thead> <br><br>
             <tr>
@@ -230,6 +268,7 @@ table {
          </tbody>
         </table>
     </div>
+    <div class="employee-info">
     <h5>yearly</h5>
     <div>
     <?php
@@ -254,7 +293,7 @@ table {
         }
         ?>
     </div>
-
+    </div>
 </div>
 
 </body>
