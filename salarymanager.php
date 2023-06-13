@@ -208,7 +208,7 @@ if ($result->num_rows > 0) {
             if ($check_result->num_rows == 0) {
                 // Data does not exist, insert it
                 $sql = "INSERT INTO salary (managerID, datefrom, dateto, present_days, late_days)
-                        VALUES ('$employeeID', '$past_date', '$present_date', '$timely_attendances', '$late_attendances')";
+                        VALUES ('$managerID', '$past_date', '$present_date', '$timely_attendances', '$late_attendances')";
                 $conn->query($sql);
             }
         } else {
