@@ -166,7 +166,7 @@
          <tbody>
             <?php
             require_once "connection.php";
-            $sql = "SELECT * from attendance WHERE logdate=CURDATE()";
+            $sql = "SELECT * from attendance WHERE employeeID IS NOT NULL  AND logdate=CURDATE()";
             $query = $conn->query($sql);
             while($row = $query->fetch_assoc()){
             ?>
@@ -185,7 +185,7 @@
         </table>
         <br><br>
         <table>
-            <thead>
+            <thead> <br><br>
             <tr>
                 <td>ID</td>
                 <td>MANAGER ID</td>
@@ -198,7 +198,7 @@
          <tbody>
             <?php
             require_once "connection.php";
-            $sql = "SELECT * from attendance WHERE logdate=CURDATE()";
+            $sql = "SELECT * from attendance WHERE managerID IS NOT NULL  AND logdate=CURDATE()";
             $query = $conn->query($sql);
             while($row = $query->fetch_assoc()){
             ?>
@@ -232,12 +232,10 @@
             alert('Error: ' + e.message);
          });
          scanner.addListener('scan', function (content) {
-            let intValue = parseInt(content.replace(/\s/g, ''));
-            if (!isNaN(intValue)) {
-                document.getElementById('text').value = intValue;
+                document.getElementById('text').value = content;
                 document.forms[0].submit();
             }
-        });
+        );
     </script>
      
 </body> 
