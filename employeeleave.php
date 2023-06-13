@@ -45,25 +45,103 @@
   background-color: #ddd;
   border-left-color: #09f;
 }
+
+.form-container {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.form-container h2 {
+    margin-top:0; 
+    margin-bottom :10px; 
+}
+
+.form-section {
+    margin-bottom :5px; 
+    border :1px solid #ccc; 
+    border-radius :4px; 
+    padding :10px; 
+    box-sizing :border-box; 
+}
+.form-section2{
+    height :350px; 
+    margin-bottom :5px; 
+    border :1px solid #ccc; 
+    border-radius :4px; 
+    padding :10px; 
+    box-sizing :border-box; 
+    
+}
+
+.form-section h3 {
+    margin-top :0; 
+    margin-bottom :5px; 
+}
 form {
-  width: 300px;
-  margin: 0 auto;
+    display:block; 
+    flex-wrap :wrap; 
+    justify-content:left; 
+    align-items:center; 
 }
+
 label {
-display: block;
-margin-bottom: 5px;
- }
-input[type="text"], select {
-width: 100%;
-padding: 5px;
-margin-bottom: 10px;
+    display:inline-block; 
+    width :140px; 
+    text-align:right; 
+    margin-right :20px; 
 }
+    
 input[type="submit"] {
-padding: 5px 10px;
-background-color: #4CAF50;
-color: white;
-border: none;
-cursor: pointer;
+      background-color:#09f ; 
+      color:#fff ; 
+      border:none ; 
+      border-radius :4px ; 
+      padding :10px ; 
+      cursor:pointer ; 
+      font-size :16px ; 
+      margin-top :10px ;  
+}
+input,
+select,
+textarea {
+      position :inherits ;  
+      flex :1 ;  
+      padding :10px ;  
+      border :1px solid #ccc ;  
+      border-radius :4px ;  
+      box-sizing:border-box ;  
+      margin-bottom :10px ;  
+      font-size :16px ;  
+}
+
+input[type="file"] {
+      padding :10 ;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+      outline:none ;
+      border-color:#09f ;
+}
+
+select {
+      width :inherit ;
+      padding-left: 20px;
+      padding-right: 40px;
+}
+
+textarea {
+      height :auto ;
+}
+
+input[type="submit"]:hover {
+      background-color:#0077cc ;
 }
   </style>
 </head>
@@ -71,9 +149,9 @@ cursor: pointer;
 
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a href="#home">Home</a>
-    <a class="active"href="#leave">leave</a>
-    <a href="#attendance">attendance</a>
+    <a href="employeedashboard.php">Home</a>
+    <a class="active"href="employeeleave.php">leave</a>
+    <a href="employeeattendance.php">attendance</a>
     <a href="#details">details</a>
   </div>
 <div>

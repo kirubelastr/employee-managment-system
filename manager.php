@@ -150,10 +150,10 @@ input[type="submit"]:hover {
 
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a class="active" href="#home">Home</a>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
+    <a href="managerdashboard.php">Home</a>
+    <a href="managerleave.php">leave</a>
+    <a href="managerattendance.php">attendance</a>
+    <a class="active"href="manager.php">details</a>
   </div>
 
   <div class="form-container">

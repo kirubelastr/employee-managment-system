@@ -3,9 +3,8 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     // One or more inputs are empty
     echo '<script>
     alert("One or more inputs are empty. Please fill in all required fields.");
-   
+    window.location.href = "manager.php";
 </script>';
-header('Location: manager.php');
 } else {
     // All inputs are not empty
     require_once "connection.php";
@@ -41,17 +40,24 @@ header('Location: manager.php');
         // Data inserted successfully
         echo '<script>
         alert("data inserted suucessfully.");
-       
-    </script>';
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "manager.php";
+</script>';
+        
     } else {
         // Error inserting data
         echo '<script>
         alert("error inserting the data.");
-       
-    </script>';
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "manager.php";
+</script>';
+        
     }
 
-    header('Location: manager.php');
-    $conn->close();
+    
 }
 ?>

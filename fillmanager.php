@@ -3,16 +3,15 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     // One or more inputs are empty
     echo '<script>
     alert("One or more inputs are empty. Please fill in all required fields.");
-   
-</script>';
-header('Location: manager.php');
+    window.location.href = "manager.php";
+    </script>';
 } else {
     // All inputs are not empty
     require_once "connection.php";
     $result = mysqli_query($conn, "SELECT MAX(id) FROM manager");
     $row = mysqli_fetch_row($result);
     $last_id = $row[0];
-    $new_value = "M" . $last_id;
+    $new_value = "M" . $last_id + 1;
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
@@ -40,12 +39,22 @@ header('Location: manager.php');
     
     if ($conn->query($sql) === TRUE) {
         // Data inserted successfully
-        echo '<script>alert("data inserted succcesfully");</script>';
+        echo '<script>
+        alert("data inserted suucessfully.");
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "manager.php";
+        </script>'; 
     } else {
         // Error inserting data
-        echo '<script>alert("Error while inserting the data: ' . mysqli_error($conn) . '");</script>';
+        echo '<script>
+        alert("error inserting the data.");
+        </script>';
+        $conn->close();
+        echo '<script>
+        window.location.href = "manager.php";
+        </script>';
     }
-    $conn->close();
-    header('Location: manager.php');
 }
 ?>
