@@ -151,7 +151,7 @@ input[type="submit"]:hover {
 
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a  href="#home">Home</a>
+    <a class="active" href="#home">Home</a>
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
