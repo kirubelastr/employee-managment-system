@@ -174,7 +174,7 @@ $sql = "SELECT managerID,
                SUM(CASE WHEN timein <= '8:30:00' THEN 1 ELSE 0 END) as timely_attendances,
                SUM(CASE WHEN timein > '8:30:00' THEN 1 ELSE 0 END) as late_attendances
         FROM attendance 
-        WHERE logdate BETWEEN '$past_date' AND '$present_date'
+        WHERE logdate BETWEEN '$past_date' AND '$present_date'AND managerID IS NOT NULL
         GROUP BY managerID";
 $result = $conn->query($sql);
 
