@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 07:46 AM
+-- Generation Time: Jun 13, 2023 at 08:15 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `attendance` (
   `attendanceID` int(11) NOT NULL,
-  `employeeID` int(11) NOT NULL,
-  `managerID` varchar(255) NOT NULL,
+  `employeeID` int(11) DEFAULT NULL,
+  `managerID` varchar(255) DEFAULT NULL,
   `logdate` date NOT NULL,
   `timein` time NOT NULL,
   `timeout` time DEFAULT NULL,
@@ -38,17 +38,11 @@ CREATE TABLE `attendance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Triggers `attendance`
+-- Dumping data for table `attendance`
 --
-DELIMITER $$
-CREATE TRIGGER `tr_check_columns` BEFORE INSERT ON `attendance` FOR EACH ROW BEGIN
-    IF (NEW.employeeID IS NOT NULL AND NEW.managerID IS NOT NULL) OR (NEW.employeeID IS NOT NULL AND (SELECT managerID FROM attendance WHERE attendanceID = NEW.attendanceID) IS NOT NULL) OR (NEW.managerID IS NOT NULL AND (SELECT employeeID FROM attendance WHERE attendanceID = NEW.attendanceID) IS NOT NULL) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot insert data into both columns at the same time or if one column is already set';
-    END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `attendance` (`attendanceID`, `employeeID`, `managerID`, `logdate`, `timein`, `timeout`, `shifttype`) VALUES
+(0, NULL, 'M1', '2023-06-13', '06:13:47', '09:15:05', '1');
 
 -- --------------------------------------------------------
 
