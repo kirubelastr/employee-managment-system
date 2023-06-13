@@ -53,7 +53,7 @@
     <h3>Sidebar</h3>
     <a class="active"href="#home">home</a>
     <a href="managerleave.php">leave</a>
-    <a href="#attendance">attendance</a>
+    <a href="employeeattendance.php">attendance</a>
     <a href="manager.php">details</a>
   </div>
 
