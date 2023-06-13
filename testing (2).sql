@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 08:15 AM
+-- Generation Time: Jun 14, 2023 at 12:58 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -130,6 +130,7 @@ CREATE TABLE `employee_leave` (
   `leaveID` int(11) NOT NULL,
   `employeeID` int(11) NOT NULL,
   `managerID` varchar(255) NOT NULL,
+  `date` date NOT NULL,
   `leavetype` varchar(50) NOT NULL,
   `startdate` date NOT NULL,
   `enddate` date NOT NULL,
@@ -232,6 +233,7 @@ INSERT INTO `position` (`positionID`, `departmentID`, `positionname`) VALUES
 CREATE TABLE `qrcode` (
   `id` int(11) NOT NULL,
   `employeeID` int(11) NOT NULL,
+  `managerID` varchar(255) NOT NULL,
   `qrimage` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -243,8 +245,8 @@ CREATE TABLE `qrcode` (
 
 CREATE TABLE `salary` (
   `salaryID` int(11) NOT NULL,
-  `employeeID` int(11) NOT NULL,
-  `managerID` varchar(255) NOT NULL,
+  `employeeID` int(11) DEFAULT NULL,
+  `managerID` varchar(255) DEFAULT NULL,
   `datefrom` date NOT NULL,
   `dateto` date NOT NULL,
   `present_days` int(11) NOT NULL,
@@ -258,17 +260,11 @@ CREATE TABLE `salary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Triggers `salary`
+-- Dumping data for table `salary`
 --
-DELIMITER $$
-CREATE TRIGGER `tr_check_columns_s` BEFORE INSERT ON `salary` FOR EACH ROW BEGIN
-    IF (NEW.employeeID IS NOT NULL AND NEW.managerID IS NOT NULL) OR (NEW.employeeID IS NOT NULL AND (SELECT managerID FROM salary WHERE salaryID = NEW.salaryID) IS NOT NULL) OR (NEW.managerID IS NOT NULL AND (SELECT employeeID FROM salary WHERE salaryID = NEW.salaryID) IS NOT NULL) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot insert data into both columns at the same time or if one column is already set';
-    END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `salary` (`salaryID`, `employeeID`, `managerID`, `datefrom`, `dateto`, `present_days`, `absent_days`, `late_days`, `salary`, `allowance`, `deduction`, `net`, `date`) VALUES
+(11, NULL, 'M1', '2023-05-15', '2023-06-14', 1, 0, 0, 0, 0, 0, 0, '2023-06-14');
 
 --
 -- Indexes for dumped tables
@@ -348,7 +344,8 @@ ALTER TABLE `position`
 --
 ALTER TABLE `qrcode`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `employeeID` (`employeeID`);
+  ADD KEY `employeeID` (`employeeID`),
+  ADD KEY `managerID` (`managerID`);
 
 --
 -- Indexes for table `salary`
@@ -414,7 +411,7 @@ ALTER TABLE `qrcode`
 -- AUTO_INCREMENT for table `salary`
 --
 ALTER TABLE `salary`
-  MODIFY `salaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `salaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
@@ -474,7 +471,8 @@ ALTER TABLE `position`
 -- Constraints for table `qrcode`
 --
 ALTER TABLE `qrcode`
-  ADD CONSTRAINT `qrcode_ibfk_1` FOREIGN KEY (`employeeID`) REFERENCES `employee` (`employeeID`);
+  ADD CONSTRAINT `qrcode_ibfk_1` FOREIGN KEY (`employeeID`) REFERENCES `employee` (`employeeID`),
+  ADD CONSTRAINT `qrcode_ibfk_2` FOREIGN KEY (`managerID`) REFERENCES `manager` (`managerID`);
 
 --
 -- Constraints for table `salary`
