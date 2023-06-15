@@ -216,12 +216,25 @@ body {
   outline: none;
   background-color: rgba(0,0,0,.5);
 }
+input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  cursor:pointer;
+  border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+  background-color:#555
+}
+
     </style>
 </head>
 <body>
 <div class="login-box">
   <h2>Login</h2>
-  <form>
+  <form action="filllogin.php" method="post">
     <div class="user-box">
       <input type="text" name="" required="">
       <label>email</label>
@@ -233,18 +246,12 @@ body {
     <div class="dropdown-box">
     <select name="role" id="role-select">
       <option value="employee" >employee</option>
-      <option value="manager">manager</option>
-      <option value="admin">general manager</option>
+      <option value="manger(branch manager)">manger</option>
+      <option value="general manager(admin)">general manager</option>
     </select>
     <label for="role-select">Role</label>
   </div>
-    <a href="#">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Submit
-    </a>
+  <input type="submit" value="Submit">
   </form>
 </div>
 </body>

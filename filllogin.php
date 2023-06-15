@@ -21,7 +21,36 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["role"])
     $row = mysqli_fetch_assoc($result);
     $_SESSION["user_type"] = $row["user_type"];
     $_SESSION["user_id"] = $row["id"];
-    header("Location: home.php");
+    $_SESSION["role"] = $role;
+
+    // Check if the employee email exists in the employee table
+    $query = "SELECT * FROM employee WHERE email='$email'";
+    $result = mysqli_query($db, $query);
+
+    if (mysqli_num_rows($result) == 1) {
+      // Employee found in employee table
+      $row = mysqli_fetch_assoc($result);
+      $_SESSION["employee_id"] = $row["id"];
+    } else {
+      // Check if the user email exists in the manager table
+      $query = "SELECT * FROM manager WHERE email='$email'";
+      $result = mysqli_query($db, $query);
+
+      if (mysqli_num_rows($result) == 1) {
+        // user found in manager table
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION["manager_id"] = $row["id"];
+      }
+    }
+
+    // Redirect the user based on their role
+    if ($role == "employee") {
+      header("Location: employeedashboard.php");
+    } elseif ($role == "branch manager") {
+      header("Location: branch_manager.php");
+    } elseif ($role == "manager") {
+      header("Location: manager.php");
+    }
   } else {
     // Login failed
     echo "Invalid email, password, or role";
