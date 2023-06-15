@@ -236,11 +236,11 @@ input[type="submit"]:hover {
   <h2>Login</h2>
   <form action="filllogin.php" method="post">
     <div class="user-box">
-      <input type="text" name="" required="">
+      <input type="text" name="email" required="">
       <label>email</label>
     </div>
     <div class="user-box">
-      <input type="password" name="" required="">
+      <input type="password" name="password" required="">
       <label>Password</label>
     </div>
     <div class="dropdown-box">

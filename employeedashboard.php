@@ -45,6 +45,12 @@
   background-color: #ddd;
   border-left-color: #09f;
 }
+.section {
+      margin: 20px 0;
+    }
+    .section h2 {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -56,6 +62,45 @@
     <a href="employeeattendance.php">attendance</a>
     <a href="manager.php">details</a>
   </div>
+
+  <h1>Dashboard</h1>
+
+  <!-- Attendance section -->
+  <div class="section">
+    <h2>Attendance</h2>
+    <canvas id="attendanceChart"></canvas>
+  </div>
+
+  <script>
+    // Attendance data
+    var attendanceData = {
+      labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      datasets: [{
+        label: "Attendance",
+        data: [8, 7, 9, 6, 8],
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1
+      }]
+    };
+
+    // Attendance options
+    var attendanceOptions = {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    };
+
+    // Create attendance chart
+    var ctx = document.getElementById("attendanceChart").getContext("2d");
+    var attendanceChart = new Chart(ctx, {
+      type: "bar",
+      data: attendanceData,
+      options: attendanceOptions
+    });
+  </script>
 
 
 </body>
