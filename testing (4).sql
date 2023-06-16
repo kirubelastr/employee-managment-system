@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2023 at 12:58 AM
+-- Generation Time: Jun 16, 2023 at 05:42 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,7 +42,8 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`attendanceID`, `employeeID`, `managerID`, `logdate`, `timein`, `timeout`, `shifttype`) VALUES
-(0, NULL, 'M1', '2023-06-13', '06:13:47', '09:15:05', '1');
+(1, NULL, 'M1', '2023-06-13', '06:13:47', '09:15:05', '1'),
+(2, NULL, 'M1', '2023-06-15', '06:27:20', '11:27:34', '1');
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ INSERT INTO `department` (`departmentID`, `departmentname`) VALUES
 (7, 'Marketing'),
 (8, 'sales'),
 (9, 'manfacturing'),
-(10, 'managment');
+(10, 'managment'),
+(11, 'as');
 
 -- --------------------------------------------------------
 
@@ -114,6 +116,7 @@ CREATE TABLE `employee` (
   `email` varchar(255) NOT NULL,
   `employment_status` varchar(15) NOT NULL,
   `employeefile` mediumblob NOT NULL,
+  `yearlyvacationdays` int(11) NOT NULL DEFAULT 16,
   `branchID` int(11) NOT NULL,
   `userID` int(11) DEFAULT NULL,
   `departmentID` int(11) NOT NULL,
@@ -128,8 +131,8 @@ CREATE TABLE `employee` (
 
 CREATE TABLE `employee_leave` (
   `leaveID` int(11) NOT NULL,
-  `employeeID` int(11) NOT NULL,
-  `managerID` varchar(255) NOT NULL,
+  `employeeID` int(11) DEFAULT NULL,
+  `managerID` varchar(255) DEFAULT NULL,
   `date` date NOT NULL,
   `leavetype` varchar(50) NOT NULL,
   `startdate` date NOT NULL,
@@ -138,17 +141,11 @@ CREATE TABLE `employee_leave` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Triggers `employee_leave`
+-- Dumping data for table `employee_leave`
 --
-DELIMITER $$
-CREATE TRIGGER `tr_check_columns_l` BEFORE INSERT ON `employee_leave` FOR EACH ROW BEGIN
-    IF (NEW.employeeID IS NOT NULL AND NEW.managerID IS NOT NULL) OR (NEW.employeeID IS NOT NULL AND (SELECT managerID FROM your_table WHERE leaveID = NEW.leaveID) IS NOT NULL) OR (NEW.managerID IS NOT NULL AND (SELECT employeeID FROM employee_leave WHERE leaveID = NEW.leaveID) IS NOT NULL) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot insert data into both columns at the same time or if one column is already set';
-    END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `employee_leave` (`leaveID`, `employeeID`, `managerID`, `date`, `leavetype`, `startdate`, `enddate`, `status`) VALUES
+(1, NULL, 'M1', '2023-06-16', 'vacation', '2023-06-17', '2023-06-18', 'pending');
 
 -- --------------------------------------------------------
 
@@ -192,6 +189,7 @@ CREATE TABLE `manager` (
   `manager_photo` longblob NOT NULL,
   `email` varchar(255) NOT NULL,
   `managerfile` blob NOT NULL,
+  `yearlyvacationdays` int(11) NOT NULL DEFAULT 18,
   `userID` int(11) DEFAULT NULL,
   `departmentID` int(11) NOT NULL,
   `positionID` int(11) NOT NULL
@@ -201,8 +199,8 @@ CREATE TABLE `manager` (
 -- Dumping data for table `manager`
 --
 
-INSERT INTO `manager` (`id`, `managerID`, `firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`, `managerfile`, `userID`, `departmentID`, `positionID`) VALUES
-(1, 'M1', 'kirubel', 'astraye', 'dessie', '1999-12-28', 'male', 'Ethiopia,addis ababa,bole,gerji,house no 605 ', '+251946331281', '+2517', '2022-12-13', 'msc', 0x656d70312e6a7067, 'kirubelast@gmail.com', 0x436f757273657320746f20626520496e636c7564656420696e20436f6d707574657220536369656e63652045786974204578616d2e706466, NULL, 5, 1);
+INSERT INTO `manager` (`id`, `managerID`, `firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`, `managerfile`, `yearlyvacationdays`, `userID`, `departmentID`, `positionID`) VALUES
+(1, 'M1', 'kirubel', 'astraye', 'dessie', '1999-12-28', 'male', 'Ethiopia,addis ababa,bole,gerji,house no 605 ', '+251946331281', '+2517', '2022-12-13', 'msc', 0x656d70312e6a7067, 'kirubelast@gmail.com', 0x436f757273657320746f20626520496e636c7564656420696e20436f6d707574657220536369656e63652045786974204578616d2e706466, 18, NULL, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -360,6 +358,12 @@ ALTER TABLE `salary`
 --
 
 --
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `attendanceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
@@ -369,7 +373,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `departmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `departmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -381,7 +385,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `employee_leave`
 --
 ALTER TABLE `employee_leave`
-  MODIFY `leaveID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `leaveID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `login`
