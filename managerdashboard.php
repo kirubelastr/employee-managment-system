@@ -51,10 +51,10 @@
 
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a class="active"href="#home">home</a>
-    <a href="#leave">leave</a>
-    <a href="#attendance">attendance</a>
-    <a href="#details">details</a>
+    <a class="active"href="managerdashboard.php">home</a>
+    <a href="managerleave.php">leave</a>
+    <a href="managerattendance.php">attendance</a>
+    <a href="managerdetails.php">details</a>
   </div>
 
 
