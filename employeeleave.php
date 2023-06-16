@@ -266,7 +266,7 @@ input[type="submit"]:hover {
             $query = $conn->query($sql);
             if ($query->num_rows > 0) {
               // Output data of each row
-              while($row = $result->fetch_assoc()) {
+              while($row = $query->fetch_assoc()) {
                   echo "<tr>";
                   echo "<td>" . $row["leaveID"] . "</td>";
                   echo "<td>" . $row["employeeID"] . "</td>";

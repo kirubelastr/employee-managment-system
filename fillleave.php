@@ -11,13 +11,13 @@ $enddate = $_POST["enddate"];
 $date = date("Y-m-d");
 // Determine whether to insert data into employeeID or managerID column
 if ($_SESSION["role"] === "manger(branch manager)" || $_SESSION["role"] === "general manager(admin)") {
-    $sql = "INSERT INTO employee_leave (managerID, date, leavetype, startdate, enddate, status) VALUES ('$userID', '$date', '$leavetype', '$startdate', '$enddate', 'pending')";
+    $statmentsql = "INSERT INTO employee_leave (managerID, date, leavetype, startdate, enddate, status) VALUES ('$userID', '$date', '$leavetype', '$startdate', '$enddate', 'pending')";
 } else {
-    $sql = "INSERT INTO employee_leave (employeeID, date, leavetype, startdate, enddate, status) VALUES ('$userID', '$date', '$leavetype', '$startdate', '$enddate', 'pending')";
+    $statmentsql = "INSERT INTO employee_leave (employeeID, date, leavetype, startdate, enddate, status) VALUES ('$userID', '$date', '$leavetype', '$startdate', '$enddate', 'pending')";
 }
 
 // Insert data into database
-if ($conn->query($sql) === TRUE ) {
+if ($conn->query($statmentsql) === TRUE ) {
     if ($_SESSION["role"] === "manger(branch manager)" || $_SESSION["role"] === "general manager(admin)") {
         echo '<script>
         alert("Leave request submitted successfully.");

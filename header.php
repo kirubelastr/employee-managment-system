@@ -64,7 +64,7 @@
 </style>
 
 <div class="header">
-    <div class="avatar"><img src="image/logo2_1619976135.png" alt="excel"></div>
+    <div class="name"><img src="image/logo2_1619976135.png" alt="excel"></div>
     <div class="menu">
       <a href="notifications.php" class="notifications">Notifications</a>
       <div class="avatar">

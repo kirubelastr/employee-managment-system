@@ -17,19 +17,22 @@
             background-color: #f7f7f7;
         }
         .page-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: stretch;
+            }
 
-    .content-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
+        .content-container {
+            margin-left: 100px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
+            }
         .container {
+            
+            margin-left: 100px;
             max-width: 800px;
             margin: 0;
             padding: 20px;
@@ -82,8 +85,9 @@
             float: right;
             width: 40%;
             text-align: center;
-            margin-top: -600px;
-            margin-right: 10px;
+            margin-top: 0px;
+            margin-left: 20px;
+            margin-right: 0px;
             padding: 20px;
             border-style: solid;
             border-width: 1px;
