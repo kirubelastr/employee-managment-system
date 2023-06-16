@@ -16,7 +16,19 @@
             padding: 0;
             background-color: #f7f7f7;
         }
+        .page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
 
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
         .container {
             max-width: 800px;
             margin: 0;
@@ -97,6 +109,10 @@
     <script src="javascript/instascan.min.js"></script>
 </head>
 <body>
+<div class="page-container">
+  <?php include 'header.php'; ?>
+
+  <div class="content-container">
     <div class="container">
         <h3 class="text-center text-dark">QR Code Scanner</h3>
         <hr>
@@ -237,7 +253,8 @@
             }
         );
     </script>
-     
+  </div>
+</div>
 </body> 
 </html>
 <?php

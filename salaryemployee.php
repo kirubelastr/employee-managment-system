@@ -12,7 +12,19 @@
   justify-content: flex-start;
   align-items: stretch;
 }
+.page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
 
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
 .sidebar {
   width: 200px;
   height: 100vh;
@@ -235,8 +247,8 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 </div>
-
 </div>
-
+</div>
+</div>
 </body>
 </html>

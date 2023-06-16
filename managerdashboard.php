@@ -12,7 +12,19 @@
   justify-content: flex-start;
   align-items: stretch;
 }
+.page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
 
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
 .sidebar {
   width: 200px;
   height: 100vh;
@@ -48,15 +60,19 @@
   </style>
 </head>
 <body>
+<div class="page-container">
+  <?php include 'header.php'; ?>
 
+  <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
     <a class="active"href="managerdashboard.php">home</a>
     <a href="managerleave.php">leave</a>
     <a href="managerattendance.php">attendance</a>
-    <a href="managerdetails.php">details</a>
+    <a href="manager details.php">details</a>
   </div>
-
+  </div>
+</div>
 
 </body>
 </html>

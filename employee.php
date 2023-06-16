@@ -12,7 +12,19 @@
   justify-content: flex-start;
   align-items: stretch;
  }
- 
+ .page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
  .sidebar {
    width: 200px;
    height: 100%;
@@ -148,7 +160,10 @@
   </style>
 </head>
 <body>
+<div class="page-container">
+  <?php include 'header.php'; ?>
 
+  <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
     <a  href="employeedashboard.php">Home</a>
@@ -343,6 +358,7 @@
 
     </div>
   </div>
-
+</div>
+</div>
 </body>
 </html>
