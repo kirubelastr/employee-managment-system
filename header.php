@@ -2,15 +2,14 @@
 <style>
     /* Add your styles for the header here */
     .header {
+        min-width: 98vw; /* Add this to make the header take up the full width of the viewport */
         display:flex;
-        justify-content:space-between;
+        justify-content:flex-end;
         align-items:center;
-        padding:0 20px;
-        height:70px;
-        background-color:#ddd;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding-right:20px;
+        height:50px;
+        background-color:#ddd
     }
-    
     .header .logo {
         font-size:24px;
         font-weight:bold;
