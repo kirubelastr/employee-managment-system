@@ -1,6 +1,5 @@
 <?php
 session_start();
-$_SESSION["userType"] = "employee";
 ?>
 <!DOCTYPE html>
 <html>
@@ -226,10 +225,9 @@ input[type="submit"]:hover {
 <div class="container">
    <h1>Leave Request Form</h1>
    <form action="fillleave.php" method="post">
-        <label for="userID">Your ID:</label>
-        <input type="text" id="userID" name="userID" required><br>
-
-        <label for="leavetype">Leave Type:</label>
+     <label for="userID">Your ID:</label>
+        <input type="text" id="userID" name="userID" value="<?php echo $_SESSION['user_type']; ?>" required><br>
+       <label for="leavetype">Leave Type:</label>
         <select id="leavetype" name="leavetype" required>
             <option value="">--Please choose an option--</option>
             <option value="sick">Sick Leave</option>
