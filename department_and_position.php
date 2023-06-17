@@ -1,5 +1,6 @@
 <?php
-require_once '/xampp/htdocs/student/employee-managment-system/serversidescripts/connection.php';
+require_once 'connection.php';
+include_once "header.php";
 function getDepartments() {
     global $conn;
     $sql = "SELECT * FROM department";
@@ -195,7 +196,7 @@ $departments = getDepartments();
     <a  href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
-    <a class="active"href="employee.php">details</a>
+    <a class="active"href="department_and_position.php">details</a>
   </div>
     <div class="container">
         <div class="main-content">
