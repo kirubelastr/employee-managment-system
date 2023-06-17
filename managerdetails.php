@@ -59,7 +59,25 @@ session_start();
    background-color: #ddd;
    border-left-color: #09f;
  }
- 
+ .manager-media {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manager-photo-container {
+  width: 50%;
+}
+
+.manager-photo {
+  max-width: 100%;
+}
+
+.manager-file-container {
+  width: 50%;
+}
+
  .form-container {
    flex: 1;
    padding: 20px;
@@ -178,12 +196,13 @@ session_start();
   </style>
 </head>
 <body>
+
 <div class="page-container">
   <?php include 'header.php'; ?>
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+  <h3>Sidebar</h3>
     <a  href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
@@ -191,86 +210,86 @@ session_start();
   </div>
   <div class="form-container">
   <?php
-// Start the session
-session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['user-type'])) {
+if (!isset($_SESSION['user_type'])) {
+
   // Redirect to the login page
   header('Location: login.php');
   exit;
 }
 
 // Connect to the database
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "myDB";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+require_once "connection.php";
 
 // Prepare the SQL statement
-$sql = "SELECT manager.id, manager.managerID, manager.firstname, manager.middlename, manager.lastname, manager.dateofbirth, manager.gender, manager.address, manager.primary_phone, manager.secondary_phone, manager.dateofjoin, manager.education_status, manager.manager_photo, manager.email, manager.managerfile, manager.yearlyvacationdays,
+$sql = "SELECT manager.managerID, manager.firstname, manager.middlename, manager.lastname, manager.dateofbirth, manager.gender, manager.address, manager.primary_phone, manager.secondary_phone, manager.dateofjoin, manager.education_status, manager.manager_photo, manager.email, manager.managerfile, manager.yearlyvacationdays,
 login.username,
-department.departmentName,
-position.positionName
+(SELECT departmentname FROM department WHERE department.departmentID = manager.departmentID) AS departmentname,
+(SELECT positionname FROM position WHERE position.positionID = manager.positionID) AS positionname
 FROM manager
 LEFT JOIN login ON manager.userID = login.userID
-LEFT JOIN department ON manager.departmentID = department.departmentID
-LEFT JOIN position ON manager.positionID = position.positionID
 WHERE manager.managerID = ?";
 
 // Bind parameters to the statement
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['user-type']);
+$stmt->bind_param("i", $_SESSION['user_type']);
 
 // Execute the statement
-$stmt->execute();
+if (!$stmt->execute()) {
+  // Display an error message if the statement execution fails
+  echo "<script>alert('Error executing the statement: " . $stmt->error . "');</script>";
+} else {
+  // Get the result set
+  $result = $stmt->get_result();
 
-// Get the result set
-$result = $stmt->get_result();
+  // Check if there are any results
+  if ($result->num_rows > 0) {
+    // Output data of each row
+    while($row = $result->fetch_assoc()) {
+      echo "<div class='manager-container'>";
+      echo "<div class='manager-details'>";
+      echo "<h2>Manager Details</h2>";
+      echo "<ul>";
+      echo "<li>Manager ID: " . $row["managerID"] . "</li>";
+      echo "<li>Name: " . $row["firstname"] . " " . $row["middlename"] . " " . $row["lastname"] . "</li>";
+      echo "<li>Date of Birth: " . $row["dateofbirth"] . "</li>";
+      echo "<li>Gender: " . $row["gender"] . "</li>";
+      echo "<li>Address: " . $row["address"] . "</li>";
+      echo "<li>Primary Phone: " . $row["primary_phone"] . "</li>";
+      echo "<li>Secondary Phone: " . $row["secondary_phone"] . "</li>";
+      echo "<li>Date of Join: " . $row["dateofjoin"] . "</li>";
+      echo "<li>Education Status: " . $row["education_status"] . "</li>";
+      echo "<li>Email: " . $row["email"] . "</li>";
+      echo "<li>Yearly Vacation Days: " . $row["yearlyvacationdays"] . "</li>";
+      echo "<li>Username: " . $row["username"] . "</li>";
+      echo "<li>Department Name: " . $row["departmentname"] . "</li>";
+      echo "<li>Position Name: " . $row["positionname"] . "</li>";
+      echo "</ul>";
+      echo "</div>";
 
-// Check if there are any results
-if ($result->num_rows > 0) {
-  // Output data of each row in an unordered list format.
-  while($row = $result->fetch_assoc()) {
-    echo "<ul class='manager'>";
-    echo "<li>Manager ID: " . $row["managerID"] . "</li>";
-    echo "<li>Name: " . $row["firstname"] . " " . $row["middlename"] . " " . $row["lastname"] . "</li>";
-    echo "<li>Date of Birth: " . $row["dateofbirth"] . "</li>";
-    echo "<li>Gender: " . $row["gender"] . "</li>";
-    echo "<li>Address: " . $row["address"] . "</li>";
-    echo "<li>Primary Phone: " . $row["primary_phone"] . "</li>";
-    echo "<li>Secondary Phone: " . $row["secondary_phone"] . "</li>";
-    echo "<li>Date of Join: " . $row["dateofjoin"] . "</li>";
-    echo "<li>Education Status: " . $row["education_status"] . "</li>";
-    echo "<li>Email: " . $row["email"] . "</li>";
-    echo "<li>Yearly Vacation Days: " . $row["yearlyvacationdays"] . "</li>";
-    echo "<li>Username: " . $row["username"] . "</li>";
-    echo "<li>Department Name: " . $row["departmentName"] . "</li>";
-    echo "<li>Position Name: " . $row["positionName"] . "</li>";
-    echo "</ul>";
-    
-    // Display the photo and file as well.
-    // Note that you need to modify this part based on your database structure.
-    // You can use the following code as a reference:
-    
-    echo "<div class='manager-photo-container'>";
-    echo "<img src='data:image/jpeg;base64," . base64_encode($row['manager_photo']) . "' alt='Manager Photo' class='manager-photo'>";
-    echo "</div>";
-    
-    echo "<div class='manager-file-container'>";
-    echo "<a href='" . $row['managerfile'] . "' download>Download Manager File</a>";
-    echo "</div>";
-    
+      // Display the photo and file
+      echo "<div class='manager-media'>";
+      echo "<div class='manager-photo-container'>";
+      echo "<img id='photo-preview' src='data:image/jpeg;base64," . base64_encode($row['manager_photo']) . "' alt='Manager Photo' class='manager-photo' style='max-width: 200px; max-height: 200px;'>";
+      echo "</div>";
+      echo "<div class='manager-file-container'>";
+      echo "<a href='" . $row['managerfile'] . "' download>Download Manager File</a>";
+      echo "</div>";
+      echo "</div>";
+
+      echo "</div>";
+    }
+
     $conn->close();
-    ?>
-    
+  } else {
+    // Display a message if there are no results
+    echo "<script>alert('No results found for the specified manager ID.');</script>";
+  }
+}
+?>
+
+
   </div>
   </div>
 </div>
