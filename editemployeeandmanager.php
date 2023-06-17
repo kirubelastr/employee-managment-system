@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>employee Data Input Form</title>
+  <title>manager Data Input Form</title>
   <style>
    body {
   margin: 0;
@@ -11,8 +10,8 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
- }
- .page-container {
+}
+.page-container {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -25,137 +24,137 @@
       justify-content: flex-start;
       align-items: stretch;
     }
- .sidebar {
-   width: 200px;
-   height: 100%;
-   background-color: #f0f0f0;
-   padding: 20px;
-   box-sizing: border-box;
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: center;
- }
- 
- .sidebar h3 {
-   margin-top: 0;
- }
- 
- .sidebar a {
-   display: block;
-   margin-bottom: 10px;
-   padding: 10px;
-   width: 100%;
-   text-align: center;
-   text-decoration: none;
-   color: #333;
-   border-left: 5px solid transparent;
- }
- 
- .sidebar a.active,
- .sidebar a:hover {
-   background-color: #ddd;
-   border-left-color: #09f;
- }
- 
- .form-container {
-   flex: 1;
-   padding: 20px;
-   box-sizing: border-box;
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: stretch;
- }
- 
- .form-container h2 {
-     margin-top:0; 
-     margin-bottom :10px; 
- }
- 
- .form-section {
-     margin-bottom :5px; 
-     border :1px solid #ccc; 
-     border-radius :4px; 
-     padding :10px; 
-     box-sizing :border-box; 
- }
- .form-section2{
-     height :350px; 
-     margin-bottom :5px; 
-     border :1px solid #ccc; 
-     border-radius :4px; 
-     padding :10px; 
-     box-sizing :border-box; 
-     
- }
- 
- .form-section h3 {
-     margin-top :0; 
-     margin-bottom :5px; 
- }
- form {
-     display:block; 
-     flex-wrap :wrap; 
-     justify-content:left; 
-     align-items:center; 
- }
- 
- label {
-     display:inline-block; 
-     width :140px; 
-     text-align:right; 
-     margin-right :20px; 
- }
-     
- input[type="submit"] {
-       background-color:#09f ; 
-       color:#fff ; 
-       border:none ; 
-       border-radius :4px ; 
-       padding :10px ; 
-       cursor:pointer ; 
-       font-size :16px ; 
-       margin-top :10px ;  
- }
- input,
- select,
- textarea {
-       position :inherits ;  
-       flex :1 ;  
-       padding :10px ;  
-       border :1px solid #ccc ;  
-       border-radius :4px ;  
-       box-sizing:border-box ;  
-       margin-bottom :10px ;  
-       font-size :16px ;  
- }
- 
- input[type="file"] {
-       padding :10 ;
- }
- 
- input:focus,
- select:focus,
- textarea:focus {
-       outline:none ;
-       border-color:#09f ;
- }
- 
- select {
-       width :inherit ;
-       padding-left: 20px;
-       padding-right: 40px;
- }
- 
- textarea {
-       height :auto ;
- }
- 
- input[type="submit"]:hover {
-       background-color:#0077cc ;
- }
- 
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+}
+
+.sidebar a {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  border-left: 5px solid transparent;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: #ddd;
+  border-left-color: #09f;
+}
+
+.form-container {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.form-container h2 {
+    margin-top:0; 
+    margin-bottom :10px; 
+}
+
+.form-section {
+    margin-bottom :5px; 
+    border :1px solid #ccc; 
+    border-radius :4px; 
+    padding :10px; 
+    box-sizing :border-box; 
+}
+.form-section2{
+    height :350px; 
+    margin-bottom :5px; 
+    border :1px solid #ccc; 
+    border-radius :4px; 
+    padding :10px; 
+    box-sizing :border-box; 
+    
+}
+
+.form-section h3 {
+    margin-top :0; 
+    margin-bottom :5px; 
+}
+form {
+    display:block; 
+    flex-wrap :wrap; 
+    justify-content:left; 
+    align-items:center; 
+}
+
+label {
+    display:inline-block; 
+    width :140px; 
+    text-align:right; 
+    margin-right :20px; 
+}
+    
+input[type="submit"] {
+      background-color:#09f ; 
+      color:#fff ; 
+      border:none ; 
+      border-radius :4px ; 
+      padding :10px ; 
+      cursor:pointer ; 
+      font-size :16px ; 
+      margin-top :10px ;  
+}
+input,
+select,
+textarea {
+      position :inherits ;  
+      flex :1 ;  
+      padding :10px ;  
+      border :1px solid #ccc ;  
+      border-radius :4px ;  
+      box-sizing:border-box ;  
+      margin-bottom :10px ;  
+      font-size :16px ;  
+}
+
+input[type="file"] {
+      padding :10 ;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+      outline:none ;
+      border-color:#09f ;
+}
+
+select {
+      width :inherit ;
+      padding-left: 20px;
+      padding-right: 40px;
+}
+
+textarea {
+      height :auto ;
+}
+
+input[type="submit"]:hover {
+      background-color:#0077cc ;
+}
+
 
   </style>
 </head>
@@ -166,18 +165,47 @@
   <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a  href="employeedashboard.php">Home</a>
-    <a href="employeeleave.php">leave</a>
-    <a href="employeeattendance.php">attendance</a>
-    <a class="active"href="employee.php">details</a>
+    <a href="managerdashboard.php">Home</a>
+    <a href="managerleave.php">leave</a>
+    <a href="managerattendance.php">attendance</a>
+    <a class="active"href="editemployeeandmanager.php">details</a>
   </div>
 
   <div class="form-container">
-    <h2>employee Data Input Form</h2>
+    <h2>manager Data Input Form</h2>
+    <form action="search.php" method="post";>
+      <label for="firstname">search employee:</label>
+        <input type="text" id="employee" name="employee">
+        <label for="firstname">search manager:</label>
+        <input type="text" id="manager" name="manager">
+        <input type="submit" name="search" value="search">
+        ...
+</form>
+        <script>
+            const employeeInput = document.querySelector('#employee');
+            const managerInput = document.querySelector('#manager');
 
+            employeeInput.addEventListener('input', () => {
+            if (employeeInput.value !== '') {
+                managerInput.disabled = true;
+            } else {
+                managerInput.disabled = false;
+            }
+            });
+
+            managerInput.addEventListener('input', () => {
+            if (managerInput.value !== '') {
+                employeeInput.disabled = true;
+            } else {
+                employeeInput.disabled = false;
+            }
+            });
+
+        </script>
     <div class="form-section">
       <h3>Personal Information</h3>
-      <form id="employeeForm" action="fillemployee.php" method="post"enctype="multipart/form-data">
+      
+      <form id="employeeForm" action="search.php" method="post"enctype="multipart/form-data">
         <label for="firstname">First Name:</label>
         <input type="text" id="firstname" name="firstname">
         <label for="middlename">Middle Name:</label>
@@ -205,33 +233,22 @@
             <h3>Employment Information</h3>
 
             <div id="employmentForm">
-            <?php
+              <?php
               require_once "connection.php";
-              //query the branch table
-              $sql = "SELECT branchID,branchname FROM branch";
-              $result = $conn->query($sql);
-
-              // Generate branch select element
-              echo '<label for="branch">branch:</label>';
-              echo '<select  name="branch" id="branch" onchange="updatePositionSelect()">';
-              while ($row = $result->fetch_assoc()) {
-                  echo '<option value="' . $row['branchID'] . '">' . $row['branchname'] . '</option>';
-              }
-              echo '</select>';
               // Query department table
               $sql = "SELECT departmentID, departmentname FROM department";
               $result = $conn->query($sql);
 
               // Generate department select element
-              echo '<label style="margin-left:77px"for="department">Department:</label>';
-              echo '<select  name="department" id="department" onchange="updatePositionSelect()">';
+              echo '<label for="department">Department:</label>';
+              echo '<select style="margin-right: 80px;" name="department" id="department" onchange="updatePositionSelect()">';
               while ($row = $result->fetch_assoc()) {
                   echo '<option value="' . $row['departmentID'] . '">' . $row['departmentname'] . '</option>';
               }
               echo '</select>';
 
               // Generate position select element
-              echo '<label  style="margin-left:67px"for="position">Position:</label>';
+              echo '<label  style="margin-left:-55px"for="position">Position:</label>';
               echo '<select  name="position" id="position">';
               echo '</select>';
               // Generate positionsByDepartment object
@@ -277,34 +294,23 @@
 
                   // Call updatePositionSelect on page load to populate initial position options
                   updatePositionSelect();
-              </script><br>
+              </script>
 
-
-              <label style="margin-left:-3px"for="hiredate">Date of Hire:</label>
-              <input type="date" id="hiredate" name="hiredate">
-              <label style="margin-left: 0px;" for="eduction">education:</label>
+              <label  style="margin-left:55px"for="hiredate">Date of Hire:</label>
+              <input type="date" id="hiredate" name="hiredate"><br>
+              <label style="margin-left: -3px;" for="eduction">education:</label>
                 <select id="status" name="educationstatus" >
                     <option value="">-- choose an option --</option>
                     <option value="msc">bsc</option>
                     <option value="bsc">bsc</option>
                     <option value="others">others</option>
                 </select>
-                <label style="margin-left:0px"for="status">Employment Status:</label>
-              <select id="status"name="employmentstatus">
-                <option value="">--Please choose an option--</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-              </select><br>
-              <label style="margin-left:0px"for="yearlyvacationdays">yearly vacation days:</label>
-                <input type="number" id="yearlyvacationdays" name="yearlyvacationdays">
-              <label style="margin-left:-50px"for="file-input">base salary:</label>
-                  <input type="number" id="salary" name="salary">
-              <label style="margin-left:-3px"for="file-input">File(resume):</label>
+              
+              <label style="margin-left:-45px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()">
                   <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
-                  </div>
-                <label style="margin-left:-47px"for="others-photo">Photo:</label>
+                  </div><br>
+                <label for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()">
                   <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
                        
@@ -331,7 +337,8 @@
                                 // Open the file in a new window
                                 var previewWindow = window.open(fileURL, "PDF Preview", "width=400,height=400");
                             }
-                        }                  
+                        }        
+                        
                       function updatePhotoPreview() {
                           // Get photo file
                           let photoInput = document.getElementById("others-photo");
@@ -357,7 +364,7 @@
                   </script>
             </div>
           </div>
-        <input type="submit" value="Submit">
+        <input type="submit" value="update">
      </form>
 
     </div>

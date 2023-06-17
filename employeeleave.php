@@ -58,7 +58,7 @@ session_start();
 .sidebar a.active,
 .sidebar a:hover {
   background-color: #ddd;
-  border-left-color: #09f;
+  border-left-color: green;
 }
 .rightofsidebar{
   margin: 0;
@@ -215,11 +215,11 @@ input[type="submit"]:hover {
   <div class="content-container">
 
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>submenu</h3>
     <a href="employeedashboard.php">Home</a>
     <a class="active"href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
-    <a href="employee.php">details</a>
+    <a href="employeedetails.php">details</a>
   </div>
 <div class="rightofsidebar">
 <div class="container">

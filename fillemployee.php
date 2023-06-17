@@ -1,5 +1,5 @@
 <?php
-if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['lastname']) || empty($_POST['dateofbirth']) || empty($_POST['gender']) || empty($_POST['address']) || empty($_POST['phonep']) || empty($_POST['phones']) || empty($_POST['hiredate']) || empty($_POST['educationstatus']) || empty($_FILES['photo']) || empty($_POST['email']) || empty($_POST['employmentstatus']) || empty($_FILES['file']) || empty($_POST['department']) || empty($_POST['position'])) {
+if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['yearlyvacationdays']) || empty($_POST['salary'])|| empty($_POST['lastname']) || empty($_POST['dateofbirth']) || empty($_POST['gender']) || empty($_POST['address']) || empty($_POST['phonep']) || empty($_POST['phones']) || empty($_POST['hiredate']) || empty($_POST['educationstatus']) || empty($_FILES['photo']) || empty($_POST['email']) || empty($_POST['employmentstatus']) || empty($_FILES['file']) || empty($_POST['department']) || empty($_POST['position'])) {
     // One or more inputs are empty
     echo '<script>
     alert("One or more inputs are empty. Please fill in all required fields.");
@@ -19,20 +19,29 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     $hiredate = $_POST['hiredate'];
     $educationstatus = $_POST['educationstatus'];
     $employmentstatus = $_POST['employmentstatus'];
+    $yearlyvacationdays = $_POST['yearlyvacationdays'];
+    $basesalary = $_POST['salary'];
     if (isset($_FILES['photo'])) {
         $photo = $_FILES['photo']['name'];
-        // ...
+            $photo_contents = file_get_contents($_FILES['photo']['tmp_name']);
+            $photo_contents = mysqli_real_escape_string($conn, $photo_contents);
+            // ...
+        
     }
     $email = $_POST['email'];
     if (isset($_FILES['file'])) {
         $file = $_FILES['file']['name'];
         // ...
+            $file_contents = file_get_contents($_FILES['file']['tmp_name']);
+            $file_contents = mysqli_real_escape_string($conn, $file_contents);
+            // ...
+        
     }
     $branchID = $_POST['branchID'];
     $departmentID = $_POST['department'];
     $positionID = $_POST['position'];
-    $sql = "INSERT INTO `employee`(`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `employee_photo`, `email`,`employment_status`,`employeefile`,  `branchID`,`departmentID`,  `positionID`) 
-        VALUES ('$new_value', '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo', '$email', '$employmentstatus', '$file','$branchID',  '$departmentID', '$positionID')";
+    $sql = "INSERT INTO `employee`(`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `employee_photo`, `email`,`employment_status`,`employeefile`, `yearlyvacationdays`,`basesalary`, `branchID`,`departmentID`,  `positionID`) 
+        VALUES ('$new_value', '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email', '$employmentstatus', '$file_contents', '$yearlyvacationdays', '$basesalary','$branchID',  '$departmentID', '$positionID')";
     $conn->query($sql);
 
     // Check if data was inserted successfully

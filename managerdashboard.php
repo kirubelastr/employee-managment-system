@@ -71,7 +71,7 @@ session_start();
     <a class="active"href="managerdashboard.php">home</a>
     <a href="managerleave.php">leave</a>
     <a href="managerattendance.php">attendance</a>
-    <a href="manager details.php">details</a>
+    <a href="managerdetails.php">details</a>
   </div>
   </div>
 </div>

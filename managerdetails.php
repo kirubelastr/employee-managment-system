@@ -203,96 +203,75 @@ session_start();
   <div class="content-container">
   <div class="sidebar">
   <h3>Sidebar</h3>
-    <a  href="employeedashboard.php">Home</a>
-    <a href="employeeleave.php">leave</a>
-    <a href="employeeattendance.php">attendance</a>
-    <a class="active"href="employee.php">details</a>
+    <a  href="managerdashboard.php">Home</a>
+    <a href="managerleave.php">leave</a>
+    <a href="managerattendance.php">attendance</a>
+    <a class="active"href="managerdetails.php">details</a>
   </div>
-  <div class="form-container">
-  <?php
-
-// Check if the user is logged in
-if (!isset($_SESSION['user_type'])) {
-
-  // Redirect to the login page
-  header('Location: login.php');
-  exit;
-}
-
-// Connect to the database
+    <div class="form-container">
+    <?php
 require_once "connection.php";
 
-// Prepare the SQL statement
-$sql = "SELECT manager.managerID, manager.firstname, manager.middlename, manager.lastname, manager.dateofbirth, manager.gender, manager.address, manager.primary_phone, manager.secondary_phone, manager.dateofjoin, manager.education_status, manager.manager_photo, manager.email, manager.managerfile, manager.yearlyvacationdays,
-login.username,
-(SELECT departmentname FROM department WHERE department.departmentID = manager.departmentID) AS departmentname,
-(SELECT positionname FROM position WHERE position.positionID = manager.positionID) AS positionname
-FROM manager
-LEFT JOIN login ON manager.userID = login.userID
-WHERE manager.managerID = ?";
+// Retrieve manager information from database
+$managerID = $_SESSION['user_type'];
+$sql_manager = "SELECT * FROM manager WHERE managerID = '$managerID'";
+$result_manager = $conn->query($sql_manager);
 
-// Bind parameters to the statement
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['user_type']);
-
-// Execute the statement
-if (!$stmt->execute()) {
-  // Display an error message if the statement execution fails
-  echo "<script>alert('Error executing the statement: " . $stmt->error . "');</script>";
-} else {
-  // Get the result set
-  $result = $stmt->get_result();
-
-  // Check if there are any results
-  if ($result->num_rows > 0) {
+// Check if any results were returned
+if ($result_manager->num_rows > 0) {
     // Output data of each row
-    while($row = $result->fetch_assoc()) {
-      echo "<div class='manager-container'>";
-      echo "<div class='manager-details'>";
-      echo "<h2>Manager Details</h2>";
-      echo "<ul>";
-      echo "<li>Manager ID: " . $row["managerID"] . "</li>";
-      echo "<li>Name: " . $row["firstname"] . " " . $row["middlename"] . " " . $row["lastname"] . "</li>";
-      echo "<li>Date of Birth: " . $row["dateofbirth"] . "</li>";
-      echo "<li>Gender: " . $row["gender"] . "</li>";
-      echo "<li>Address: " . $row["address"] . "</li>";
-      echo "<li>Primary Phone: " . $row["primary_phone"] . "</li>";
-      echo "<li>Secondary Phone: " . $row["secondary_phone"] . "</li>";
-      echo "<li>Date of Join: " . $row["dateofjoin"] . "</li>";
-      echo "<li>Education Status: " . $row["education_status"] . "</li>";
-      echo "<li>Email: " . $row["email"] . "</li>";
-      echo "<li>Yearly Vacation Days: " . $row["yearlyvacationdays"] . "</li>";
-      echo "<li>Username: " . $row["username"] . "</li>";
-      echo "<li>Department Name: " . $row["departmentname"] . "</li>";
-      echo "<li>Position Name: " . $row["positionname"] . "</li>";
-      echo "</ul>";
-      echo "</div>";
+    while($row_manager = $result_manager->fetch_assoc()) {
+        echo "<table>";
+        echo "<tr><td>Manager ID:</td><td>".$row_manager["managerID"]."</td></tr>";
+        echo "<tr><td>First Name:</td><td>".$row_manager["firstname"]."</td></tr>";
+        echo "<tr><td>Middle Name:</td><td>".$row_manager["middlename"]."</td></tr>";
+        echo "<tr><td>Last Name:</td><td>".$row_manager["lastname"]."</td></tr>";
+        echo "<tr><td>Date of Birth:</td><td>".$row_manager["dateofbirth"]."</td></tr>";
+        echo "<tr><td>Gender:</td><td>".$row_manager["gender"]."</td></tr>";
+        echo "<tr><td>Address:</td><td>".$row_manager["address"]."</td></tr>";
+        echo "<tr><td>Primary Phone:</td><td>".$row_manager["primary_phone"]."</td></tr>";
+        echo "<tr><td>Secondary Phone:</td><td>".$row_manager["secondary_phone"]."</td></tr>";
+        echo "<tr><td>Date of Join:</td><td>".$row_manager["dateofjoin"]."</td></tr>";
+        echo "<tr><td>Education Status:</td><td>".$row_manager["education_status"]."</td></tr>";
+        echo "<tr><td>yearly vacation days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
+        echo "<tr><td>base salary:</td><td>".$row_manager["basesalary"]."</td></tr>";
+        echo "<tr><td>Manager Photo:</td><td><img src='data:image/jpeg;base64,".base64_encode($row_manager["manager_photo"])."' style='max-width: 200px; max-height: 200px;'/></td></tr>";
+        echo "<tr><td>Email:</td><td>".$row_manager["email"]."</td></tr>";
+        echo "<tr><td>Manager File:</td><td><a href='view_pdf.php?managerID=".$row_manager["managerID"]."'>View PDF</a></td></tr>";
+        echo "<tr><td>Yearly Vacation Days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
 
-      // Display the photo and file
-      echo "<div class='manager-media'>";
-      echo "<div class='manager-photo-container'>";
-      echo "<img id='photo-preview' src='data:image/jpeg;base64," . base64_encode($row['manager_photo']) . "' alt='Manager Photo' class='manager-photo' style='max-width: 200px; max-height: 200px;'>";
-      echo "</div>";
-      echo "<div class='manager-file-container'>";
-      echo "<a href='" . $row['managerfile'] . "' download>Download Manager File</a>";
-      echo "</div>";
-      echo "</div>";
+        // Retrieve login information from database
+        $userID = $row_manager['userID'];
+        $sql_login = "SELECT username FROM login WHERE userID = '$userID'";
+        $result_login = $conn->query($sql_login);
+        $row_login = $result_login->fetch_assoc();
+        echo "<tr><td>User ID:</td><td>".$row_login["username"]."</td></tr>";
 
-      echo "</div>";
+        // Retrieve department information from database
+        $departmentID = $row_manager['departmentID'];
+        $sql_department = "SELECT departmentname FROM department WHERE departmentID = '$departmentID'";
+        $result_department = $conn->query($sql_department);
+        $row_department = $result_department->fetch_assoc();
+        echo "<tr><td>Department:</td><td>".$row_department["departmentname"]."</td></tr>";
+
+        // Retrieve position information from database
+        $positionID = $row_manager['positionID'];
+        $sql_position = "SELECT positionname FROM position WHERE positionID = '$positionID'";
+        $result_position = $conn->query($sql_position);
+        $row_position = $result_position->fetch_assoc();
+        echo "<tr><td>Position:</td><td>".$row_position["positionname"]."</td></tr>";
+
+        echo "</table>";
     }
-
-    $conn->close();
-  } else {
-    // Display a message if there are no results
-    echo "<script>alert('No results found for the specified manager ID.');</script>";
-  }
+} else {
+    echo "No results found.";
 }
+
+// Close database connection
+$conn->close();
 ?>
-
-
-  </div>
+    </div>
   </div>
 </div>
 </body>
 </html>
-

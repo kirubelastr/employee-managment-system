@@ -59,7 +59,7 @@ align-items: stretch;
 .sidebar a.active,
 .sidebar a:hover {
   background-color: #ddd;
-  border-left-color: #09f;
+  border-left-color: green;
 }
 .rightofsidebar{
   margin: 0;
@@ -95,7 +95,7 @@ align-items: stretch;
     <a class="active"href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
-    <a href="employee.php">details</a>
+    <a href="employeedetails.php">details</a>
   </div>
  
   <h1>Dashboard</h1>

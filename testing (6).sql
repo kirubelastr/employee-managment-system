@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2023 at 05:42 PM
+-- Generation Time: Jun 17, 2023 at 10:37 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -58,6 +58,14 @@ CREATE TABLE `branch` (
   `managerID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`branchID`, `branchname`, `address`, `managerID`) VALUES
+(3, 'addis ababa', 'Addis Ababa, Gerji Near Unity University.', 'M1'),
+(4, 'Bishoftu', 'Ethiopia,Bishoftu', 'M2');
+
 -- --------------------------------------------------------
 
 --
@@ -69,6 +77,14 @@ CREATE TABLE `branchmanager` (
   `branchID` int(11) NOT NULL,
   `managertype` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `branchmanager`
+--
+
+INSERT INTO `branchmanager` (`managerID`, `branchID`, `managertype`) VALUES
+('M1', 3, 'General Manager'),
+('M2', 4, 'Branch Manager');
 
 -- --------------------------------------------------------
 
@@ -117,6 +133,7 @@ CREATE TABLE `employee` (
   `employment_status` varchar(15) NOT NULL,
   `employeefile` mediumblob NOT NULL,
   `yearlyvacationdays` int(11) NOT NULL DEFAULT 16,
+  `basesalary` double NOT NULL,
   `branchID` int(11) NOT NULL,
   `userID` int(11) DEFAULT NULL,
   `departmentID` int(11) NOT NULL,
@@ -190,6 +207,7 @@ CREATE TABLE `manager` (
   `email` varchar(255) NOT NULL,
   `managerfile` blob NOT NULL,
   `yearlyvacationdays` int(11) NOT NULL DEFAULT 18,
+  `basesalary` double NOT NULL,
   `userID` int(11) DEFAULT NULL,
   `departmentID` int(11) NOT NULL,
   `positionID` int(11) NOT NULL
@@ -199,8 +217,9 @@ CREATE TABLE `manager` (
 -- Dumping data for table `manager`
 --
 
-INSERT INTO `manager` (`id`, `managerID`, `firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`, `managerfile`, `yearlyvacationdays`, `userID`, `departmentID`, `positionID`) VALUES
-(1, 'M1', 'kirubel', 'astraye', 'dessie', '1999-12-28', 'male', 'Ethiopia,addis ababa,bole,gerji,house no 605 ', '+251946331281', '+2517', '2022-12-13', 'msc', 0x656d70312e6a7067, 'kirubelast@gmail.com', 0x436f757273657320746f20626520496e636c7564656420696e20436f6d707574657220536369656e63652045786974204578616d2e706466, 18, NULL, 5, 1);
+INSERT INTO `manager` (`id`, `managerID`, `firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`, `managerfile`, `yearlyvacationdays`, `basesalary`, `userID`, `departmentID`, `positionID`) VALUES
+(1, 'M1', 'kirubel', 'astraye', 'dessie', '1999-12-28', 'male', 'Ethiopia,addis ababa,bole,gerji,house no 605 ', '+251946331281', '+2517', '2022-12-13', 'msc', 0x656d70312e6a7067, 'kirubelast@gmail.com', 0x436f757273657320746f20626520496e636c7564656420696e20436f6d707574657220536369656e63652045786974204578616d2e706466, 18, 25000, 1, 5, 1),
+(3, 'M2', 'kaleab', 'solomon', 'mana', '1996-02-17', 'male', '   Ethiopia,bishoftu     ', '+251946331281', '+251746331281', '2022-07-17', 'msc', 0x656d70312e6a7067, 'kaleabsolomon@gmail.com', 0x436f757273657320746f20626520496e636c7564656420696e20436f6d707574657220536369656e63652045786974204578616d2e706466, 18, 20000, NULL, 10, 4);
 
 -- --------------------------------------------------------
 
@@ -220,7 +239,9 @@ CREATE TABLE `position` (
 
 INSERT INTO `position` (`positionID`, `departmentID`, `positionname`) VALUES
 (1, 5, 'superviser'),
-(2, 5, 'junior');
+(2, 5, 'junior'),
+(3, 10, 'general manager'),
+(4, 10, 'branch manager');
 
 -- --------------------------------------------------------
 
@@ -262,7 +283,8 @@ CREATE TABLE `salary` (
 --
 
 INSERT INTO `salary` (`salaryID`, `employeeID`, `managerID`, `datefrom`, `dateto`, `present_days`, `absent_days`, `late_days`, `salary`, `allowance`, `deduction`, `net`, `date`) VALUES
-(11, NULL, 'M1', '2023-05-15', '2023-06-14', 1, 0, 0, 0, 0, 0, 0, '2023-06-14');
+(11, NULL, 'M1', '2023-05-15', '2023-06-14', 1, 0, 0, 0, 0, 0, 0, '2023-06-14'),
+(12, NULL, 'M1', '2023-05-18', '2023-06-17', 2, 0, 0, 0, 0, 0, 0, '2023-06-17');
 
 --
 -- Indexes for dumped tables
@@ -326,9 +348,9 @@ ALTER TABLE `login`
 ALTER TABLE `manager`
   ADD PRIMARY KEY (`managerID`),
   ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `userID` (`userID`),
   ADD KEY `departmentID` (`departmentID`),
-  ADD KEY `positionID` (`positionID`);
+  ADD KEY `positionID` (`positionID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `position`
@@ -367,7 +389,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `branchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `branchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `department`
@@ -397,13 +419,13 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `position`
 --
 ALTER TABLE `position`
-  MODIFY `positionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `positionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `qrcode`
@@ -415,7 +437,7 @@ ALTER TABLE `qrcode`
 -- AUTO_INCREMENT for table `salary`
 --
 ALTER TABLE `salary`
-  MODIFY `salaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `salaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -461,9 +483,9 @@ ALTER TABLE `employee_leave`
 -- Constraints for table `manager`
 --
 ALTER TABLE `manager`
-  ADD CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `login` (`userID`),
   ADD CONSTRAINT `manager_ibfk_2` FOREIGN KEY (`departmentID`) REFERENCES `department` (`departmentID`),
-  ADD CONSTRAINT `manager_ibfk_3` FOREIGN KEY (`positionID`) REFERENCES `position` (`positionID`);
+  ADD CONSTRAINT `manager_ibfk_3` FOREIGN KEY (`positionID`) REFERENCES `position` (`positionID`),
+  ADD CONSTRAINT `manager_ibfk_4` FOREIGN KEY (`userID`) REFERENCES `login` (`userID`);
 
 --
 -- Constraints for table `position`

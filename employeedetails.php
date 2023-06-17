@@ -57,7 +57,7 @@ session_start();
  .sidebar a.active,
  .sidebar a:hover {
    background-color: #ddd;
-   border-left-color: #09f;
+   border-left-color: green;
  }
  
  .form-container {
@@ -187,115 +187,59 @@ session_start();
     <a  href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
-    <a class="active"href="employee.php">details</a>
+    <a class="active"href="employeedetails.php">details</a>
   </div>
-  <div class="form-container">
-  <?php
-// Start the session
-session_start();
+    <div class="form-container">
+    <?php
+       require_once "connection.php";
+       $_SESSION['employeeID']=1;
+        // Retrieve employee information from database
+        $employeeID = $_SESSION['user_type'];
+        $sql = "SELECT e.employeeID, e.firstname, e.middlename, e.lastname, e.dateofbirth, e.gender, e.address, e.primary_phone, e.secondary_phone, e.dateofjoin, e.education_status, e.employee_photo, e.email, e.employment_status, e.employeefile, e.yearlyvacationdays, b.branchID, l.userID, d.departmentID, p.positionID
+                FROM employee e 
+                LEFT JOIN branch b ON e.branchID = b.branchID 
+                LEFT JOIN login l ON e.userID = l.userID 
+                LEFT JOIN department d ON e.departmentID = d.departmentID 
+                LEFT JOIN position p ON e.positionID = p.positionID 
+                WHERE e.employeeID = '$employeeID'";
+        $result = $conn->query($sql);
 
-// Check if the user is logged in
-if (!isset($_SESSION['user-type'])) {
-  // Redirect to the login page
-  header('Location: login.php');
-  exit;
-}
+        // Check if any results were returned
+        if ($result->num_rows > 0) {
+            // Output data of each row
+            while($row = $result->fetch_assoc()) {
+                echo "<table>";
+                echo "<tr><td>Employee ID:</td><td>".$row["employeeID"]."</td></tr>";
+                echo "<tr><td>First Name:</td><td>".$row["firstname"]."</td></tr>";
+                echo "<tr><td>Middle Name:</td><td>".$row["middlename"]."</td></tr>";
+                echo "<tr><td>Last Name:</td><td>".$row["lastname"]."</td></tr>";
+                echo "<tr><td>Date of Birth:</td><td>".$row["dateofbirth"]."</td></tr>";
+                echo "<tr><td>Gender:</td><td>".$row["gender"]."</td></tr>";
+                echo "<tr><td>Address:</td><td>".$row["address"]."</td></tr>";
+                echo "<tr><td>Primary Phone:</td><td>".$row["primary_phone"]."</td></tr>";
+                echo "<tr><td>Secondary Phone:</td><td>".$row["secondary_phone"]."</td></tr>";
+                echo "<tr><td>Date of Join:</td><td>".$row["dateofjoin"]."</td></tr>";
+                echo "<tr><td>Education Status:</td><td>".$row["education_status"]."</td></tr>";
+                echo "<tr><td>Employee Photo:</td><td><img src='data:image/jpeg;base64,".base64_encode($row["employee_photo"])."'/></td></tr>";
+                echo "<tr><td>Email:</td><td>".$row["email"]."</td></tr>";
+                echo "<tr><td>Employment Status:</td><td>".$row["employment_status"]."</td></tr>";
+                echo "<tr><td>Employee File:</td><td><a href='data:application/pdf;base64,".base64_encode($row["employeefile"])."'>View PDF</a></td></tr>";
+                echo "<tr><td>yearly vaccation days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
+                echo "<tr><td>basesalary:</td><td>".$row_manager["basesalary"]."</td></tr>";
+                echo "<tr><td>Branch:</td><td>".$row["branch_name"]."</td></tr>";
+                echo "<tr><td>User ID:</td><td>".$row["username"]."</td></tr>";
+                echo "<tr><td>Department:</td><td>".$row["department_name"]."</td></tr>";
+                echo "<tr><td>Position:</td><td>".$row["position_name"]."</td></tr>";
+                echo "</table>";
+            }
+        } else {
+            echo "No results found.";
+        }
 
-// Connect to the database
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "myDB";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// Prepare the SQL statement
-$sql = "SELECT employee.employeeID, employee.firstname, employee.middlename, employee.lastname, employee.dateofbirth, employee.gender, employee.address, employee.primary_phone, employee.secondary_phone, employee.dateofjoin, employee.education_status, employee.employee_photo, employee.email, employee.employment_status, employee.employeefile, employee.yearlyvacationdays,
-branch.branchName,
-login.username,
-department.departmentName,
-position.positionName
-FROM employee
-LEFT JOIN branch ON employee.branchID = branch.branchID
-LEFT JOIN login ON employee.userID = login.userID
-LEFT JOIN department ON employee.departmentID = department.departmentID
-LEFT JOIN position ON employee.positionID = position.positionID
-WHERE employee.employeeID = ?";
-
-// Bind parameters to the statement
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['user-type']);
-
-// Execute the statement
-$stmt->execute();
-
-// Get the result set
-$result = $stmt->get_result();
-
-// Check if there are any results
-if ($result->num_rows > 0) {
-  // Output data of each row in an unordered list format.
-  while($row = $result->fetch_assoc()) {
-    echo "<ul class='employee'>";
-    echo "<li>Employee ID: " . $row["employeeID"] . "</li>";
-    echo "<li>Name: " . $row["firstname"] . " " . $row["middlename"] . " " . $row["lastname"] . "</li>";
-    echo "<li>Date of Birth: " . $row["dateofbirth"] . "</li>";
-    echo "<li>Gender: " . $row["gender"] . "</li>";
-    echo "<li>Address: " . $row["address"] . "</li>";
-    echo "<li>Primary Phone: " . $row["primary_phone"] . "</li>";
-    echo "<li>Secondary Phone: " . $row["secondary_phone"] . "</li>";
-    echo "<li>Date of Join: " . $row["dateofjoin"] . "</li>";
-    echo "<li>Education Status: " . $row["education_status"] . "</li>";
-    echo "<li>Email: " . $row["email"] . "</li>";
-    echo "<li>Employment Status: " . $row["employment_status"] . "</li>";
-    echo "<li>Yearly Vacation Days: " . $row["yearlyvacationdays"] . "</li>";
-    echo "<li>Branch Name: " . $row["branchName"] . "</li>";
-    echo "<li>Username: " . $row["username"] . "</li>";
-    echo "<li>Department Name: " . $row["departmentName"] . "</li>";
-    echo "<li>Position Name: " . $row["positionName"] . "</li>";
-    echo "</ul>";
-
-    // Display the photo and file as well.
-    // Note that you need to modify this part based on your database structure.
-    // You can use the following code as a reference:
-
-    echo "<div class='employee-photo-container'>";
-    echo "<img src='data:image/jpeg;base64," . base64_encode($row['employee_photo']) . "' alt='Employee Photo' class='employee-photo'>";
-    }
-    echo "</div>";
-    $conn->close();
-    ?>
-    <!-- The button to open the modal form -->
-    <button class="open-button" onclick="openForm()">Open Form</button>
-
-    <!-- The modal form -->
-    <div class="form-popup" id="myForm">
-    <form action="/action_page.php" class="form-container">
-    <h1>Login</h1>
-
-    <!-- The iframe that displays the PDF file -->
-    <iframe src="path/to/your/pdf/file.pdf"></iframe>
-
-    <button type="submit" class="btn">Submit</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-    </form>
+        // Close database connection
+        $conn->close();
+        ?>
     </div>
-
-    <script>
-    function openForm() {
-    document.getElementById("myForm").style.display = "block";
-    }
-
-    function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-    }
-    </script>
-  </div>
   </div>
 </div>
 </body>

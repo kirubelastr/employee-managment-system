@@ -276,11 +276,14 @@ input[type="submit"]:hover {
                     <option value="bsc">bsc</option>
                     <option value="others">others</option>
                 </select>
-              
+                <label style="margin-left:-3px"for="yearlyvacationdays">yearly vacation days:</label>
+                <input type="number" id="yearlyvacationdays" name="yearlyvacationdays">
+              <label style="margin-left:-45px"for="file-input">base salary</label>
+                  <input type="number" id="salary" name="salary"><br>
               <label style="margin-left:-45px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()">
                   <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
-                  </div><br>
+                  </div>
                 <label for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()">
                   <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
