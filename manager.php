@@ -178,27 +178,27 @@ input[type="submit"]:hover {
       <h3>Personal Information</h3>
       <form id="employeeForm" action="fillmanager.php" method="post"enctype="multipart/form-data">
         <label for="firstname">First Name:</label>
-        <input type="text" id="firstname" name="firstname">
+        <input type="text" id="firstname" name="firstname"required>
         <label for="middlename">Middle Name:</label>
-        <input type="text" id="middlename" name="middlename">
+        <input type="text" id="middlename" name="middlename"required>
         <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname">
+        <input type="text" id="lastname" name="lastname"required>
         <label for="gender">Gender:</label>
-        <select id="gender" name="gender" style="width: fit-content;">
+        <select id="gender" name="gender" style="width: fit-content;"required>
           <option value="">-choose an option-</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
         <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email">
+        <input type="email" id="email" name="email"required>
         <label for="dateofbirth">Date of Birth:</label>
-        <input type="date" id="dateofbirth" name="dateofbirth"><br>
+        <input type="date" id="dateofbirth" name="dateofbirth"required><br>
         <label for="phone" class="phonestyle">primary Phone Number:</label>
-        <input type="tel" id="phone" name="phonep">
+        <input type="tel" id="phone" name="phonep"required>
         <label for="phone">secondary Phone Number:</label>
-        <input type="tel" id="phone" name="phones">
+        <input type="tel" id="phone" name="phones"required>
         <label style="margin-top: -10px;"for="phone">address:</label>
-        <textarea rows="1" cols="30" type="text" id="address" name="address">
+        <textarea rows="1" cols="30" type="text" id="address" name="address"required>
         </textarea>
           <div class="form-section2">
             <h3>Employment Information</h3>
@@ -212,7 +212,7 @@ input[type="submit"]:hover {
 
               // Generate department select element
               echo '<label for="department">Department:</label>';
-              echo '<select style="margin-right: 80px;" name="department" id="department" onchange="updatePositionSelect()">';
+              echo '<select style="margin-right: 80px;" name="department" id="department" onchange="updatePositionSelect()"required>';
               while ($row = $result->fetch_assoc()) {
                   echo '<option value="' . $row['departmentID'] . '">' . $row['departmentname'] . '</option>';
               }
@@ -220,7 +220,7 @@ input[type="submit"]:hover {
 
               // Generate position select element
               echo '<label  style="margin-left:-55px"for="position">Position:</label>';
-              echo '<select  name="position" id="position">';
+              echo '<select  name="position" id="position"required>';
               echo '</select>';
               // Generate positionsByDepartment object
               $positionsByDepartment = [];
@@ -268,24 +268,24 @@ input[type="submit"]:hover {
               </script>
 
               <label  style="margin-left:55px"for="hiredate">Date of Hire:</label>
-              <input type="date" id="hiredate" name="hiredate"><br>
+              <input type="date" id="hiredate" name="hiredate"required><br>
               <label style="margin-left: -3px;" for="eduction">education:</label>
-                <select id="status" name="educationstatus" >
+                <select id="status" name="educationstatus" required>
                     <option value="">-- choose an option --</option>
                     <option value="msc">bsc</option>
                     <option value="bsc">bsc</option>
                     <option value="others">others</option>
                 </select>
                 <label style="margin-left:-3px"for="yearlyvacationdays">yearly vacation days:</label>
-                <input type="number" id="yearlyvacationdays" name="yearlyvacationdays">
-              <label style="margin-left:-45px"for="file-input">base salary</label>
-                  <input type="number" id="salary" name="salary"><br>
+                <input type="number" id="yearlyvacationdays" name="yearlyvacationdays"required>
+              <label style="margin-left:-25px"for="file-input">base salary</label>
+                  <input type="number" id="salary" name="salary"required><br>
               <label style="margin-left:-45px"for="file-input">File(resume):</label>
-                  <input type="file" id="file-input" name="file"onchange="updateFilePreview()">
+                  <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
                   <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
                   </div>
                 <label for="others-photo">Photo:</label>
-                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()">
+                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
                   <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
                        
                 

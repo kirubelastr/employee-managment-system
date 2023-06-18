@@ -45,8 +45,43 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $conn->query($sql);
 
     // Check if data was inserted successfully
-    if ($conn->affected_rows > 0) {
+    if ($conn->affected_rows > 0 && $conn->query($sql) === TRUE) {
         // Data inserted successfully
+            // Data inserted successfully
+            $employeeID = $conn->insert_id;
+
+            // Calculate tax rate and deduction amount based on base salary
+            if ($basesalary <= 600) {
+                $taxRate = 0;
+                $dAmount = 0;
+            } elseif ($basesalary <= 1650) {
+                $taxRate = 0.1;
+                $dAmount = $basesalary * 0.1;
+            } elseif ($basesalary <= 3200) {
+                $taxRate = 0.15;
+                $dAmount = $basesalary * 0.15;
+            } elseif ($basesalary <= 5250) {
+                $taxRate = 0.2;
+                $dAmount = $basesalary * 0.2;
+            } elseif ($basesalary <= 7800) {
+                $taxRate = 0.25;
+                $dAmount = $basesalary * 0.25;
+            } elseif ($basesalary <= 10900) {
+                $taxRate = 0.3;
+                $dAmount = $basesalary * 0.3;
+            } else {
+                $taxRate = 0.35;
+                $dAmount = $basesalary * 0.35;
+            }
+        
+            // Calculate employee pension
+            $employeePension = 0.07;
+            $ePension =$basesalary * 0.07;
+            $deductionAmount=$ePension+$dAmount;
+            // Insert data into deduction table
+            $sql = "INSERT INTO deduction (employeeID, taxRate, deductionAmount, Pension,deductionType)
+            VALUES ($employeeID, $taxRate, $deductionAmount, $employeePension,'pension and tax')";
+            $conn->query($sql);
         echo '<script>
         alert("data inserted suucessfully.");
         </script>';
