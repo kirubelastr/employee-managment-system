@@ -170,7 +170,7 @@ if (isset($_POST['delete'])) {
 .sidebar a.active,
 .sidebar a:hover {
   background-color: #ddd;
-  border-left-color: #09f;
+  border-left-color: red;
 }
 
 .form-container {
@@ -281,10 +281,10 @@ input[type="submit"]:hover {
   <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a href="managerdashboard.php">Home</a>
-    <a href="managerleave.php">leave</a>
-    <a href="managerattendance.php">attendance</a>
-    <a class="active"href="manager.php">details</a>
+    <a  href="department_and_position.php">department and position</a>
+    <a href="aproveleave.php">aprove leave</a>
+    <a class="active"href="createusers.php">createusers</a>
+    <a href="qrcode.php">qrcode</a>
   </div>
 
   <div class="form-container">

@@ -286,7 +286,21 @@ input[type="submit"]:hover {
         </table>
     </div>
       <div class="employee-info">
-        <h5>yearly</h5>
+        <div>
+      <table>
+    <h5>yearly</h5>
+            <thead> <br><br>
+            <tr>
+                <td>ID</td>
+                <td>manager ID</td>
+                <td>DATE</td>
+                <td>leave type</td>
+                <td>START DATE</td>
+                <td>END DATE</td>
+                <td>STATUS</td>
+            </tr>    
+            </thead>
+         <tbody>
       <?php
           $sql = "SELECT * from employee_leave WHERE employeeID IS NOT NULL AND YEAR(date) = YEAR(CURDATE())";
           $query = $conn->query($sql);

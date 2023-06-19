@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION["userType"] = "employee";
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -283,8 +283,21 @@ input[type="submit"]:hover {
         </table>
     </div>
     <div class="employee-info">
-    <h5>yearly</h5>
     <div>
+    <table>
+    <h5>yearly</h5>
+            <thead> <br><br>
+            <tr>
+                <td>ID</td>
+                <td>manager ID</td>
+                <td>DATE</td>
+                <td>leave type</td>
+                <td>START DATE</td>
+                <td>END DATE</td>
+                <td>STATUS</td>
+            </tr>    
+            </thead>
+         <tbody>
     <?php
         require_once "connection.php";
         $sql = "SELECT * from employee_leave WHERE managerID IS NOT NULL AND YEAR(date) = YEAR(CURDATE())";
@@ -301,6 +314,7 @@ input[type="submit"]:hover {
                 echo "<td>" . $row["enddate"] . "</td>";
                 echo "<td>" . $row["status"] . "</td>";
                 echo "</tr>";
+                echo '<br>';
             }
         } else {
             echo "<tr><td colspan='11'>No results found</td></tr>";
