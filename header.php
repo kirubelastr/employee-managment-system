@@ -77,13 +77,23 @@ session_start();
 <div class="header">
     <div class="name"><img src="image/logo2_1619976135.png" alt="excel"></div>
     <div class="menu">
-      <a href="notifications.php" class="notifications">Notifications</a>
       <div class="avatar">
           <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon" alt="Avatar">
       </div>
       <a href="logout.php">Logout</a>
     </div>
 </div>
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/648ede4e94cf5d49dc5e66a6/1h3718pn4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
     
 </body>
 </html>
