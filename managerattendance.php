@@ -1,6 +1,5 @@
 <?php
 session_start();
-$_SESSION["userID"] = "1";
 ?>
 <!DOCTYPE html>
 <html>
@@ -243,7 +242,7 @@ input[type="submit"]:hover {
             <tbody>
                 <?php
                 require_once "connection.php";
-                $userID = $_SESSION['userID']; // assuming the logged-in user's ID is stored in a session variable
+                $userID = $_SESSION["user_type"];// assuming the logged-in user's ID is stored in a session variable
                 $sql = "SELECT * FROM attendance WHERE managerID = '$userID' AND MONTH(logdate) = MONTH(CURDATE())";
                 $query = $conn->query($sql);
                 while($row = $query->fetch_assoc()){

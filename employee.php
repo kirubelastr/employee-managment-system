@@ -55,7 +55,7 @@
  .sidebar a.active,
  .sidebar a:hover {
    background-color: #ddd;
-   border-left-color: #09f;
+   border-left-color: red;
  }
  
  .form-container {
@@ -166,10 +166,12 @@
   <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a  href="employeedashboard.php">Home</a>
-    <a href="employeeleave.php">leave</a>
-    <a href="employeeattendance.php">attendance</a>
-    <a class="active"href="employee.php">details</a>
+    <a  href="department_and_position.php">department and position</a>
+    <a href="aproveleave.php">aprove leave</a>
+    <a href="createusers.php">createusers</a>
+    <a  class="active"href="employee.php">add employee</a>
+    <a href="manager.php">add manage</a>
+    <a href="qrcode.php">qrcode</a>
   </div>
 
   <div class="form-container">
@@ -208,14 +210,14 @@
             <?php
               require_once "connection.php";
               //query the branch table
-              $sql = "SELECT branchID,branchname FROM branch";
+              $sql = "SELECT branchID,managerID,branchname FROM branch";
               $result = $conn->query($sql);
 
               // Generate branch select element
               echo '<label for="branch">branch:</label>';
-              echo '<select  name="branch" id="branch" onchange="updatePositionSelect()"required>';
+              echo '<select  name="branchID" id="branch" onchange="updatePositionSelect()"required>';
               while ($row = $result->fetch_assoc()) {
-                  echo '<option value="' . $row['branchID'] . '">' . $row['branchname'] . '</option>';
+                  echo '<option value="' . $row['branchID'] . $row['managerID'] . '">' . $row['branchname'] . '</option>';
               }
               echo '</select>';
               // Query department table

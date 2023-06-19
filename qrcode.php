@@ -265,6 +265,8 @@ input[type="submit"]:hover {
     <a  href="department_and_position.php">department and position</a>
     <a href="aproveleave.php">aprove leave</a>
     <a href="createusers.php">createusers</a>
+    <a href="employee.php">add employee</a>
+    <a href="manager.php">add manage</a>
     <a class="active"href="qrcode.php">qrcode</a>
   </div>
   <div class="rightofsidebar">

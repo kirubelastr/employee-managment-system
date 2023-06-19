@@ -35,7 +35,11 @@ if (isset($_POST['approve'])) {
     }
 } elseif (isset($_POST['reject'])) {
     // update status to rejected
-    // ...
+    $sql = "UPDATE employee_leave SET status = 'denied' WHERE leaveID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $_POST['leaveID']);
+    $stmt->execute();
+    $result = $stmt->get_result();
 }
 
 header("Location: aproveleave.php"); // redirect back to index page
