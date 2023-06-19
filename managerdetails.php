@@ -216,7 +216,12 @@ require_once "connection.php";
 $managerID = $_SESSION['user_type'];
 $sql_manager = "SELECT * FROM manager WHERE managerID = '$managerID'";
 $result_manager = $conn->query($sql_manager);
-
+function base64_to_jpeg($base64_string, $output_file) {
+  $ifp = fopen($output_file, "wb"); 
+  fwrite($ifp, base64_decode($base64_string)); 
+  fclose($ifp); 
+  return $output_file; 
+}
 // Check if any results were returned
 if ($result_manager->num_rows > 0) {
     // Output data of each row
@@ -235,11 +240,34 @@ if ($result_manager->num_rows > 0) {
         echo "<tr><td>Education Status:</td><td>".$row_manager["education_status"]."</td></tr>";
         echo "<tr><td>yearly vacation days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
         echo "<tr><td>base salary:</td><td>".$row_manager["basesalary"]."</td></tr>";
-        echo "<tr><td>Manager Photo:</td><td><img src='data:image/jpeg;base64,".base64_encode($row_manager["manager_photo"])."' style='max-width: 200px; max-height: 200px;'/></td></tr>";
-        echo "<tr><td>Email:</td><td>".$row_manager["email"]."</td></tr>";
-        echo "<tr><td>Manager File:</td><td><a href='view_pdf.php?managerID=".$row_manager["managerID"]."'>View PDF</a></td></tr>";
-        echo "<tr><td>Yearly Vacation Days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
+        if (isset($row_manager['manager_photo'])) {
+          // Save binary image data to a JPEG file using base64_to_jpeg() function
+          $manager_photo_base64 = base64_encode($row_manager['manager_photo']);
+          base64_to_jpeg($manager_photo_base64, "manager_photo.jpg");
+          echo "<tr><td>Manager Photo:</td><td><img class='manager-photo' src='manager_photo.jpg' style='max-width: 200px; max-height: 200px;'/></td></tr>";
+      } else {
+          echo "<tr><td>Manager Photo:</td><td>No photo data</td></tr>";
+      }
+      echo "<tr><td>Email:</td><td>".htmlspecialchars($row_manager["email"])."</td></tr>";
+if (isset($row_manager['manager_file'])) {
+    // Save binary PDF data to a PDF file
+    $pdf_file = "manager_file.pdf";
+    file_put_contents($pdf_file, $row_manager['manager_file']);
+    echo "<tr><td>Manager File:</td><td><a class='manager-file' href='manager_file.pdf'>View PDF</a></td></tr>";
+} else {
+    echo "<tr><td>Manager File:</td><td>No file data</td></tr>";
+}
 
+// JavaScript for displaying manager PDF file in new window
+echo "<script>
+var managerFiles = document.getElementsByClassName('manager-file');
+for (var i = 0; i < managerFiles.length; i++) {
+    managerFiles[i].onclick = function(e){
+        e.preventDefault();
+        window.open(this.href);
+    }
+}
+</script>";
         // Retrieve login information from database
         $userID = $row_manager['userID'];
         $sql_login = "SELECT username FROM login WHERE userID = '$userID'";
@@ -270,6 +298,83 @@ if ($result_manager->num_rows > 0) {
 // Close database connection
 $conn->close();
 ?>
+<!-- Modal window for displaying manager photo -->
+<div id="photo-modal" class="modal">
+  <span class="close">×</span>
+  <img class="modal-content" id="photo-modal-image">
+  <div id="photo-modal-caption"></div>
+</div>
+
+<!-- Styles for modal window -->
+<style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 700px;
+}
+
+#photo-modal-caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor:pointer;
+}
+</style>
+
+<!-- JavaScript for displaying manager photo in modal window -->
+<script>
+// Get the modal
+var modal = document.getElementById("photo-modal");
+
+// Get the image and insert it inside the modal
+var modalImg = document.getElementById("photo-modal-image");
+var captionText = document.getElementById("photo-modal-caption");
+var managerPhotos = document.getElementsByClassName("manager-photo");
+for (var i = 0; i < managerPhotos.length; i++) {
+    managerPhotos[i].onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+    modal.style.display = "none";
+}
+</script>
+
     </div>
   </div>
 </div>

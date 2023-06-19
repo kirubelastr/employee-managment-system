@@ -41,7 +41,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $departmentID = $_POST['department'];
     $positionID = $_POST['position'];
     $sql = "INSERT INTO `employee`(`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `employee_photo`, `email`,`employment_status`,`employeefile`, `yearlyvacationdays`,`basesalary`, `branchID`,`departmentID`,  `positionID`) 
-        VALUES ('$new_value', '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email', '$employmentstatus', '$file_contents', '$yearlyvacationdays', '$basesalary','$branchID',  '$departmentID', '$positionID')";
+        VALUES ( '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email', '$employmentstatus', '$file_contents', '$yearlyvacationdays', '$basesalary','$branchID',  '$departmentID', '$positionID')";
     $conn->query($sql);
 
     // Check if data was inserted successfully
