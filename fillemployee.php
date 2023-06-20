@@ -45,7 +45,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $conn->query($sql);
 
     // Check if data was inserted successfully
-    if ($conn->affected_rows > 0 && $conn->query($sql) === TRUE) {
+    if ($conn->affected_rows > 0 ) {
         // Data inserted successfully
             // Data inserted successfully
             $employeeID = $conn->insert_id;
@@ -95,7 +95,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
         $conn->close();
         echo '<script>
         window.location.href = "manager.php";
-</script>';
+        </script>';
         
     } else {
         // Error inserting data
@@ -105,7 +105,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
         $conn->close();
         echo '<script>
         window.location.href = "manager.php";
-</script>';
+    </script>';
         
     }
 

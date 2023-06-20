@@ -245,9 +245,9 @@ input[type="submit"]:hover {
     </div>
     <div class="dropdown-box">
     <select name="role" id="role-select">
-      <option value="employee" >employee</option>
-      <option value="manger(branch manager)">manger</option>
-      <option value="general manager(admin)">general manager</option>
+        <option value="general manager(admin)">General Manager</option>
+        <option value="manger(branch manager)">Regional Manager(branch)</option>
+        <option value="employee">Employee</option>
     </select>
     <label for="role-select">Role</label>
   </div>

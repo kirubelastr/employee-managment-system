@@ -56,7 +56,7 @@ session_start();
 .sidebar a.active,
 .sidebar a:hover {
   background-color: #ddd;
-  border-left-color: #09f;
+  border-left-color: red;
 }
 .rightofsidebar{
   margin: 0;
@@ -217,6 +217,7 @@ input[type="submit"]:hover {
     <a href="createusers.php">createusers</a>
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
   </div>
   <div class="rightofsidebar">

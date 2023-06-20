@@ -198,6 +198,7 @@ $departments = getDepartments();
     <a href="createusers.php">createusers</a>
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
   </div>
     <div class="container">

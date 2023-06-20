@@ -48,7 +48,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     $sql = "INSERT INTO `manager`(`managerID`,`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`,`managerfile`,`yearlyvacationdays`,`basesalary`, `departmentID`,  `positionID`) 
         VALUES ('$new_value', '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email',  '$file_contents', '$yearlyvacationdays', '$basesalary', '$departmentID', '$positionID')";
     
-    if ($conn->affected_rows > 0 && $conn->query($sql) === TRUE) {
+    if ($conn->affected_rows > 0) {
         // Data inserted successfully
     // Calculate tax rate and deduction amount based on base salary
     if ($basesalary <= 600) {

@@ -191,56 +191,157 @@ session_start();
   </div>
     <div class="form-container">
     <?php
-       require_once "connection.php";
-       $_SESSION['employeeID']=1;
-        // Retrieve employee information from database
+        require_once "connection.php";
+        
+        // Retrieve manager information from database
         $employeeID = $_SESSION['user_type'];
-        $sql = "SELECT e.employeeID, e.firstname, e.middlename, e.lastname, e.dateofbirth, e.gender, e.address, e.primary_phone, e.secondary_phone, e.dateofjoin, e.education_status, e.employee_photo, e.email, e.employment_status, e.employeefile, e.yearlyvacationdays, b.branchID, l.userID, d.departmentID, p.positionID
-                FROM employee e 
-                LEFT JOIN branch b ON e.branchID = b.branchID 
-                LEFT JOIN login l ON e.userID = l.userID 
-                LEFT JOIN department d ON e.departmentID = d.departmentID 
-                LEFT JOIN position p ON e.positionID = p.positionID 
-                WHERE e.employeeID = '$employeeID'";
-        $result = $conn->query($sql);
-
+        $sql_manager = "SELECT * FROM employee WHERE employeeID = '$employeeID'";
+        $result_manager = $conn->query($sql_manager);
+        function base64_to_jpeg($base64_string, $output_file) {
+          $ifp = fopen($output_file, "wb"); 
+          fwrite($ifp, base64_decode($base64_string)); 
+          fclose($ifp); 
+          return $output_file; 
+        }
         // Check if any results were returned
-        if ($result->num_rows > 0) {
+        if ($result_manager->num_rows > 0) {
             // Output data of each row
-            while($row = $result->fetch_assoc()) {
+            while($row_employee = $result_manager->fetch_assoc()) {
                 echo "<table>";
-                echo "<tr><td>Employee ID:</td><td>".$row["employeeID"]."</td></tr>";
-                echo "<tr><td>First Name:</td><td>".$row["firstname"]."</td></tr>";
-                echo "<tr><td>Middle Name:</td><td>".$row["middlename"]."</td></tr>";
-                echo "<tr><td>Last Name:</td><td>".$row["lastname"]."</td></tr>";
-                echo "<tr><td>Date of Birth:</td><td>".$row["dateofbirth"]."</td></tr>";
-                echo "<tr><td>Gender:</td><td>".$row["gender"]."</td></tr>";
-                echo "<tr><td>Address:</td><td>".$row["address"]."</td></tr>";
-                echo "<tr><td>Primary Phone:</td><td>".$row["primary_phone"]."</td></tr>";
-                echo "<tr><td>Secondary Phone:</td><td>".$row["secondary_phone"]."</td></tr>";
-                echo "<tr><td>Date of Join:</td><td>".$row["dateofjoin"]."</td></tr>";
-                echo "<tr><td>Education Status:</td><td>".$row["education_status"]."</td></tr>";
-                echo "<tr><td>Employee Photo:</td><td><img src='data:image/jpeg;base64,".base64_encode($row["employee_photo"])."'/></td></tr>";
-                echo "<tr><td>Email:</td><td>".$row["email"]."</td></tr>";
-                echo "<tr><td>Employment Status:</td><td>".$row["employment_status"]."</td></tr>";
-                echo "<tr><td>Employee File:</td><td><a href='data:application/pdf;base64,".base64_encode($row["employeefile"])."'>View PDF</a></td></tr>";
-                echo "<tr><td>yearly vaccation days:</td><td>".$row_manager["yearlyvacationdays"]."</td></tr>";
-                echo "<tr><td>basesalary:</td><td>".$row_manager["basesalary"]."</td></tr>";
-                echo "<tr><td>Branch:</td><td>".$row["branch_name"]."</td></tr>";
-                echo "<tr><td>User ID:</td><td>".$row["username"]."</td></tr>";
-                echo "<tr><td>Department:</td><td>".$row["department_name"]."</td></tr>";
-                echo "<tr><td>Position:</td><td>".$row["position_name"]."</td></tr>";
-                echo "</table>";
+                echo "<tr><td>Employee ID:</td><td>".$row_employee["employeeID"]."</td></tr>";
+                echo "<tr><td>First Name:</td><td>".$row_employee["firstname"]."</td></tr>";
+                echo "<tr><td>Middle Name:</td><td>".$row_employee["middlename"]."</td></tr>";
+                echo "<tr><td>Last Name:</td><td>".$row_employee["lastname"]."</td></tr>";
+                echo "<tr><td>Date of Birth:</td><td>".$row_employee["dateofbirth"]."</td></tr>";
+                echo "<tr><td>Gender:</td><td>".$row_employee["gender"]."</td></tr>";
+                echo "<tr><td>Address:</td><td>".$row_employee["address"]."</td></tr>";
+                echo "<tr><td>Primary Phone:</td><td>".$row_employee["primary_phone"]."</td></tr>";
+                echo "<tr><td>Secondary Phone:</td><td>".$row_employee["secondary_phone"]."</td></tr>";
+                echo "<tr><td>Date of Join:</td><td>".$row_employee["dateofjoin"]."</td></tr>";
+                echo "<tr><td>Education Status:</td><td>".$row_employee["education_status"]."</td></tr>";
+                echo "<tr><td>Employee Photo:</td><td><img src='data:image/jpeg;base64,".base64_encode($row_employee["employee_photo"])."'/></td></tr>";
+                echo "<tr><td>Email:</td><td>".$row_employee["email"]."</td></tr>";
+                echo "<tr><td>Employment Status:</td><td>".$row_employee["employment_status"]."</td></tr>";
+                echo "<tr><td>Employee File:</td><td><a href='data:application/pdf;base64,".base64_encode($row_employee["employeefile"])."'>View PDF</a></td></tr>";
+                echo "<tr><td>yearly vaccation days:</td><td>".$row_employee["yearlyvacationdays"]."</td></tr>";
+                echo "<tr><td>basesalary:</td><td>".$row_employee["basesalary"]."</td></tr>";
+                echo "<tr><td>Branch:</td><td>".$row_employee["branchID"]."</td></tr>";
+                // Retrieve branch information from database
+               $branchID = $row_employee['branchID'];
+               $sql_login = "SELECT branchname FROM branch WHERE branchID = '$branchID'";
+               $result_login = $conn->query($sql_login);
+               $row_branch = $result_login->fetch_assoc();
+               echo "<tr><td>branch name:</td><td>".$row_branch["branchname"]."</td></tr>";
+       
+               // Retrieve login information from database
+               $email = $row_employee['email'];
+               $sql_login = "SELECT username FROM login WHERE username = '$email'";
+               $result_login = $conn->query($sql_login);
+               $row_login = $result_login->fetch_assoc();
+               echo "<tr><td>User ID:</td><td>".$row_login["username"]."</td></tr>";
+       
+               // Retrieve department information from database
+               $departmentID = $row_employee['departmentID'];
+               $sql_department = "SELECT departmentname FROM department WHERE departmentID = '$departmentID'";
+               $result_department = $conn->query($sql_department);
+               $row_department = $result_department->fetch_assoc();
+               echo "<tr><td>Department:</td><td>".$row_department["departmentname"]."</td></tr>";
+       
+               // Retrieve position information from database
+               $positionID = $row_employee['positionID'];
+               $sql_position = "SELECT positionname FROM position WHERE positionID = '$positionID'";
+               $result_position = $conn->query($sql_position);
+               $row_position = $result_position->fetch_assoc();
+               echo "<tr><td>Position:</td><td>".$row_position["positionname"]."</td></tr>";
+       
             }
         } else {
             echo "No results found.";
         }
-
+        
         // Close database connection
         $conn->close();
         ?>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+        <!-- Modal window for displaying manager photo -->
+        <div id="photo-modal" class="modal">
+          <span class="close">×</span>
+          <img class="modal-content" id="photo-modal-image">
+          <div id="photo-modal-caption"></div>
+        </div>
+        
+        <!-- Styles for modal window -->
+        <style>
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+          margin: auto;
+          display: block;
+          max-width: 700px;
+        }
+        
+        #photo-modal-caption {
+          margin: auto;
+          display: block;
+          width: 80%;
+          text-align: center;
+        }
+        
+        .close {
+          position: absolute;
+          top: 10px;
+          right: 25px;
+          color: #f1f1f1;
+          font-size: 40px;
+          font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+          color: #bbb;
+          text-decoration: none;
+          cursor:pointer;
+        }
+        </style>
+        
+        <!-- JavaScript for displaying manager photo in modal window -->
+        <script>
+        // Get the modal
+        var modal = document.getElementById("photo-modal");
+        
+        // Get the image and insert it inside the modal
+        var modalImg = document.getElementById("photo-modal-image");
+        var captionText = document.getElementById("photo-modal-caption");
+        var managerPhotos = document.getElementsByClassName("manager-photo");
+        for (var i = 0; i < managerPhotos.length; i++) {
+            managerPhotos[i].onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+        }
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+        </script>
+        
+            </div>
+          </div>
+        </div>
+        </body>
+        </html>
+        

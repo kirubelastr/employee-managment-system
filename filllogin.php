@@ -6,27 +6,28 @@ require_once "connection.php";
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["role"])) {
   // Get the email, password, and role from the form
   $email = $_POST["email"];
-  $password = $_POST["password"];
-  $role = $_POST["role"];
-
-  // Check if the email, password, and role exist in the login table
-  $query = "SELECT * FROM login WHERE username='$email' AND password='$password' AND role='$role'";
-  $result = mysqli_query($conn, $query);
-
-  if (mysqli_num_rows($result) == 1) {
-    // Login successful
-    $row = mysqli_fetch_assoc($result);
-    $_SESSION["role"] = $role;
+   // Hash the password
+   $password = md5($_POST["password"]);
+   $role = $_POST["role"];
+   
+   // Check if the email, password, and role exist in the login table
+   $query = "SELECT * FROM login WHERE username='$email' AND password='$password' AND role='$role'";
+   $result = mysqli_query($conn, $query);
+   
+   if (mysqli_num_rows($result) == 1) {
+     // Login successful
+     $row = mysqli_fetch_assoc($result);
+     $_SESSION["role"] = $role;
 
     // Check if the user is an employee
-    if ($role == "employee") {
+    if ($role === "employee") {
       $query = "SELECT * FROM employee WHERE email='$email'";
       $result = mysqli_query($conn, $query);
 
       if (mysqli_num_rows($result) == 1) {
         // Employee found in employee table
         $row = mysqli_fetch_assoc($result);
-        $_SESSION["user_type"] = $row["employeeID"];
+        $_SESSION["user_type"] = $row['employeeID'];
         // Display employee ID using a script alert
       }
     } else {
@@ -48,6 +49,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["role"])
     // Redirect the user based on their role using JavaScript
     if ($role == "employee") {
         echo "<script>alert('Employee ID: " . $_SESSION["user_type"] . "');</script>";
+        echo "<script>alert('Employee ID: " .  $_SESSION["role"]. "');</script>";
         echo "<script>window.location.href='employeedashboard.php';</script>";
     } elseif ($role == "manger(branch manager)") {
         echo "<script>alert('Employee ID: " . $_SESSION["user_type"] . "');</script>";

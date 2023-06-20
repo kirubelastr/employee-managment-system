@@ -171,6 +171,7 @@
     <a href="createusers.php">createusers</a>
     <a  class="active"href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
   </div>
 
@@ -302,9 +303,10 @@
                 <input type="number" id="yearlyvacationdays" name="yearlyvacationdays"required>
               <label style="margin-left:-50px"for="file-input">base salary:</label>
                   <input type="number" id="salary" name="salary"required>
+                  
               <label style="margin-left:-3px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
-                  <button id="preview-button"  style="display: none; position: absolute; bottom: 150px; right: 300px;"onclick="openPreviewDialog()">Preview</button>
+                  <button id="preview-button"  style="display: none; position: absolute; bottom: 100px; right: 300px;"onclick="openPreviewDialog()">Preview</button>
                   </div>
                 <label style="margin-left:-47px"for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>

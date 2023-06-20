@@ -14,10 +14,10 @@ if (isset($_POST['create'])) {
     // Check if the password and confirm password match
     if ($password != $confirmPassword) {
         // Display an error message
-        echo "Error: Password and confirm password do not match!";
+        echo "<script>alert('Error: Password and confirm password do not match!');</script>";
     } else {
         // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = md5($password);
 
         // Check if employeeID is set
         if (!empty($employeeID)) {
@@ -35,16 +35,16 @@ if (isset($_POST['create'])) {
                 $username = $employee_row['email'];
 
                 // Insert the user into the logins table
-                $insert_sql = "INSERT INTO login (username, password, roles) VALUES (?, ?, ?)";
+                $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
                 $insert_stmt = $conn->prepare($insert_sql);
                 $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
                 $insert_stmt->execute();
 
                 // Display a success message
-                echo "User created successfully!";
+                echo "<script>alert('User created successfully!!');</script>";
             } else {
                 // Display an error message
-                echo "Error: Invalid employee ID!";
+                echo "<script>alert('Error: Invalid employee ID!!');</script>";
             }
         } elseif (!empty($managerID)) {
             // Get the manager's email from the manager table
@@ -67,10 +67,11 @@ if (isset($_POST['create'])) {
                 $insert_stmt->execute();
 
                 // Display a success message
-                echo "User created successfully!";
+                
+                echo "<script>alert('User created successfully!!');</script>";
             } else {
                 // Display an error message
-                echo "Error: Invalid manager ID!";
+                 echo "<script>alert('Error: Invalid manager ID!!');</script>";
             }
         }
     }
@@ -82,10 +83,10 @@ if (isset($_POST['update'])) {
     $loginID = $_POST['loginID'];
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $userType = $_POST['userType'];
+    $userType = $_POST['userType2'];
 
     // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+     $hashedPassword = md5($password);
 
     // Update the user in the logins table
     $update_sql = "UPDATE login SET username=?, password=?, role=? WHERE userID=?";
@@ -94,7 +95,7 @@ if (isset($_POST['update'])) {
     $update_stmt->execute();
 
     // Display a success message
-    echo "User updated successfully!";
+    echo "<script>alert('User updated successfully!');</script>";
 }
 
 // Check if the delete form has been submitted
@@ -109,7 +110,8 @@ if (isset($_POST['delete'])) {
     $delete_stmt->execute();
 
     // Display a success message
-    echo "User deleted successfully!";
+    echo "<script>alert('User deleted successfully!!');</script>";
+    
 }
 ?>
 <!DOCTYPE html>
@@ -286,6 +288,7 @@ input[type="submit"]:hover {
     <a class="active"href="createusers.php">createusers</a>
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
   </div>
 
@@ -343,18 +346,18 @@ input[type="submit"]:hover {
     </select><br>
 
     <label for="createUserType">User Type:</label>
-    <select name="userType" id="createUserType">
+    <select name="userType" id="createUserType" required>
         <option value="">--Select User Type--</option>
+        <option value="general manager(admin)">General Manager</option>
+        <option value="manger(branch manager)">Regional Manager(branch)</option>
         <option value="employee">Employee</option>
-        <option value="regionalManager">Regional Manager</option>
-        <option value="generalManager">General Manager</option>
     </select><br>
 
     <label for="createPassword">Password:</label>
-    <input type="password" name="password" id="createPassword"><br>
+    <input type="password" name="password" id="createPassword"required><br>
 
     <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" name="confirmPassword" id="confirmPassword"><br>
+    <input type="password" name="confirmPassword" id="confirmPassword"required><br>
 
     <input type="submit" name="create" value="Create User">
 </form>
@@ -363,20 +366,20 @@ input[type="submit"]:hover {
 <form method="post" id="updateForm">
     <h2>Update User</h2>
 
-    <input type="hidden" name="loginID" id="updateLoginID">
+    <input type="hidden" name="loginID" id="updateLoginID" >
 
     <label for="updateUsername">Username:</label>
-    <input type="text" name="username" id="updateUsername"><br>
+    <input type="text" name="username" id="updateUsername" required><br>
 
     <label for="updatePassword">Password:</label>
-    <input type="password" name="password" id="updatePassword"><br>
+    <input type="password" name="password" id="updatePassword" required><br>
 
     <label for="updateUserType">User Type:</label>
-    <select name="userType" id="updateUserType">
+    <select name="userType2" id="updateUserType" required>
         <option value="">--Select User Type--</option>
+        <option value="general manager(admin)">General Manager</option>
+        <option value="manger(branch manager)">Regional Manager(branch)</option>
         <option value="employee">Employee</option>
-        <option value="regionalManager">Regional Manager</option>
-        <option value="generalManager">General Manager</option>
     </select><br>
     <input type="submit" name="update" value="Update User">
 </form>
