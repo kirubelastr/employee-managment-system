@@ -19,7 +19,7 @@ if (isset($_POST['approve'])) {
         $startdate = new DateTime($row["startdate"]);
         $enddate = new DateTime($row["enddate"]);
         $interval = date_diff($startdate, $enddate);
-        $days_taken = intval($interval->format('%a')) + 1;
+        $days_taken = intval($interval->format('%a'));
 
         if (isset($row["employeeID"])) {
             $sql = "UPDATE employee SET yearlyvacationdays = yearlyvacationdays - ? WHERE employeeID = ?";
@@ -29,7 +29,7 @@ if (isset($_POST['approve'])) {
         } elseif (isset($row["managerID"])) {
             $sql = "UPDATE manager SET yearlyvacationdays = yearlyvacationdays - ? WHERE managerID = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ii", $days_taken, $row["employeeID"]);
+            $stmt->bind_param("is", $days_taken, $row["managerID"]);
             $stmt->execute();
         }
     }
