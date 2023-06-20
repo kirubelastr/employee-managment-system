@@ -282,13 +282,13 @@ input[type="submit"]:hover {
                 <input type="number" id="yearlyvacationdays" name="yearlyvacationdays"required>
               <label style="margin-left:-25px"for="file-input">base salary</label>
                   <input type="number" id="salary" name="salary"required><br>
-              <label style="margin-left:-45px"for="file-input">File(resume):</label>
+                  <label style="margin-left:-3px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
-                  <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
+                  <button id="preview-button"  style="display: none; position: absolute; bottom: 200px; right: 700px;"onclick="openPreviewDialog()">Preview</button>
                   </div>
-                <label for="others-photo">Photo:</label>
+                <label style="margin-left:-3px"for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
-                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
+                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position: absolute; bottom: 30px; right: 500px;">
                        
                 
                   <script>

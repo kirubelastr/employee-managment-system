@@ -6,8 +6,7 @@ session_start();
 <html>
 <head>
   <title>leave</title>
-  <style>
-   body {
+  <style>   body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -15,7 +14,6 @@ session_start();
   justify-content: flex-start;
   align-items: stretch;
 }
-
 .page-container {
       display: flex;
       flex-direction: column;
@@ -100,9 +98,6 @@ h3 {
         th, td {
             text-align: left;
             padding: 8px;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
         }
         th {
             background-color: #4CAF50;
@@ -209,26 +204,24 @@ input[type="submit"]:hover {
   </style>
 </head>
 <body>
-
 <div class="page-container">
   <?php include 'header.php'; ?>
 
   <div class="content-container">
-
   <div class="sidebar">
-    <h3>submenu</h3>
+    <h3>Sidebar</h3>
     <a href="employeedashboard.php">Home</a>
     <a class="active"href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
     <a href="employeedetails.php">details</a>
   </div>
-<div class="rightofsidebar">
+  <div class="rightofsidebar">
 <div class="container">
    <h1>Leave Request Form</h1>
-   <form action="fillleave.php" method="post">
-     <label for="userID">Your ID:</label>
+   <form action="fillleave.php" method="post"><label for="userID">Your ID:</label>
         <input type="text" id="userID" name="userID" value="<?php echo $_SESSION['user_type']; ?>" required><br>
-       <label for="leavetype">Leave Type:</label>
+
+        <label for="leavetype">Leave Type:</label>
         <select id="leavetype" name="leavetype" required>
             <option value="">--Please choose an option--</option>
             <option value="sick">Sick Leave</option>
@@ -236,23 +229,28 @@ input[type="submit"]:hover {
             <option value="personal">Personal Leave</option>
         </select><br>
         <label for="startdate">Start Date:</label>
-          <input type="date" id="startdate" name="startdate" required min="" onchange="setEndDateMin()"><br>
+<input type="date" id="startdate" name="startdate" required min="" onchange="setEndDateMin()"><br>
 
-          <label for="enddate">End Date:</label>
-          <input type="date" id="enddate" name="enddate" required min="">
+<label for="enddate">End Date:</label>
+<input type="date" id="enddate" name="enddate" required min="">
 
-          <script>
-              function setEndDateMin() {
-                  let startDate = new Date(document.querySelector("#startdate").value);
-                  let endDateMin = new Date(startDate.getTime() + 86400000);
-                  document.querySelector("#enddate").min = endDateMin.toISOString().split("T")[0];
-              }
-              document.querySelector("#startdate").min = new Date().toISOString().split("T")[0];
-          </script>
+<script>
+    function setEndDateMin() {
+        let startDate = new Date(document.querySelector("#startdate").value);
+        let endDateMin = new Date(startDate.getTime() + 86400000);
+        document.querySelector("#enddate").min = endDateMin.toISOString().split("T")[0];
+    }
+    document.querySelector("#startdate").min = new Date().toISOString().split("T")[0];
+</script>
+
+
         <input type="submit" value="apply">
     </form>
-    <style>
-     .status-pending {
+    </div>
+    <div class="container">
+     <div class="employee-info">
+     <style>
+    .status-pending {
     border: 11px solid blue;
     background-color: transparent;
 }
@@ -264,6 +262,7 @@ input[type="submit"]:hover {
     border: 11px solid green;
     background-color: transparent;
 }
+
 </style>
 
 <table>
@@ -358,10 +357,12 @@ input[type="submit"]:hover {
         ?>
     </tbody>
 </table>
-      </div>
+
+
+    </div>
     </div>
 </div>
   </div>
-</div>
+  </div>
 </body>
 </html>

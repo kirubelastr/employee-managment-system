@@ -304,11 +304,11 @@
                   <input type="number" id="salary" name="salary"required>
               <label style="margin-left:-3px"for="file-input">File(resume):</label>
                   <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
-                  <button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
+                  <button id="preview-button"  style="display: none; position: absolute; bottom: 150px; right: 300px;"onclick="openPreviewDialog()">Preview</button>
                   </div>
                 <label style="margin-left:-47px"for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
-                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
+                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position: absolute; bottom: 30px; right: 600px;">
                        
                 
                   <script>
