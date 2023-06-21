@@ -275,9 +275,13 @@ input[type="submit"]:hover {
               <label style="margin-left: -3px;" for="eduction">education:</label>
                 <select id="status" name="educationstatus" required>
                     <option value="">-- choose an option --</option>
-                    <option value="msc">bsc</option>
-                    <option value="bsc">bsc</option>
-                    <option value="others">others</option>
+                    <option value="msc">MSc</option>
+                    <option value="bsc">BSc</option>
+                    <option value="phd">PhD</option>
+                    <option value="mba">MBA</option>
+                    <option value="ba">BA</option>
+                    <option value="ma">MA</option>
+                    <option value="others">Others</option>
                 </select>
                 <label style="margin-left:-3px"for="yearlyvacationdays">yearly vacation days:</label>
                 <input type="number" id="yearlyvacationdays" name="yearlyvacationdays"required>
@@ -288,8 +292,8 @@ input[type="submit"]:hover {
                   <button id="preview-button"  style="display: none; position: absolute; bottom: 200px; right: 700px;"onclick="openPreviewDialog()">Preview</button>
                   </div>
                 <label style="margin-left:-3px"for="others-photo">Photo:</label>
-                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
-                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position: absolute; bottom: 30px; right: 500px;">
+                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()" required>
+                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position:absolute; bottom: 30px; right: 500px;">
                        
                 
                   <script>

@@ -85,8 +85,8 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     $ePension =$basesalary * 0.07;
     $deductionAmount=$ePension+$dAmount;
     // Insert data into deduction table
-    $sql = "INSERT INTO deduction (managerID, taxRate, deductionAmount, Pension,deductionType)
-    VALUES ('$new_value',  $taxRate, $deductionAmount, $employeePension,'pension and tax')";
+    $sql = "INSERT INTO `deduction`( `managerID`, `taxrate`, `Pension`, `deductionAmount`, `deductionType`)
+    VALUES ('$new_value',  $taxRate, $employeePension, $deductionAmount,'pension and tax')";
     $conn->query($sql);
         echo '<script>
         alert("data inserted suucessfully.");

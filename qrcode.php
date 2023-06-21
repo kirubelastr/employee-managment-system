@@ -267,32 +267,23 @@ input[type="submit"]:hover {
     <a href="createusers.php">createusers</a>
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
     <a class="active"href="qrcode.php">qrcode</a>
   </div>
   <div class="rightofsidebar">
 <div class="container">
-
 <?php
 // Require the connection file to connect to the database
 require_once "connection.php";
 
-// Function to convert base64-encoded data to a JPEG file
-function base64_to_jpeg($base64_string, $output_file) {
-    $ifp = fopen($output_file, "wb"); 
-    fwrite($ifp, base64_decode($base64_string)); 
-    fclose($ifp); 
-    return $output_file; 
-}
-
 // Query to select the employeeID and managerID from the employee and manager tables
 $employee_query = "SELECT employeeID FROM employee WHERE employeeID NOT IN (SELECT employeeID FROM qrcode WHERE employeeID IS NOT NULL)";
-$manager_query = "SELECT managerID FROM manager WHERE managerID NOT IN (SELECT managerID FROM qrcode WHERE managerID IS NOT NULL)";
-
 // Execute the queries and store the results in variables
 $employee_result = $conn->query($employee_query);
 if ($employee_result === false) {
     die("Error executing query: " . $conn->error);
 }
+$manager_query = "SELECT managerID FROM manager WHERE managerID NOT IN (SELECT managerID FROM qrcode WHERE managerID IS NOT NULL)";
 $manager_result = $conn->query($manager_query);
 if ($manager_result === false) {
     die("Error executing query: " . $conn->error);
@@ -326,64 +317,14 @@ if ($employee_result->num_rows > 0 || $manager_result->num_rows > 0) {
         if ($insert_stmt === false) {
             die("Error preparing statement: " . $conn->error);
         }
-        $insert_stmt->bind_param("is", $employeeID, $qr_image);
+        $insert_stmt->bind_param("is", $employeeID, $qr_image); 
         if ($insert_stmt->execute() === false) {
-            die("Error executing statement: " . $insert_stmt->error);
-        }
-        $insert_stmt->close();
-    }
-
-    // Generate a QR code for each manager without one
-    while($row = $manager_result->fetch_assoc()) {
-        // Get the manager ID from the row
-        $managerID = $row['managerID'];
-
-        // Set the data to be encoded in the QR code
-        $qr_data = "Manager ID: " . $managerID;
-
-        // Generate the QR code and save it to a variable
-        ob_start();
-        QRcode::png($qr_data);
-        $qr_image = ob_get_contents();
-        ob_end_clean();
-
-        // Insert the data into the qrcode table
-        $insert_query = "INSERT INTO qrcode (managerID, qrimage) VALUES (?, ?)";
-        $insert_stmt = $conn->prepare($insert_query);
-        if ($insert_stmt === false) {
-            die("Error preparing statement: " . $conn->error);
-        }
-        // Changed first parameter from "i" to "s" since managerID is now a string (varchar)
-        $insert_stmt->bind_param("ss", $managerID, $qr_image);
-        if ($insert_stmt->execute() === false) {
-            die("Error executing statement: " . $insert_stmt->error);
+            die("Error executing statement: " . $insert_stmt->error); 
         }
         $insert_stmt->close();
     }
 }
 
-// Save binary image data to a JPEG file using base64_to_jpeg() function
-
-// Query to select a single row from qrcode table
-$sql = "SELECT qrimage FROM qrcode WHERE id = 1";
-
-// Execute query and store result in variable
-$result = $conn->query($sql);
-
-// Check if there is any row in result
-if ($result->num_rows > 0) {
-    // Get qrimage from row
-    $row = $result->fetch_assoc();
-    if (isset($row['qrimage'])) {
-      // Save binary image data to a JPEG file using base64_to_jpeg() function
-      $qr_image_base64 = base64_encode($row['qrimage']);
-      base64_to_jpeg($qr_image_base64, "debug.jpg");
-      echo "<p>Image saved to debug.jpg</p>";
-    } else {
-      echo "<p>No image data found in row</p>";
-    }
-} else {
-}
 // Display the values stored in the table for all employees and managers
 
 // Query to select all data from qrcode table
@@ -395,7 +336,6 @@ $result = $conn->query($sql);
 // Check if there is any row in result
 if ($result->num_rows > 0) {
     // Output data of each row
-
     echo "<h2>QR Codes</h2>";
     echo "<table>";
     echo "<tr><th>ID</th><th>Employee ID</th><th>Manager ID</th><th>QR Image</th></tr>";
@@ -405,17 +345,14 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['id']) . "</td>";
         echo "<td>" . htmlspecialchars($row['employeeID']) . "</td>";
         echo "<td>" . htmlspecialchars($row['managerID']) . "</td>";
-        if (isset($row['qrimage'])) {
-          echo "<td><img class='qr-image' src='data:image/png;base64," . base64_encode($row['qrimage']) . "' alt='QR Image'></td>";
-        } else {
-          echo "<td>No image data</td>";
-        }
+        echo "<td><img class='qr-image' src='data:image/png;base64," . base64_encode($row['qrimage']) . "' alt='QR Image'></td>";
         echo "</tr>";
     }
     echo "</table>";
 } else {
-    echo "<p>No rows found in qrcode table</p>";
+    echo "<p>No rows found in qrcode table</p>"; 
 }
+$conn->close();
 ?>
 
       <!-- Modal window for displaying QR code images -->

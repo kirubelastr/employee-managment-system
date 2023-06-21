@@ -287,10 +287,13 @@
               <input type="date" id="hiredate" name="hiredate"required>
               <label style="margin-left: 0px;" for="eduction">education:</label>
                 <select id="status" name="educationstatus" required>
-                    <option value="">-- choose an option --</option>
-                    <option value="msc">bsc</option>
-                    <option value="bsc">bsc</option>
-                    <option value="others">others</option>
+                   <option value="msc">MSc</option>
+                  <option value="bsc">BSc</option>
+                  <option value="phd">PhD</option>
+                  <option value="mba">MBA</option>
+                  <option value="ba">BA</option>
+                  <option value="ma">MA</option>
+                  <option value="others">Others</option>
                 </select>
                 <label style="margin-left:0px"for="status">Employment Status:</label>
               <select id="status"name="employmentstatus"required>
@@ -310,7 +313,7 @@
                   </div>
                 <label style="margin-left:-47px"for="others-photo">Photo:</label>
                   <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
-                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position: absolute; bottom: 30px; right: 600px;">
+                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position:absolute; bottom: 30px; right: 600px;">
                        
                 
                   <script>

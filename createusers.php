@@ -61,7 +61,7 @@ if (isset($_POST['create'])) {
                 $username = $manager_row['email'];
 
                 // Insert the user into the logins table
-                $insert_sql = "INSERT INTO login (username, password, roles) VALUES (?, ?, ?)";
+                $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
                 $insert_stmt = $conn->prepare($insert_sql);
                 $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
                 $insert_stmt->execute();
