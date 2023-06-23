@@ -289,21 +289,36 @@ form {
   <div class="rightofsidebar">
 <div class="container">
 <h2>Add Record to Deduction Table</h2>
+<?php
+// Your PHP code here
+?>
+
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+  <!-- Add a select element to let the user choose between employee and manager ID -->
+  <label for="idType">ID Type:</label>
+  <select name="idType" id="idType">
+    <option value="employee">Employee</option>
+    <option value="manager">Manager</option>
+  </select>
+
+  <!-- Add select element for employee ID -->
   <label for="deduction_employeeID">Employee ID:</label>
   <select name="deduction_employeeID" id="deduction_employeeID">
     <?php
-    // Query manager table for manager ID and name
-    // Use while loop to populate select options with manager data
+    // Query employee table for employee ID and name
+    // Use while loop to populate select options with employee data
     // Use htmlspecialchars() function to prevent XSS attacks
-    $manager_sql = "SELECT manager.managerID AS managerID, manager.firstname AS firstname, manager.middlename AS middlename, manager.lastname AS lastname FROM manager";
-    if ($manager_result = mysqli_query($conn, $manager_sql)) {
-      while ($row = mysqli_fetch_assoc($manager_result)) {
-        echo "<option value='" . htmlspecialchars($row["managerID"]) . "'>" . htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
+    $employee_sql = "SELECT employee.employeeID AS employeeID, employee.firstname AS firstname, employee.middlename AS middlename, employee.lastname AS lastname FROM employee";
+    if ($employee_result = mysqli_query($conn, $employee_sql)) {
+      while ($row = mysqli_fetch_assoc($employee_result)) {
+        echo "<option value='" . htmlspecialchars($row["employeeID"]) . "'>" . htmlspecialchars($row["employeeID"]) . " :". htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
       }
     }
     ?>
   </select>
+
+  <!-- Add select element for manager ID -->
   <label for="deduction_managerID">Manager ID:</label>
   <select name="deduction_managerID" id="deduction_managerID">
     <?php
@@ -313,21 +328,55 @@ form {
     $manager_sql = "SELECT manager.managerID AS managerID, manager.firstname AS firstname, manager.middlename AS middlename, manager.lastname AS lastname FROM manager";
     if ($manager_result = mysqli_query($conn, $manager_sql)) {
       while ($row = mysqli_fetch_assoc($manager_result)) {
-        echo "<option value='" . htmlspecialchars($row["managerID"]) . "'>" . htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
+        echo "<option value='" . htmlspecialchars($row["managerID"]) . "'>" . htmlspecialchars($row["managerID"]) . " :". htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
       }
     }
     ?>
   </select>
+
+  <!-- Add the rest of your form elements here -->
   <label for="deduction_type">Deduction Type:</label>
   <input type="text" name="deduction_type" id="deduction_type" value="<?php echo $deduction_type; ?>">
   <label for="deduction_amount">Deduction Amount:</label>
   <input type="text" name="deduction_amount" id="deduction_amount" value="<?php echo $deduction_amount; ?>">
   <button type="submit" name="deduction_submit">Add Record</button>
+
+  <!-- Add CSS to initially hide the manager ID select element -->
+  <style>
+  #deduction_managerID {
+    display: none;
+  }
+  </style>
+
+  <!-- Add JavaScript to show or hide the employee and manager select elements based on the selected option -->
+  <script>
+  document.getElementById('idType').addEventListener('change', function() {
+    // Get the selected ID type
+    var idType = this.value;
+
+    // Show or hide the employee and manager select elements
+    if (idType === 'employee') {
+      document.getElementById('deduction_employeeID').style.display = 'block';
+      document.getElementById('deduction_managerID').style.display = 'none';
+    } else if (idType === 'manager') {
+      document.getElementById('deduction_employeeID').style.display = 'none';
+      document.getElementById('deduction_managerID').style.display = 'block';
+    }
+  });
+  </script>
 </form>
 
-<!-- HTML form to add record to allowance table -->
 <h2>Add Record to Allowance Table</h2>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+  <!-- Add a select element to let the user choose between employee and manager ID -->
+  <label for="idType">ID Type:</label>
+  <select name="idType" id="idType">
+    <option value="employee">Employee</option>
+    <option value="manager">Manager</option>
+  </select>
+
+  <!-- Add select element for employee ID -->
   <label for="allowance_employeeID">Employee ID:</label>
   <select name="allowance_employeeID" id="allowance_employeeID">
     <?php
@@ -336,32 +385,60 @@ form {
     // Use htmlspecialchars() function to prevent XSS attacks
     $employee_sql = "SELECT employee.employeeID AS employeeID, employee.firstname AS firstname, employee.middlename AS middlename, employee.lastname AS lastname FROM employee";
     if ($employee_result = mysqli_query($conn, $employee_sql)) {
-        while ($row = mysqli_fetch_assoc($employee_result)) {
-          echo "<option value='" . htmlspecialchars($row["employeeID"]) . "'>" . htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
-        }
+      while ($row = mysqli_fetch_assoc($employee_result)) {
+        echo "<option value='" . htmlspecialchars($row["employeeID"]) . "'>" . htmlspecialchars($row["employeeID"]) . " : ". htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
       }
-      ?>
-    </select>
-    <label for="allowance_managerID">Manager ID:</label>
-    <select name="allowance_managerID" id="allowance_managerID">
-    <?php
-// Query manager table for manager ID and name
-// Use while loop to populate select options with manager data
-// Use htmlspecialchars() function to prevent XSS attacks
-$manager_sql = "SELECT manager.managerID AS managerID, manager.firstname AS firstname, manager.middlename AS middlename, manager.lastname AS lastname FROM manager";
-if ($manager_result = mysqli_query($conn, $manager_sql)) {
-  while ($row = mysqli_fetch_assoc($manager_result)) {
-    echo "<option value='" . htmlspecialchars($row["managerID"]) . "'>" . htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
-  }
-}
-?>
+    }
+    ?>
+  </select>
 
-    </select>
-    <label for="allowance_type">Allowance Type:</label>
-    <input type="text" name="allowance_type" id="allowance_type" value="<?php echo $allowance_type; ?>">
-    <label for="allowance_amount">Allowance Amount:</label>
-    <input type="text" name="allowance_amount" id="allowance_amount" value="<?php echo $allowance_amount; ?>">
-    <button type="submit" name="allowance_submit">Add Record</button>
-  </form>
+  <!-- Add select element for manager ID -->
+  <label for="allowance_managerID">Manager ID:</label>
+  <select name="allowance_managerID" id="allowance_managerID">
+    <?php
+    // Query manager table for manager ID and name
+    // Use while loop to populate select options with manager data
+    // Use htmlspecialchars() function to prevent XSS attacks
+    $manager_sql = "SELECT manager.managerID AS managerID, manager.firstname AS firstname, manager.middlename AS middlename, manager.lastname AS lastname FROM manager";
+    if ($manager_result = mysqli_query($conn, $manager_sql)) {
+      while ($row = mysqli_fetch_assoc($manager_result)) {
+        echo "<option value='" . htmlspecialchars($row["managerID"]) . "'>" . htmlspecialchars($row["managerID"]) . " : ". htmlspecialchars($row["firstname"]) . " " . htmlspecialchars($row["middlename"]) . " " . htmlspecialchars($row["lastname"]) . "</option>";
+      }
+    }
+    ?>
+  </select>
+
+  <!-- Add the rest of your form elements here -->
+  <label for="allowance_type">Allowance Type:</label>
+  <input type="text" name="allowance_type" id="allowance_type" value="<?php echo $allowance_type; ?>">
+  <label for="allowance_amount">Allowance Amount:</label>
+  <input type="text" name="allowance_amount" id="allowance_amount" value="<?php echo $allowance_amount; ?>">
+  <button type="submit" name="allowance_submit">Add Record</button>
+
+  <!-- Add CSS to initially hide the manager ID select element -->
+  <style>
+  #allowance_managerID {
+    display: none;
+  }
+  </style>
+
+  <!-- Add JavaScript to show or hide the employee and manager select elements based on the selected option -->
+  <script>
+  document.getElementById('idType').addEventListener('change', function() {
+    // Get the selected ID type
+    var idType = this.value;
+
+    // Show or hide the employee and manager select elements
+    if (idType === 'employee') {
+      document.getElementById('allowance_employeeID').style.display = 'block';
+      document.getElementById('allowance_managerID').style.display = 'none';
+    } else if (idType === 'manager') {
+      document.getElementById('allowance_employeeID').style.display = 'none';
+      document.getElementById('allowance_managerID').style.display = 'block';
+    }
+  });
+  </script>
+</form>
+
   
     </div></div></div></div></body></html>

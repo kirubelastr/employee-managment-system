@@ -48,14 +48,10 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["role"])
 
     // Redirect the user based on their role using JavaScript
     if ($role == "employee") {
-        echo "<script>alert('Employee ID: " . $_SESSION["user_type"] . "');</script>";
-        echo "<script>alert('Employee ID: " .  $_SESSION["role"]. "');</script>";
         echo "<script>window.location.href='employeedashboard.php';</script>";
     } elseif ($role == "manger(branch manager)") {
-        echo "<script>alert('Employee ID: " . $_SESSION["user_type"] . "');</script>";
         echo "<script>window.location.href='managerdashboard.php';</script>";
     } elseif ($role == "general manager(admin)") {
-        echo "<script>alert('Employee ID: " . $_SESSION["user_type"] . "');</script>";
         echo "<script>window.location.href='manager.php';</script>";
     }
   } else {
