@@ -1,5 +1,5 @@
 <?php
-if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['yearlyvacationdays']) || empty($_POST['salary'])|| empty($_POST['lastname']) || empty($_POST['dateofbirth']) || empty($_POST['gender']) || empty($_POST['address']) || empty($_POST['phonep']) || empty($_POST['phones']) || empty($_POST['hiredate']) || empty($_POST['educationstatus']) || empty($_FILES['photo']) || empty($_POST['email']) || empty($_POST['employmentstatus']) || empty($_FILES['file']) || empty($_POST['department']) || empty($_POST['position'])) {
+if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['yearlyvacationdays']) || empty($_POST['salary'])|| empty($_POST['lastname']) || empty($_POST['dateofbirth']) || empty($_POST['gender']) || empty($_POST['state']) ||empty($_POST['city']) || empty($_POST['street']) ||  empty($_POST['phonep']) || empty($_POST['phones']) || empty($_POST['hiredate']) || empty($_POST['educationstatus']) || empty($_FILES['photo']) || empty($_POST['email']) || empty($_POST['employmentstatus']) || empty($_FILES['file']) || empty($_POST['department']) || empty($_POST['position'])) {
     // One or more inputs are empty
     echo '<script>
     alert("One or more inputs are empty. Please fill in all required fields.");
@@ -13,7 +13,9 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $lastname = $_POST['lastname'];
     $dateofbirth = $_POST['dateofbirth'];
     $gender = $_POST['gender'];
-    $address = $_POST['address'];
+    $state = $_POST['state'];
+    $city = $_POST['city'];
+    $street = $_POST['street'];
     $phonep = $_POST['phonep'];
     $phones = $_POST['phones'];
     $hiredate = $_POST['hiredate'];
@@ -40,8 +42,8 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $branchID = $_POST['branchID'];
     $departmentID = $_POST['department'];
     $positionID = $_POST['position'];
-    $sql = "INSERT INTO `employee`(`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `address`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `employee_photo`, `email`,`employment_status`,`employeefile`, `yearlyvacationdays`,`basesalary`, `branchID`,`departmentID`,  `positionID`) 
-        VALUES ( '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$address', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email', '$employmentstatus', '$file_contents', '$yearlyvacationdays', '$basesalary','$branchID',  '$departmentID', '$positionID')";
+    $sql = "INSERT INTO `employee`(`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `state`,`city`,`street`,  `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `employee_photo`, `email`,`employment_status`,`employeefile`, `yearlyvacationdays`,`basesalary`, `branchID`,`departmentID`,  `positionID`) 
+        VALUES ( '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$state', '$city','$street','$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email', '$employmentstatus', '$file_contents', '$yearlyvacationdays', '$basesalary','$branchID',  '$departmentID', '$positionID')";
     $conn->query($sql);
 
     // Check if data was inserted successfully
@@ -90,7 +92,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
             VALUES ($employeeID, $taxRate, $deductionAmount, $employeePension,'pension and tax')";
             $conn->query($sql);
         echo '<script>
-        alert("data inserted suucessfully.");
+        alert("data inserted sucessfully.");
         </script>';
         $conn->close();
         echo '<script>

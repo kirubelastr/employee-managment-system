@@ -200,9 +200,28 @@ input[type="submit"]:hover {
         <input type="tel" id="phone" name="phonep"required>
         <label for="phone">secondary Phone Number:</label>
         <input type="tel" id="phone" name="phones"required>
-        <label style="margin-top: -10px;"for="phone">address:</label>
-        <textarea rows="1" cols="30" type="text" id="address" name="address"required>
-        </textarea>
+        <label style="margin-top: -10px;"for="phone">state:</label>
+        <select id="state" name="state" style="width: fit-content;"required>
+            <option value="Afar">Afar</option>
+            <option value="Amhara">Amhara</option>
+            <option value="Benishangul/Gumaz">Benishangul/Gumaz</option>
+            <option value="Gambela">Gambela</option>
+            <option value="Harari">Harari</option>
+            <option value="Oromia">Oromia</option>
+            <option value="Somali">Somali</option>
+            <option value="SNNPR">SNNPR</option>
+            <option value="Tigray">Tigray</option>
+            <option value="Sidama">Sidama</option>
+            <option value="South West Ethiopia">South West Ethiopia</option>
+            <option value="Addis Ababa">Addis Ababa</option>
+            <option value="Dire Dawa">Dire Dawa</option>
+          </select>
+
+          <label style="margin-top: -10px;"for="city">city:</label>
+        <input type="text" id="city" name="city"required>
+          
+        <label style="margin-top: -10px;"for="street">street:</label>
+        <input type="text" id="street" name="street"required>
           <div class="form-section2">
             <h3>Employment Information</h3>
 
