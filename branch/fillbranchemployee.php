@@ -7,7 +7,8 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
 </script>';
 } else {
     // All inputs are not empty
-    require_once "connection.php";
+    require_once "../connection.php";
+
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
@@ -96,7 +97,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
         </script>';
         $conn->close();
         echo '<script>
-        window.location.href = "employee.php";
+        window.location.href = "addbranchemployee.php";
         </script>';
         
     } else {
@@ -106,7 +107,7 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
         </script>';
         $conn->close();
         echo '<script>
-        window.location.href = "employee.php";
+        window.location.href = "addbranchemployee.php";
     </script>';
         
     }

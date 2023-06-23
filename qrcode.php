@@ -396,6 +396,7 @@ if (isset($_POST["searchType"]) && isset($_POST["searchID"])) {
         document.getElementById('qr-image').src = img.src;
     }
 </script>
+
     <!-- QR code images section -->
     <div class="qr-images-container">
         <!-- Display all QR codes from the qrcodes array in a table with their employee/manager ID -->
