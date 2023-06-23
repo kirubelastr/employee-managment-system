@@ -80,24 +80,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     ));
 }
 
-// Search for a specific employee/manager ID and display the corresponding QR code right under the form
-if (isset($_POST["searchType"]) && isset($_POST["searchID"])) {
-    // Get search type and ID from form data
-    $searchType = $_POST["searchType"];
-    $searchID = $_POST["searchID"];
-
-    // Search for the specified ID in the qrcodes array
-    foreach ($qrcodes as &$qrcode) {
-        if (($searchType == "employee" && isset($qrcode["employeeID"]) && strval($qrcode["employeeID"]) == strval($searchID)) ||
-            ($searchType == "manager" && isset($qrcode["managerID"]) && strval($qrcode["managerID"]) == strval($searchID))) {
-            // Display the corresponding QR code right under the form
-            echo '<img src="data:image/png;base64,' . htmlspecialchars($qrcode["qrimage"]) . '" onclick="showQRCode(this)"/>';
-            // Display a print button
-            echo '<button onclick="printQRCode(this)">Print</button>';
-            break;
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -106,14 +88,7 @@ if (isset($_POST["searchType"]) && isset($_POST["searchID"])) {
     <title>QR Codes</title>
     <script>
         function showQRCode(img) {
-            var printWindow = window.open("", "PrintWindow", "width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes");
-            printWindow.document.write(img.outerHTML);
-            printWindow.document.close();
-            printWindow.focus();
-        }
-
-        function printQRCode(button) {
-            var img = button.previousSibling;
+            
             var printWindow = window.open("", "PrintWindow", "width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes");
             printWindow.document.write(img.outerHTML);
             printWindow.document.close();
@@ -340,39 +315,87 @@ input[type="submit"]:hover {
   </div>
   <div class="rightofsidebar">
 <div class="container">
-    <!-- Search form -->
-    <form method="post">
-        <label for="searchType">Search Type:</label>
-        <select name="searchType" id="searchType">
-            <option value="employee">Employee</option>
-            <option value="manager">Manager</option>
-        </select><br><br>
-        <label for="searchID">ID:</label>
-        <input type="text" name="searchID" id="searchID"><br><br>
-        <input type="submit" value="Search">
-    </form>
+<style>
+    /* Hide the image container initially */
+    #qr-image-container {
+        display: none;
+    }
+</style>
 
-    <?php
-    // Display the searched QR code right under the form
-    if (isset($_POST["searchType"]) && isset($_POST["searchID"])) {
-        // Get search type and ID from form data
-        $searchType = $_POST["searchType"];
-        $searchID = $_POST["searchID"];
+<form method="post">
+    <label for="searchType">Search Type:</label>
+    <select name="searchType" id="searchType">
+        <option value="employee">Employee</option>
+        <option value="manager">Manager</option>
+    </select><br><br>
+    <label for="searchID">ID:</label>
+    <input type="text" name="searchID" id="searchID"><br><br>
+    <input type="submit" value="Search">
+</form>
 
-        // Search for the specified ID in the qrcodes array
-        foreach ($qrcodes as &$qrcode) {
-            if (($searchType == "employee" && isset($qrcode["employeeID"]) && strval($qrcode["employeeID"]) == strval($searchID)) ||
-                ($searchType == "manager" && isset($qrcode["managerID"]) && strval($qrcode["managerID"]) == strval($searchID))) {
-                // Display the corresponding QR code right under the form
-                echo '<img src="data:image/png;base64,' . htmlspecialchars($qrcode["qrimage"]) . '" onclick="showQRCode(this)"/>';
-                // Display a print button
-                echo '<button onclick="printQRCode(this)">Print</button>';
-                break;
-            }
+<!-- Container for the searched image -->
+<div id="qr-image-container">
+    <img id="qr-image" onclick="showQRCode(this)">
+</div>
+
+<?php
+if (isset($_POST["searchType"]) && isset($_POST["searchID"])) {
+    $searchType = $_POST["searchType"];
+    $searchID = $_POST["searchID"];
+    require_once "connection.php";
+    if ($searchType=="employee"){
+        $query="select qrimage FROM qrcode where employeeID= ?";
+        // Prepare the statement
+        $stmt = mysqli_prepare($conn, $query);
+        // Bind the searchID parameter
+        mysqli_stmt_bind_param($stmt, "s", $searchID);
+        // Execute the statement
+        mysqli_stmt_execute($stmt);
+        // Fetch the result
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if ($row) {
+            $qrimage = $row['qrimage'];
+            $img = '<img src="data:image/png;base64,' . htmlspecialchars($qrimage) . '">';
+            // Show the image in the container
+            echo '<script>showQRImage(' . $img . ');</script>';
+        } else {
+            // Alert message if no data is found
+            echo '<script>alert("No data found.");</script>';
+        }
+    } else if ($searchType=="manager"){
+        $query="select qrimage FROM qrcode where managerID= ?";
+        // Prepare the statement
+        $stmt = mysqli_prepare($conn, $query);
+        // Bind the searchID parameter
+        mysqli_stmt_bind_param($stmt, "s", $searchID);
+        // Execute the statement
+        mysqli_stmt_execute($stmt);
+        // Fetch the result
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if ($row) {
+            $qrimage = $row['qrimage'];
+            $img = '<img src="data:image/png;base64,' . htmlspecialchars($qrimage) . '">';
+            // Show the image in the container
+            echo '<script>showQRImage(' . $img . ');</script>';
+        } else {
+            // Alert message if no data is found
+            echo '<script>alert("No data found.");</script>';
         }
     }
-    ?>
+}
+?>
 
+<!-- JavaScript function to show the image in the container -->
+<script>
+    function showQRImage(img) {
+        // Display the container
+        document.getElementById('qr-image-container').style.display = 'block';
+        // Set the image source
+        document.getElementById('qr-image').src = img.src;
+    }
+</script>
     <!-- QR code images section -->
     <div class="qr-images-container">
         <!-- Display all QR codes from the qrcodes array in a table with their employee/manager ID -->

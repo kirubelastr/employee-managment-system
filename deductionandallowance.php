@@ -399,9 +399,9 @@ color: white;
     ?>
   </tbody>
 </table>
-
 </div>
 
+<div class="container">
 <!-- Display existing records in allowance table -->
 <h2>Allowance Table</h2>
 <table>
