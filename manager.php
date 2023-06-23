@@ -171,6 +171,7 @@ input[type="submit"]:hover {
     <a href="employee.php">add employee</a>
     <a class="active"href="manager.php">add manage</a>
     <a href="deductionandallowance.php">deduction and allowance</a>
+    <a href="adddeductionandallowance.php">add deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
   </div>
 

@@ -66,11 +66,10 @@ while ($row = $result->fetch_assoc()) {
 
         // Insert into qrcode table
         $stmt = $conn->prepare("INSERT INTO qrcode (managerID, qrimage) VALUES (?, ?)");
-        mysqli_stmt_bind_param($stmt, "ss", strval($id), $qrCode);
+        $stmt->bind_param("ss", $id, $qrCode);
         mysqli_stmt_execute($stmt);
     }
 }
-
 // Store all data from the qrcode table in an array
 $qrcodes = array();
 $result = mysqli_query($conn, "SELECT * FROM qrcode");
@@ -335,8 +334,10 @@ input[type="submit"]:hover {
     <a href="createusers.php">createusers</a>
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
-    <a class="active"href="deductionandallowance.php">deduction and allowance</a>
-    <a href="qrcode.php">qrcode</a>
+    <a href="deductionandallowance.php">deduction and allowance</a>
+    
+    <a href="deductionandallowance.php">add deduction and allowance</a>
+    <a class="active" href="qrcode.php">qrcode</a>
   </div>
   <div class="rightofsidebar">
 <div class="container">

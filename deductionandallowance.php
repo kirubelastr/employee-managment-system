@@ -13,8 +13,8 @@ $search_employeeID = $search_managerID = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Validate search input
-  $search_employeeID = validate_input($_POST["search_employeeID"]);
-  $search_managerID = validate_input($_POST["search_managerID"]);
+  $search_employeeID = validate_input($_POST["searchID"]);
+  $search_managerID = validate_input($_POST["searchID"]);
 
   // Prepare SQL statement for deduction table search
   $deduction_sql = "SELECT * FROM deduction WHERE employeeID = ? OR managerID = ?";
@@ -341,19 +341,24 @@ color: white;
     <a href="employee.php">add employee</a>
     <a href="manager.php">add manage</a>
     <a class="active"href="deductionandallowance.php">deduction and allowance</a>
+    <a href="adddeductionandallowance.php">add deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
    
   </div>
   <div class="rightofsidebar">
 <div class="container">
 <!-- HTML form to search records -->
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-  <h2>Search Records</h2>
-  <label for="search_employeeID">Employee ID:</label>
-  <input type="text" name="search_employeeID" id="search_employeeID">
-  <label for="search_managerID">Manager ID:</label>
-  <input type="text" name="search_managerID" id="search_managerID">
-  <button type="submit">Search</button>
+  <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <h2>Search Records</h2>
+        <label for="searchType">Search Type:</label>
+        <select name="searchType" id="searchType">
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+        </select><br><br>
+        <label for="searchID">ID:</label>
+        <input type="text" name="searchID" id="searchID"><br><br>
+        <button type="submit">Search</button>
+    </form>
 </form>
 
 <!-- Display existing records in deduction table -->
@@ -395,24 +400,8 @@ color: white;
   </tbody>
 </table>
 
-<!-- HTML form to add record to deduction table -->
-<h2>Add Record to Deduction Table</h2>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-  <input type="text" name="deduction_employeeID" id="deduction_employeeID" value="<?php echo $deduction_employeeID; ?>">
-  <label for="deduction_managerID">Manager ID:</label>
-  <input type="text" name="deduction_managerID" id="deduction_managerID" value="<?php echo $deduction_managerID; ?>">
-  <label for="deduction_taxrate">Tax Rate:</label>
-  <input type="text" name="deduction_taxrate" id="deduction_taxrate" value="<?php echo $deduction_taxrate; ?>">
-  <label for="deduction_pension">Pension:</label>
-  <input type="text" name="deduction_pension" id="deduction_pension" value="<?php echo $deduction_pension; ?>">
-  <label for="deduction_type">Deduction Type:</label>
-  <input type="text" name="deduction_type" id="deduction_type" value="<?php echo $deduction_type; ?>">
-  <label for="deduction_amount">Deduction Amount:</label>
-  <input type="text" name="deduction_amount" id="deduction_amount" value="<?php echo $deduction_amount; ?>">
-  <button type="submit" name="deduction_submit">Add Record</button>
-</form>
 </div>
-<div class="container">
+
 <!-- Display existing records in allowance table -->
 <h2>Allowance Table</h2>
 <table>
@@ -446,21 +435,6 @@ color: white;
     }
     ?>
   </tbody>
-</table>
-
-<!-- HTML form to add record to allowance table -->
-<h2>Add Record to Allowance Table</h2>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-  <label for="allowance_employeeID">Employee ID:</label>
-  <input type="text" name="allowance_employeeID" id="allowance_employeeID" value="<?php echo $allowance_employeeID; ?>">
-  <label for="allowance_managerID">Manager ID:</label>
-  <input type="text" name="allowance_managerID" id="allowance_managerID" value="<?php echo $allowance_managerID; ?>">
-  <label for="allowance_type">Allowance Type:</label>
-  <input type="text" name="allowance_type" id="allowance_type" value="<?php echo $allowance_type; ?>">
-  <label for="allowance_amount">Allowance Amount:</label>
-  <input type="text" name="allowance_amount" id="allowance_amount" value="<?php echo $allowance_amount; ?>">
-  <button type="submit" name="allowance_submit">Add Record</button>
-</form>
 </table>
 </div>
   </div>
