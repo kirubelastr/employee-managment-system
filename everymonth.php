@@ -271,49 +271,28 @@ $salary_stmt->bind_result($baseSalary);
 $salary_stmt->fetch();
 $salary_stmt->close();
 }
-<?php
-// Get the starting date from user input
-$start_date = $_POST['start_date'];
 
-// Calculate the next salary date by adding 30 days to the start date
-$next_salary_date = date('Y-m-d', strtotime($start_date . ' + 30 days'));
+// Calculate deductions and net salary
 
-// Check if today is the next salary date
-if (date('Y-m-d') == $next_salary_date) {
-    // Import data from attendance, allowance, and deduction tables
-    // ...
-
-    // Calculate salary for each employee and manager
-    // ...
-
-    // Insert salary data into salary table
-    if ($employeeID) {
-        // Employee
-        $insert_stmt = $conn->prepare($insert_query);
-        $insert_stmt->bind_param("issiiiiiiiiis", $employeeID, $start_date, $end_date, $workDays, $present_days, $absent_days, $late_days, $overtimes, $baseSalary, $allowance, $deduction, $netSalary,$present_date);
-        $insert_stmt->execute();
-        $insert_stmt->close();
-    } else if ($managerID) {
-        // Manager
-        // Changed managerID from int (i) to string (s) since managerID is now a string (varchar)
-        $insert_query = "INSERT INTO salary (managerID,datefrom, dateto, workdays, present_days, absent_days, late_days,overtime_worked_days,salary ,allowance ,deduction ,net,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-        $insert_stmt = $conn->prepare($insert_query);
-        // Changed first parameter from "i" to "s" since managerID is now a string (varchar)
-        $insert_stmt->bind_param("ssiiiiiiiiis", $managerID,$start_date,$end_date,$workDays,$present_days,$absent_days,$late_days,$overtimes,$baseSalary,$allowance,$deduction,$netSalary,$present_date);
-        $insert_stmt->execute();
-        $insert_stmt->close();
-    }
+// Insert the data into the salary table
+if ($employeeID) {
+    // Employee
+    $insert_stmt = $conn->prepare($insert_query);
+    $insert_stmt->bind_param("issiiiiiiiiis", $employeeID, $start_date, $end_date, $workDays, $present_days, $absent_days, $late_days, $overtimes, $baseSalary, $allowance, $deduction, $netSalary,$present_date);
+    $insert_stmt->execute();
+    $insert_stmt->close();
+} else if ($managerID) {
+    // Manager
+    // Changed managerID from int (i) to string (s) since managerID is now a string (varchar)
+    $insert_query = "INSERT INTO salary (managerID,datefrom, dateto, workdays, present_days, absent_days, late_days,overtime_worked_days,salary ,allowance ,deduction ,net,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+    $insert_stmt = $conn->prepare($insert_query);
+    // Changed first parameter from "i" to "s" since managerID is now a string (varchar)
+    $insert_stmt->bind_param("ssiiiiiiiiis", $managerID,$start_date,$end_date,$workDays,$present_days,$absent_days,$late_days,$overtimes,$baseSalary,$allowance,$deduction,$netSalary,$present_date);
+    $insert_stmt->execute();
+    $insert_stmt->close();
 }
-?>
-
-// HTML form for user to input start date
-
-<form method="post">
-    <label for="start_date">Start Date:</label>
-    <input type="date" id="start_date" name="start_date">
-    <input type="submit" value="Submit">
-</form>
-<?php
+}
+}
 
 // Display the values stored in the table for a set of employees
 // Added code to display employee salaries
