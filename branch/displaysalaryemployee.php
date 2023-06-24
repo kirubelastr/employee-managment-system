@@ -55,6 +55,7 @@ require_once "../connection.php";
             color: #333;
             border-left: 5px solid transparent;
         }
+        .sidebar a.active,
         .sidebar a:hover {
                 background-color: #ddd;
                 border-left-color: #09f;

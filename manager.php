@@ -26,7 +26,7 @@
     }
 .sidebar {
   width: 200px;
-  height: 100vh;
+  height: auto;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
@@ -80,7 +80,7 @@
     box-sizing :border-box; 
 }
 .form-section2{
-    height :350px; 
+    height :auto; 
     margin-bottom :5px; 
     border :1px solid #ccc; 
     border-radius :4px; 
@@ -244,7 +244,7 @@ input[type="submit"]:hover {
               echo '</select>';
 
               // Generate position select element
-              echo '<label  style="margin-left:-55px"for="position">Position:</label>';
+              echo '<label  style="margin-left:-15px"for="position">Position:</label>';
               echo '<select  name="position" id="position"required>';
               echo '</select>';
               // Generate positionsByDepartment object
@@ -292,7 +292,7 @@ input[type="submit"]:hover {
                   updatePositionSelect();
               </script>
 
-              <label  style="margin-left:55px"for="hiredate">Date of Hire:</label>
+              <label  style="margin-left:35px"for="hiredate">Date of Hire:</label>
               <input type="date" id="hiredate" name="hiredate"required><br>
               <label style="margin-left: -3px;" for="eduction">education:</label>
                 <select id="status" name="educationstatus" required>
@@ -309,62 +309,63 @@ input[type="submit"]:hover {
                 <input type="number" id="yearlyvacationdays" name="yearlyvacationdays"required>
               <label style="margin-left:-25px"for="file-input">base salary</label>
                   <input type="number" id="salary" name="salary"required><br>
-                  <label style="margin-left:-3px"for="file-input">File(resume):</label>
-                  <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
-                  <button id="preview-button"  style="display: none; position: absolute; bottom: 200px; right: 700px;"onclick="openPreviewDialog()">Preview</button>
-                  </div>
-                <label style="margin-left:-3px"for="others-photo">Photo:</label>
-                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()" required>
-                  <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position:absolute; bottom: 30px; right: 500px;">
-                       
-                
-                  <script>
-                      function updateFilePreview() {
-                            // Get the selected file
-                            var file = document.getElementById("file-input").files[0];
-                            if (file) {
-                                // Show the preview button
-                                document.getElementById("preview-button").style.display = "inline-block";
-                            } else {
-                                // Hide the preview button
-                                document.getElementById("preview-button").style.display = "none";
-                            }
-                        }
+                  <label for="file-input">File (resume):</label>
+<input type="file" id="file-input" name="file" onchange="updateFilePreview()" required>
+<button id="preview-button" style="display: none;" onclick="openPreviewDialog()">Preview</button>
 
-                        function openPreviewDialog() {
-                            // Get the selected file
-                            var file = document.getElementById("file-input").files[0];
-                            if (file) {
-                                // Create a URL for the file
-                                var fileURL = URL.createObjectURL(file);
-                                // Open the file in a new window
-                                var previewWindow = window.open(fileURL, "PDF Preview", "width=400,height=400");
-                            }
-                        }        
-                        
-                      function updatePhotoPreview() {
-                          // Get photo file
-                          let photoInput = document.getElementById("others-photo");
-                          let photoFile = photoInput.files[0];
+<label for="others-photo">Photo:</label>
+<input type="file" id="others-photo" name="photo" onchange="updatePhotoPreview()" required>
+<img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px;">
 
-                          // Get photo preview element
-                          let photoPreview = document.getElementById("photo-preview");
+<script>
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-                          // Update photo preview
-                          if (photoFile) {
-                              let reader = new FileReader();
-                              reader.onload = function(e) {
-                                  photoPreview.src = e.target.result;
-                                  photoPreview.style.display = "block";
-                              }
-                              reader.readAsDataURL(photoFile);
-                          } else {
-                              photoPreview.src = "";
-                              photoPreview.style.display = "none";
-                          }
-                      }
+    function updateFilePreview() {
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0];
+        if (file.size > MAX_FILE_SIZE) {
+            alert('This file is too large. Please choose a smaller file.');
+            fileInput.value = '';
+        } else if (file.type !== 'application/pdf') {
+            alert('Please choose a PDF file.');
+            fileInput.value = '';
+        } else {
+            // Show the preview button
+            document.getElementById("preview-button").style.display = "inline-block";
+        }
+    }
 
-                  </script>
+    function openPreviewDialog() {
+        // Get the selected file
+        var file = document.getElementById("file-input").files[0];
+        if (file) {
+            // Create a URL for the file
+            var fileURL = URL.createObjectURL(file);
+            // Open the file in a new window
+            var previewWindow = window.open(fileURL, "PDF Preview", "width=400,height=400");
+        }
+    }
+
+    function updatePhotoPreview() {
+        const photoInput = document.getElementById('others-photo');
+        const photo = photoInput.files[0];
+        if (photo.size > MAX_FILE_SIZE) {
+            alert('This image is too large. Please choose a smaller image.');
+            photoInput.value = '';
+        } else if (!photo.type.startsWith('image/jpeg')) {
+            alert('Please choose a JPG image.');
+            photoInput.value = '';
+        } else {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("photo-preview").src = e.target.result;
+                document.getElementById("photo-preview").style.display = "block";
+            }
+            reader.readAsDataURL(photo);
+        }
+    }
+</script>
+
             </div>
           </div>
         <input type="submit" value="Submit">

@@ -29,9 +29,9 @@ require_once "../connection.php";
             justify-content: flex-start;
             align-items: stretch;
         }
-        .sidebar {
+ .sidebar {
             width: 200px;
-            height: 100vh;
+            height: auto;
             background-color: #f0f0f0;
             padding: 20px;
             box-sizing: border-box;
@@ -55,6 +55,7 @@ require_once "../connection.php";
             color: #333;
             border-left: 5px solid transparent;
         }
+        .sidebar a.active,
         .sidebar a:hover {
                 background-color: #ddd;
                 border-left-color: #09f;
@@ -121,7 +122,7 @@ require_once "../connection.php";
                     box-sizing :border-box; 
             }
             .form-section2{
-                    height :350px; 
+                    height :auto; 
                     margin-bottom :5px; 
                     border :1px solid #ccc; 
                     border-radius :4px; 
@@ -220,10 +221,15 @@ require_once "../connection.php";
 <h3>employee informations</h3>
 <?php
 // Assuming you have a database connection established
-$sql = "SELECT employee.*, branch.branchname, department.departmentname FROM employee JOIN branch ON employee.branchID = branch.branchID JOIN department ON employee.departmentID = department.departmentID";
+$sql = "SELECT employee.*, branch.branchname, department.departmentname 
+FROM employee 
+JOIN branch ON employee.branchID = branch.branchID 
+JOIN department ON employee.departmentID = department.departmentID
+WHERE employee.branchID IN (SELECT branchID FROM branchmanager WHERE managerID = 'manager_id')";
 $result = $conn->query($sql);
 ?>
 <table id="employeeTable">
+
     <tr>
         <th>Employee ID</th>
         <th>First Name</th>
