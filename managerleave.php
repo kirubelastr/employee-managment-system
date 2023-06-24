@@ -214,6 +214,10 @@ input[type="submit"]:hover {
     <a class="active"href="managerleave.php">leave</a>
     <a href="managerattendance.php">attendance</a>
     <a href="managerdetails.php">details</a>
+    <a href="branch/addbranchemployee.php">add branch employees</a>
+    <a href="branch.displayemployees.php">view branch employees</a>
+    <a href="branch/displaysalaryemployee.php">view employee salary</a>
+    <a href="branch/aprovebranchleave.php">aprove branch leave</a>
   </div>
   <div class="rightofsidebar">
 <div class="container">

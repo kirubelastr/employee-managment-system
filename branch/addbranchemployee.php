@@ -1,183 +1,220 @@
 <?php
 session_start();
+require_once "../connection.php";
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>employee Data Input Form</title>
-  <style>
-   body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
- }
- .page-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
+    <title>Manager Dashboard</title>
+    <style>
+       body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
 
-    .content-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
- .sidebar {
-   width: 200px;
-   height: 100%;
-   background-color: #f0f0f0;
-   padding: 20px;
-   box-sizing: border-box;
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: center;
- }
- 
- .sidebar h3 {
-   margin-top: 0;
- }
- 
- .sidebar a {
-   display: block;
-   margin-bottom: 10px;
-   padding: 10px;
-   width: 100%;
-   text-align: center;
-   text-decoration: none;
-   color: #333;
-   border-left: 5px solid transparent;
- }
- 
- .sidebar a.active,
- .sidebar a:hover {
-   background-color: #ddd;
-   border-left-color: blueviolet;
- }
- 
- .form-container {
-   flex: 1;
-   padding: 20px;
-   box-sizing: border-box;
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: stretch;
- }
- 
- .form-container h2 {
-     margin-top:0; 
-     margin-bottom :10px; 
- }
- 
- .form-section {
-     margin-bottom :5px; 
-     border :1px solid #ccc; 
-     border-radius :4px; 
-     padding :10px; 
-     box-sizing :border-box; 
- }
- .form-section2{
-     height :350px; 
-     margin-bottom :5px; 
-     border :1px solid #ccc; 
-     border-radius :4px; 
-     padding :10px; 
-     box-sizing :border-box; 
-     
- }
- 
- .form-section h3 {
-     margin-top :0; 
-     margin-bottom :5px; 
- }
- form {
-     display:block; 
-     flex-wrap :wrap; 
-     justify-content:left; 
-     align-items:center; 
- }
- 
- label {
-     display:inline-block; 
-     width :140px; 
-     text-align:right; 
-     margin-right :20px; 
- }
-     
- input[type="submit"] {
-       background-color:#09f ; 
-       color:#fff ; 
-       border:none ; 
-       border-radius :4px ; 
-       padding :10px ; 
-       cursor:pointer ; 
-       font-size :16px ; 
-       margin-top :10px ;  
- }
- input,
- select,
- textarea {
-       position :inherits ;  
-       flex :1 ;  
-       padding :10px ;  
-       border :1px solid #ccc ;  
-       border-radius :4px ;  
-       box-sizing:border-box ;  
-       margin-bottom :10px ;  
-       font-size :16px ;  
- }
- 
- input[type="file"] {
-       padding :10 ;
- }
- 
- input:focus,
- select:focus,
- textarea:focus {
-       outline:none ;
-       border-color:#09f ;
- }
- 
- select {
-       width :inherit ;
-       padding-left: 20px;
-       padding-right: 40px;
- }
- 
- textarea {
-       height :auto ;
- }
- 
- input[type="submit"]:hover {
-       background-color:#0077cc ;
- }
- 
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
 
-  </style>
+        .content-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            border-left: 5px solid transparent;
+        }
+        .sidebar a:hover {
+                background-color: #ddd;
+                border-left-color: #09f;
+            }
+            .rightofsidebar{
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: baseline;
+            }
+            .container {
+                max-width: 600px;
+                height: auto;
+                margin: 10px;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            }
+            h3 {
+                margin-top: 0;
+            }
+            hr {
+                margin: 20px 0;
+                border: none;
+                border-top: 1px solid #ccc;
+            }
+
+            .employee-info {
+                        text-align: center;
+                        border-style: solid;
+                        border-width: 1px;
+                        border-color: #000000;
+                        background-color: #FFFFFF;
+            }
+            .table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 5px;}
+                    
+            .form-container {
+                flex: 1;
+                padding: 20px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+            }
+
+            .form-container h2 {
+                    margin-top:0; 
+                    margin-bottom :10px; 
+            }
+
+            .form-section {
+                    margin-bottom :5px; 
+                    border :1px solid #ccc; 
+                    border-radius :4px; 
+                    padding :10px; 
+                    box-sizing :border-box; 
+            }
+            .form-section2{
+                    height :350px; 
+                    margin-bottom :5px; 
+                    border :1px solid #ccc; 
+                    border-radius :4px; 
+                    padding :10px; 
+                    box-sizing :border-box; 
+                    
+            }
+
+            .form-section h3 {
+                    margin-top :0; 
+                    margin-bottom :5px; 
+            }
+            form {
+                    display:block; 
+                    flex-wrap :wrap; 
+                    justify-content:left; 
+                    align-items:center; 
+            }
+
+            label {
+                    display:inline-block; 
+                    width :140px; 
+                    text-align:right; 
+                    margin-right :20px; 
+            }
+                
+            input[type="submit"] {
+                    background-color:#09f ; 
+                    color:#fff ; 
+                    border:none ; 
+                    border-radius :4px ; 
+                    padding :10px ; 
+                    cursor:pointer ; 
+                    font-size :16px ; 
+                    margin-top :10px ;  
+            }
+            input,
+            select,
+            textarea {
+                    position :inherits ;  
+                    flex :1 ;  
+                    padding :10px ;  
+                    border :1px solid #ccc ;  
+                    border-radius :4px ;  
+                    box-sizing:border-box ;  
+                    margin-bottom :10px ;  
+                    font-size :16px ;  
+            }
+
+            input[type="file"] {
+                    padding :10 ;
+            }
+
+            input:focus,
+            select:focus,
+            textarea:focus {
+                    outline:none ;
+                    border-color:#09f ;
+            }
+            select {
+                    width: inherit;
+                    padding-left: 20px;
+                    padding-right: 40px;
+                }
+
+                textarea {
+                    height: auto;
+                }
+
+                input[type="submit"]:hover {
+                    background-color: #0077cc;
+                }
+
+       </style>
 </head>
 <body>
+    
 <div class="page-container">
-  <?php include 'header.php'; ?>
+  <?php include '../header.php'; ?>
 
   <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a  href="department_and_position.php">department and position</a>
-    <a href="aproveleave.php">aprove leave</a>
-    <a href="createusers.php">createusers</a>
-    <a  class="active"href="employee.php">add employee</a>
-    <a href="manager.php">add manage</a>
-    <a href="deductionandallowance.php">deduction and allowance</a>
-    <a href="adddeductionandallowance.php">add deduction and allowance</a>
-    <a href="qrcode.php">qrcode</a>
+    <a href="../employeedashboard.php">Home</a>
+    <a href="../employeeleave.php">leave</a>
+    <a href="../employeeattendance.php">attendance</a>
+    <a href="../employee.php">details</a>
+    <a class="active"href="addbranchemployee.php">add branch employees</a>
+    <a href="displayemployees.php">view branch employees</a>
+    <a href="displaysalaryemployee.php">view employee salary</a>
+    <a href="aprovebranchleave.php">aprove branch leave</a>
   </div>
-
+<div class="rightofsidebar">
   <div class="form-container">
     <h2>employee Data Input Form</h2>
 
@@ -189,7 +226,7 @@ session_start();
         <label for="middlename">Middle Name:</label>
         <input type="text" id="middlename" name="middlename"required>
         <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname"required>
+        <input type="text" id="lastname" name="lastname"required><Br>
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" style="width: fit-content;"required>
           <option value="">-choose an option-</option>
@@ -231,7 +268,7 @@ session_start();
 
             <div id="employmentForm">
             <?php
-              require_once "connection.php";
+              require_once "../connection.php";
               //query the branch table
               $sql = "SELECT branchID,managerID,branchname FROM branch";
               $result = $conn->query($sql);
@@ -331,14 +368,39 @@ session_start();
               <label style="margin-left:-50px"for="file-input">base salary:</label>
                   <input type="number" id="salary" name="salary"required>
                   
-              <label style="margin-left:-3px"for="file-input">File(resume):</label>
-                  <input type="file" id="file-input" name="file"onchange="updateFilePreview()"required>
-                  <button id="preview-button"  style="display: none; position: absolute; bottom: 100px; right: 300px;"onclick="openPreviewDialog()">Preview</button>
+                  <label style="margin-left:-3px" for="file-input">File(resume):</label>
+                  <input type="file" id="file-input" name="file" onchange="updateFilePreview()" required>
+                  <button id="preview-button" style="display: none; position: absolute; bottom: 100px; right: 300px;" onclick="openPreviewDialog()">Preview</button>
                   </div>
-                <label style="margin-left:-47px"for="others-photo">Photo:</label>
-                  <input type="file" id="others-photo"name="photo" onchange="updatePhotoPreview()"required>
+                  <label style="margin-left:-47px" for="others-photo">Photo:</label>
+                  <input type="file" id="others-photo" name="photo" onchange="updatePhotoPreview()" required>
                   <img id="photo-preview" src="" style="display: none; max-width: 200px; max-height: 200px; position:absolute; bottom: 30px; right: 600px;">
-                       
+                  <script>
+                      const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+                      function updateFilePreview() {
+                          const fileInput = document.getElementById('file-input');
+                          const file = fileInput.files[0];
+                          if (file.size > MAX_FILE_SIZE) {
+                              alert('This file is too large. Please choose a smaller file.');
+                              fileInput.value = '';
+                          } else if (file.type !== 'application/pdf') {
+                              alert('Please choose a PDF file.');
+                              fileInput.value = '';
+                          }
+                      }
+                      function updatePhotoPreview() {
+                          const photoInput = document.getElementById('others-photo');
+                          const photo = photoInput.files[0];
+                          if (photo.size > MAX_FILE_SIZE) {
+                              alert('This image is too large. Please choose a smaller image.');
+                              photoInput.value = '';
+                          } else if (!photo.type.startsWith('image/jpeg')) {
+                              alert('Please choose a JPG image.');
+                              photoInput.value = '';
+                          }
+                      }
+                  </script>
+
                 
                   <script>
                       function updateFilePreview() {
