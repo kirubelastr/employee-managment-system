@@ -144,7 +144,7 @@ if (isset($_POST['delete'])) {
     }
 .sidebar {
   width: 200px;
-  height: 100vh;
+  height: auto;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
@@ -173,6 +173,24 @@ if (isset($_POST['delete'])) {
 .sidebar a:hover {
   background-color: #ddd;
   border-left-color: red;
+}
+
+.rightofsidebar{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.container {
+ min-width: 600px;
+ max-width: 600px;
+ height: auto;
+ margin: 10px;
+ padding: 20px;
+ background-color: #fff;
+ box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .form-container {
@@ -294,16 +312,16 @@ input[type="submit"]:hover {
     <a href="branchmanager.php">branch</a>
     <a href="everymonth.php">salary</a>
   </div>
-
+  <div class="rightofsidebar">
+    <div class="container">
   <div class="form-container">
 <form method="post">
-   
-<!-- The create form -->
+   <!-- The create form -->
 <form method="post">
     <h2>Create User</h2>
 
     <label for="employeeID">Employee:</label>
-    <select name="employeeID" id="employeeID">
+    <select name="employeeID" id="employeeID" onchange="onEmployeeChange()">
         <option value="">--Select Employee--</option>
         <?php
         // Query to get all employees from the employee table
@@ -326,7 +344,7 @@ input[type="submit"]:hover {
     </select><br>
 
     <label for="managerID">Manager:</label>
-    <select name="managerID" id="managerID">
+    <select name="managerID" id="managerID" onchange="onManagerChange()">
         <option value="">--Select Manager--</option>
         <?php
         // Query to get all managers from the manager table
@@ -365,6 +383,30 @@ input[type="submit"]:hover {
     <input type="submit" name="create" value="Create User">
 </form>
 
+<script>
+function onEmployeeChange() {
+    var employeeSelect = document.getElementById('employeeID');
+    var managerSelect = document.getElementById('managerID');
+    var userTypeSelect = document.getElementById('createUserType');
+
+    if (employeeSelect.value !== '') {
+        // Employee is selected, automatically select employee user type and clear manager selection
+        userTypeSelect.value = 'employee';
+        managerSelect.value = '';
+    }
+}
+
+function onManagerChange() {
+    var employeeSelect = document.getElementById('employeeID');
+    var managerSelect = document.getElementById('managerID');
+
+    if (managerSelect.value !== '') {
+        // Manager is selected, clear employee selection
+        employeeSelect.value = '';
+    }
+}
+</script>
+
 <!-- The update form -->
 <form method="post" id="updateForm">
     <h2>Update User</h2>
@@ -387,6 +429,8 @@ input[type="submit"]:hover {
     <input type="submit" name="update" value="Update User">
 </form>
     </div>
+    </div>
+    <div class="container">
     <div class="form-container">
 <!-- The HTML table -->
 <table>
@@ -441,7 +485,7 @@ function editUser(loginID, username, userType) {
 }
 </script>
 
-
+    </div>
     </div>
   </div>
 </body>

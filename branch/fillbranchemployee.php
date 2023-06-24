@@ -3,11 +3,11 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     // One or more inputs are empty
     echo '<script>
     alert("One or more inputs are empty. Please fill in all required fields.");
-    window.location.href = "manager.php";
+    window.location.href = "addbranchemployee.php";
 </script>';
 } else {
     // All inputs are not empty
-    require_once "connection.php";
+    require_once "../connection.php";
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
@@ -42,14 +42,14 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['y
     $branchID = $_POST['branchID'];
     $departmentID = $_POST['department'];
     $positionID = $_POST['position'];
-// Check if email already exists in database
+    // Check if email already exists in database
 $sql_check_email = "SELECT * FROM employee WHERE email = '$email'";
 $result_check_email = $conn->query($sql_check_email);
 if ($result_check_email->num_rows > 0) {
     // Email already exists in database
     echo '<script>
     alert("Email already exists in database. Please use a different email.");
-    window.location.href = "employee.php";
+    window.location.href = "addbranchemployee.php";
 </script>';
 } else {
     // Email does not exist in database
@@ -110,7 +110,7 @@ if ($result_check_email->num_rows > 0) {
         </script>';
         $conn->close();
         echo '<script>
-        window.location.href = "employee.php";
+        window.location.href = "addbranchemployee.php";
         </script>';
         
     } else {
@@ -120,9 +120,9 @@ if ($result_check_email->num_rows > 0) {
         </script>';
         $conn->close();
         echo '<script>
-        window.location.href = "employee.php";
+        window.location.href = "addbranchemployee.php";
     </script>';
-    }  
+} 
     }
 
     

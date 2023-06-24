@@ -205,7 +205,7 @@ require_once "../connection.php";
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>branch manager</h3>
     <a href="../managerdashboard.php">Home</a>
     <a href="../managerleave.php">leave</a>
     <a href="../managerattendance.php">attendance</a>
@@ -220,13 +220,16 @@ require_once "../connection.php";
 <div class="container">
 <h3>employee informations</h3>
 <?php
-// Assuming you have a database connection established
 $sql = "SELECT employee.*, branch.branchname, department.departmentname 
 FROM employee 
 JOIN branch ON employee.branchID = branch.branchID 
 JOIN department ON employee.departmentID = department.departmentID
-WHERE employee.branchID IN (SELECT branchID FROM branchmanager WHERE managerID = 'manager_id')";
-$result = $conn->query($sql);
+WHERE employee.branchID IN (SELECT branchID FROM branchmanager WHERE managerID = ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $_SESSION['user_type']);
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 <table id="employeeTable">
 

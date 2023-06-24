@@ -45,7 +45,19 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
     }
     $departmentID = $_POST['department'];
     $positionID = $_POST['position'];
-    
+// Check if email already exists in database
+$sql_check_email = "SELECT * FROM manager WHERE email = '$email'";
+$result_check_email = $conn->query($sql_check_email);
+if ($result_check_email->num_rows > 0) {
+    // Email already exists in database
+    echo '<script>
+    alert("Email already exists in database. Please use a different email.");
+    window.location.href = "manager.php";
+</script>';
+} else {
+    // Email does not exist in database
+    // INSERT statement here
+
     // Insert data into manager table
     $sql = "INSERT INTO `manager`(`managerID`,`firstname`, `middlename`, `lastname`, `dateofbirth`, `gender`, `state`, `city`, `street`, `primary_phone`, `secondary_phone`, `dateofjoin`, `education_status`, `manager_photo`, `email`,`managerfile`,`yearlyvacationdays`,`basesalary`, `departmentID`,  `positionID`) 
             VALUES ('$new_value', '$firstname', '$middlename', '$lastname', '$dateofbirth', '$gender', '$state', '$city', '$street', '$phonep', '$phones', '$hiredate', '$educationstatus', '$photo_contents', '$email',  '$file_contents', '$yearlyvacationdays', '$basesalary', '$departmentID', '$positionID')";
@@ -96,19 +108,23 @@ if (empty($_POST['firstname']) || empty($_POST['middlename']) || empty($_POST['l
             $sql = "INSERT INTO deduction (employeeID, taxRate, deductionAmount, Pension,deductionType)
                 VALUES ($employeeID, $taxRate, $deductionAmount, $employeePension,'pension and tax')";
             $conn->query($sql);
-        echo '<script>
-        alert("data inserted successfully.");
-        </script>';
-    } else {
         // Error inserting data
         echo '<script>
         alert("error inserting the data.");
         </script>';
-    }
-}
-$conn->close();
-echo '<script>
-window.location.href = "manager.php";
-</script>';
-}
+        $conn->close();
+        echo '<script>
+        window.location.href = "manager.php";
+    </script>';
+    } else {
+       // Error inserting data
+       echo '<script>
+       alert("error inserting the data.");
+       </script>';
+       $conn->close();
+       echo '<script>
+       window.location.href = "manager.php";
+   </script>';
+    }}
+}}
 ?>

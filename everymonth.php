@@ -265,100 +265,103 @@ if ($result->num_rows > 0) {
             // Changed managerID to a string (varchar)
             $salary_query = "SELECT baseSalary FROM manager WHERE managerID = ?";
             $salary_stmt = $conn->prepare($salary_query);
-            // Changed second parameter from "ii" to "s" since only one parameter is used now and managerID is a string (varchar)
-$salary_stmt->bind_param("s", $managerID);
-$salary_stmt->execute();
-$salary_stmt->bind_result($baseSalary);
-$salary_stmt->fetch();
-$salary_stmt->close();
-}
+        $salary_stmt->bind_param("s", $managerID);
+        $salary_stmt->execute();
+        $salary_stmt->bind_result($baseSalary);
+        $salary_stmt->fetch();
+        $salary_stmt->close();
+        }
 
-// Calculate deductions and net salary
+        // Calculate deductions and net salary
 
-// Insert the data into the salary table
-if ($employeeID) {
-    // Employee
-    $insert_stmt = $conn->prepare($insert_query);
-    $insert_stmt->bind_param("issiiiiiiiiis", $employeeID, $start_date, $end_date, $workDays, $present_days, $absent_days, $late_days, $overtimes, $baseSalary, $allowance, $deduction, $netSalary,$present_date);
-    $insert_stmt->execute();
-    $insert_stmt->close();
-} else if ($managerID) {
-    // Manager
-    // Changed managerID from int (i) to string (s) since managerID is now a string (varchar)
-    $insert_query = "INSERT INTO salary (managerID,datefrom, dateto, workdays, present_days, absent_days, late_days,overtime_worked_days,salary ,allowance ,deduction ,net,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-    $insert_stmt = $conn->prepare($insert_query);
-    // Changed first parameter from "i" to "s" since managerID is now a string (varchar)
-    $insert_stmt->bind_param("ssiiiiiiiiis", $managerID,$start_date,$end_date,$workDays,$present_days,$absent_days,$late_days,$overtimes,$baseSalary,$allowance,$deduction,$netSalary,$present_date);
-    $insert_stmt->execute();
-    $insert_stmt->close();
-}
-}
-}
+        // Insert the data into the salary table
+        if ($employeeID) {
+            // Employee
+            $insert_stmt = $conn->prepare($insert_query);
+            $insert_stmt->bind_param("issiiiiiiiiis", $employeeID, $start_date, $end_date, $workDays, $present_days, $absent_days, $late_days, $overtimes, $baseSalary, $allowance, $deduction, $netSalary,$present_date);
+            $insert_stmt->execute();
+            $insert_stmt->close();
+        } else if ($managerID) {
+            // Manager
+            // Changed managerID from int (i) to string (s) since managerID is now a string (varchar)
+            $insert_query = "INSERT INTO salary (managerID,datefrom, dateto, workdays, present_days, absent_days, late_days,overtime_worked_days,salary ,allowance ,deduction ,net,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+            $insert_stmt = $conn->prepare($insert_query);
+            // Changed first parameter from "i" to "s" since managerID is now a string (varchar)
+            $insert_stmt->bind_param("ssiiiiiiiiis", $managerID,$start_date,$end_date,$workDays,$present_days,$absent_days,$late_days,$overtimes,$baseSalary,$allowance,$deduction,$netSalary,$present_date);
+            $insert_stmt->execute();
+            $insert_stmt->close();
+        }
+        }
+        }
 
-// Display the values stored in the table for a set of employees
-// Added code to display employee salaries
-echo "<h2>Employee Salaries</h2>";
-echo "<table>";
-echo "<tr><th>Employee ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Present Days</th><th>Absent Days</th><th>Late Days</th><th>Overtime Worked Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th></tr>";
-$employee_query = "SELECT * FROM salary WHERE employeeID IS NOT NULL";
-$employee_result = $conn->query($employee_query);
-if ($employee_result->num_rows > 0) {
-while($row = $employee_result->fetch_assoc()) {
-echo "<tr>";
-echo "<td>" . htmlspecialchars($row['employeeID']) . "</td>";
-echo "<td>" . htmlspecialchars($row['datefrom']) . "</td>";
-echo "<td>" . htmlspecialchars($row['dateto']) . "</td>";
-echo "<td>" . htmlspecialchars($row['workdays']) . "</td>";
-echo "<td>" . htmlspecialchars($row['present_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['absent_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['late_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['overtime_worked_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['salary']) . "</td>";
-echo "<td>" . htmlspecialchars($row['allowance']) . "</td>";
-echo "<td>" . htmlspecialchars($row['deduction']) . "</td>";
-echo "<td>" . htmlspecialchars($row['net']) . "</td>";
-echo "</tr>";
-}
-}
-echo "</table>";
+        // Display the values stored in the table for a set of employees
+        // Added code to display employee salaries
+        echo "<h2>Employee Salaries</h2>";
+        echo "<table>";
+        echo "<tr><th>Employee ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Present Days</th><th>Absent Days</th><th>Late Days</th><th>Overtime Worked Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th></tr>";
+        $employee_query = "SELECT * FROM salary WHERE employeeID IS NOT NULL";
+        $employee_result = $conn->query($employee_query);
+        if ($employee_result->num_rows > 0) {
+        while($row = $employee_result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['employeeID']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['datefrom']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['dateto']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['workdays']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['present_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['absent_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['late_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['overtime_worked_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['salary']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['allowance']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['deduction']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['net']) . "</td>";
+        echo "</tr>";
+        }
+        }
+        echo "</table>";
 
-// Display the values stored in the table for a set of managers
-// Added code to display manager salaries
-echo "<h2>Manager Salaries</h2>";
-echo "<table>";
-echo "<tr><th>Manager ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Present Days</th><th>Absent Days</th><th>Late Days</th><th>Overtime Worked Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th></tr>";
-$manager_query = "SELECT * FROM salary WHERE managerID IS NOT NULL";
-$manager_result = $conn->query($manager_query);
-if ($manager_result->num_rows > 0) {
-while($row = $manager_result->fetch_assoc()) {
-echo "<tr>";
-echo "<td>" . htmlspecialchars($row['managerID']) . "</td>";
-echo "<td>" . htmlspecialchars($row['datefrom']) . "</td>";
-echo "<td>" . htmlspecialchars($row['dateto']) . "</td>";
-echo "<td>" . htmlspecialchars($row['workdays']) . "</td>";
-echo "<td>" . htmlspecialchars($row['present_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['absent_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['late_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['overtime_worked_days']) . "</td>";
-echo "<td>" . htmlspecialchars($row['salary']) . "</td>";
-echo "<td>" . htmlspecialchars($row['allowance']) . "</td>";
-echo "<td>" . htmlspecialchars($row['deduction']) . "</td>";
-echo "<td>" . htmlspecialchars($row['net']) . "</td>";
-echo "</tr>";
-}
-}
-echo "</table>";
+        // Display the values stored in the table for a set of managers
+        // Added code to display manager salaries
+        echo "<h2>Manager Salaries</h2>";
+        echo "<table>";
+        echo "<tr><th>Manager ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Present Days</th><th>Absent Days</th><th>Late Days</th><th>Overtime Worked Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th></tr>";
+        $manager_query = "SELECT * FROM salary WHERE managerID IS NOT NULL";
+        $manager_result = $conn->query($manager_query);
+        if ($manager_result->num_rows > 0) {
+        while($row = $manager_result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['managerID']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['datefrom']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['dateto']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['workdays']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['present_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['absent_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['late_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['overtime_worked_days']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['salary']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['allowance']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['deduction']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['net']) . "</td>";
+        echo "</tr>";
+        }
+        }
+        echo "</table>";
 
-// Calculate the sum of the net salaries for both employees and managers
-// Added code to calculate and display the sum of net salaries
-$sum_query = "SELECT SUM(net) as total_net FROM salary";
-$sum_result = $conn->query($sum_query);
-if ($sum_result->num_rows > 0) {
-while($row = $sum_result->fetch_assoc()) {
-$total_net = $row['total_net'];
-}
-}
-echo "<h2>Total Net Salaries: " . $total_net . "</h2>";
-}
+        // Calculate the sum of the net salaries for both employees and managers
+        // Added code to calculate and display the sum of net salaries
+        $sum_query = "SELECT SUM(net) as total_net FROM salary";
+        $sum_result = $conn->query($sum_query);
+        if ($sum_result->num_rows > 0) {
+        while($row = $sum_result->fetch_assoc()) {
+        $total_net = $row['total_net'];
+        }
+        }
+        echo "<h2>Total Net Salaries: " . $total_net . "</h2>";
+        }
 ?>
-  </div></div></div></body></html>
+  </div>
+</div>
+</div>
+</body>
+</html>

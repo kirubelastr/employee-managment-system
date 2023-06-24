@@ -34,12 +34,14 @@ while ($row = $result->fetch_assoc()) {
         // Insert into qrcode table
         if (isset($row["employeeID"])) {
             // employeeID is an integer
+            $employeeID = intval($id);
             $stmt = $conn->prepare("INSERT INTO qrcode (employeeID, qrimage) VALUES (?, ?)");
-            mysqli_stmt_bind_param($stmt, "is", intval($id), $qrCode);
+            mysqli_stmt_bind_param($stmt, "is", $employeeID, $qrCode);
             mysqli_stmt_execute($stmt);
         }
     }
 }
+
 $result = $conn->query("SELECT managerID FROM manager");
 
 while ($row = $result->fetch_assoc()) {

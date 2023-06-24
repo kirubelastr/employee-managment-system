@@ -67,7 +67,7 @@ session_start();
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>branch manager</h3>
     <a class="active"href="managerdashboard.php">home</a>
     <a href="managerleave.php">leave</a>
     <a href="managerattendance.php">attendance</a>

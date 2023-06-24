@@ -168,7 +168,7 @@ require_once "../connection.php";
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>branch manager</h3>
     <a href="../managerdashboard.php">Home</a>
     <a href="../managerleave.php">leave</a>
     <a href="../managerattendance.php">attendance</a>
@@ -232,18 +232,29 @@ require_once "../connection.php";
             <div id="employmentForm">
             <?php
               require_once "../connection.php";
-              //query the branch table
-              $sql = "SELECT branchID,managerID,branchname FROM branch";
-              $result = $conn->query($sql);
-              // Generate branch select element
-              echo '<label for="branch">branch:</label>';
-              echo '<select  name="branchID" id="branch" onchange="updatePositionSelect()"required>';
+             // Query the branchmanager table
+              $sql = "SELECT branchID FROM branchmanager WHERE managerID = ?";
+              $stmt = $conn->prepare($sql);
+              $stmt->bind_param("s", $_SESSION['user_type']);
+              $stmt->execute();
+              $result = $stmt->get_result();
+              $branchIDs = array();
               while ($row = $result->fetch_assoc()) {
-                  if ($_SESSION['user_type'] == $row['branchname']) {
-                      echo '<option value="' . $row['branchID'] . $row['managerID'] . '">' . $row['branchname'] . '</option>';
-                  }
+                  $branchIDs[] = $row['branchID'];
+              }
+
+              // Query the branch table
+              $sql = "SELECT branchID, branchname FROM branch WHERE branchID IN (" . implode(",", $branchIDs) . ")";
+              $result = $conn->query($sql);
+
+              // Generate branch select element
+              echo '<label for="branch">Branch:</label>';
+              echo '<select name="branchID" id="branch" onchange="updatePositionSelect()" required>';
+              while ($row = $result->fetch_assoc()) {
+                  echo '<option value="' . $row['branchID'] . '">' . $row['branchname'] . '</option>';
               }
               echo '</select>';
+
               
               // Query department table
               $sql = "SELECT departmentID, departmentname FROM department";

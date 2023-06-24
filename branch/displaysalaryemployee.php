@@ -205,7 +205,7 @@ require_once "../connection.php";
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>branch manager</h3>
     <a href="../managerdashboard.php">Home</a>
     <a href="../managerleave.php">leave</a>
     <a href="../managerattendance.php">attendance</a>
