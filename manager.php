@@ -164,7 +164,7 @@ input[type="submit"]:hover {
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>admin</h3>
     <a  href="department_and_position.php">department and position</a>
     <a href="aproveleave.php">aprove leave</a>
     <a href="createusers.php">createusers</a>
@@ -173,6 +173,7 @@ input[type="submit"]:hover {
     <a href="deductionandallowance.php">deduction and allowance</a>
     <a href="adddeductionandallowance.php">add deduction and allowance</a>
     <a href="qrcode.php">qrcode</a>
+    <a href="branchmanager.php">branch</a>
   </div>
 
   <div class="form-container">
