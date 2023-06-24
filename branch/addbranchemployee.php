@@ -205,10 +205,10 @@ require_once "../connection.php";
   <div class="content-container">
   <div class="sidebar">
     <h3>Sidebar</h3>
-    <a href="../employeedashboard.php">Home</a>
-    <a href="../employeeleave.php">leave</a>
-    <a href="../employeeattendance.php">attendance</a>
-    <a href="../employee.php">details</a>
+    <a href="../managerdashboard.php">Home</a>
+    <a href="../managerleave.php">leave</a>
+    <a href="../managerattendance.php">attendance</a>
+    <a href="../managerdetails.php">details</a>
     <a class="active"href="addbranchemployee.php">add branch employees</a>
     <a href="displayemployees.php">view branch employees</a>
     <a href="displaysalaryemployee.php">view employee salary</a>

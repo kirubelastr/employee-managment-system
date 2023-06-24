@@ -313,6 +313,7 @@ input[type="submit"]:hover {
     <a href="adddeductionandallowance.php">add deduction and allowance</a>
     <a class="active" href="qrcode.php">qrcode</a>
     <a href="branchmanager.php">branch</a>
+    <a href="everymonth.php">salary</a>
   </div>
   <div class="rightofsidebar">
 <div class="container">
