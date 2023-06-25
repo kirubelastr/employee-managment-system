@@ -1,15 +1,15 @@
 <?php
-
-/* // Check if the user is logged in
-if (!isset($_SESSION['user_type'])) {
-    // Start the session
-session_start();
-  // Redirect to the login page
-  header('Location: login.php');
-  exit;
-} */
-
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'employee') {
+        $headerColor = 'green';
+    } elseif ($_SESSION['role'] === 'regionalmanager') {
+        $headerColor = 'blue';
+    } elseif ($_SESSION['role'] === 'generalmanager') {
+        $headerColor = 'red';
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +37,7 @@ session_start();
     margin-left:20px;
     transition: color 0.2s;
     text-decoration:none;
-    color:#333;
+    color:<?php echo $headerColor; ?>;
 }
 .header .menu a:hover {
     color:#09f;
