@@ -31,7 +31,8 @@ align-items: stretch;
     }
 .sidebar {
   width: 200px;
-  height: 100vh;
+  min-height: 100%;
+  height: auto;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
@@ -61,27 +62,26 @@ align-items: stretch;
   background-color: #ddd;
   border-left-color: green;
 }
-.rightofsidebar{
-  margin: 0;
-  padding: 0;
+
+.form-container {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: baseline;
+  align-items: stretch;
 }
-    .section {
-      margin: 20px 0;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-    }
-    .section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .section h2 {
-      margin-bottom: 10px;
-    }
+.vacation-days {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background-color: lightblue;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+  }
   </style>
 </head>
 <body>
@@ -98,154 +98,126 @@ align-items: stretch;
     <a href="employeedetails.php">details</a>
   </div>
  
+  <div class="form-container">
+  <?php
+  require_once "connection.php";
+  $userID = $_SESSION['user_type']; // assuming the logged-in user's ID is stored in a session variable
+
+  // Select the yearly vacation days for the user
+  $sql = "SELECT yearlyvacationdays FROM employee WHERE employeeID = '$userID'";
+  $query = $conn->query($sql);
+  $row = $query->fetch_assoc();
+  $yearlyVacationDays = $row['yearlyvacationdays'];
+
+?>
+
   <h1>Dashboard</h1>
   <?php
-// Connect to the database
-require_once "connection.php";
+  require_once "connection.php";
+  $userID = $_SESSION['user_type']; // assuming the logged-in user's ID is stored in a session variable
 
-// Retrieve attendance data from the database
-$query = "SELECT logdate, COUNT(*) as count FROM attendance GROUP BY logdate";
-$result = mysqli_query($conn, $query);
+  // Get the current year
+  $year = date('Y');
 
-// Check if any rows were returned
-if (mysqli_num_rows($result) > 0) {
-  // Initialize data arrays
-  $attendanceLabels = [];
-  $attendanceData = [];
+  // Select the attendance data for the current year and user
+  $sql = "SELECT *, MONTH(logdate) AS month FROM attendance WHERE employeeID = '$userID' AND YEAR(logdate) = '$year'";
+  $query = $conn->query($sql);
 
-  // Populate data arrays
-  while ($row = mysqli_fetch_assoc($result)) {
-    $attendanceLabels[] = $row["logdate"];
-    $attendanceData[] = $row["count"];
+  // Create arrays for storing the time in and time out data
+  $timeInData = [];
+  $timeOutData = [];
+  $labels = [];
+
+  while($row = $query->fetch_assoc()){
+    // Add the time in and time out data to the arrays
+    $timeInData[$row['month']][] = strtotime($row['timein']);
+    $timeOutData[$row['month']][] = strtotime($row['timeout']);
+    $labels[$row['month']] = date('F', mktime(0, 0, 0, $row['month'], 10));
   }
-} else {
-  // No rows returned
-  echo "No attendance data found";
-}
 
-// Retrieve department data from the database
-$query = "SELECT departmentname, COUNT(*) as count FROM employee JOIN department ON employee.departmentID = department.departmentID GROUP BY departmentname";
-$result = mysqli_query($conn, $query);
-
-// Check if any rows were returned
-if (mysqli_num_rows($result) > 0) {
-  // Initialize data arrays
-  $departmentLabels = [];
-  $departmentData = [];
-
-  // Populate data arrays
-  while ($row = mysqli_fetch_assoc($result)) {
-    $departmentLabels[] = $row["departmentname"];
-    $departmentData[] = $row["count"];
+  // Calculate the average time in and time out for each month
+  foreach ($timeInData as $month => $times) {
+    $timeInData[$month] = array_sum($times) / count($times);
+    $timeOutData[$month] = array_sum($timeOutData[$month]) / count($timeOutData[$month]);
   }
-} else {
-  // No rows returned
-  echo "No department data found";
-}
+
+  // Format the data for display on the chart
+  foreach ($timeInData as &$time) {
+    $time = date('H:i', $time);
+  }
+  foreach ($timeOutData as &$time) {
+    $time = date('H:i', $time);
+  }
+
+  $conn->close();
 ?>
-  <!-- Attendance section -->
-  <div class="section" id="attendanceSection">
-    <h2>Attendance</h2>
-    <canvas id="attendanceChart"></canvas>
-  </div>
 
-  <!-- Department section -->
-  <div class="section" id="departmentSection">
-    <h2>Departments</h2>
-    <canvas id="departmentChart"></canvas>
-  </div>
+<!-- Use the data retrieved from the database to create the line graph using Chart.js -->
 
-  <script>
-    // Attendance data
-    var attendanceData = {
-      labels: <?php echo json_encode($attendanceLabels); ?>,
+<div class="graph">
+<div class="vacation-days">
+Yearly Vacation Days: <?php echo $yearlyVacationDays; ?>
+</div>
+  <h2>Average Employee Attendance</h2>
+  <canvas id="average-attendance-chart"></canvas>
+ 
+</div>
+
+<script src="javascript/chart.js"></script>
+<script>
+  const timeInData = <?php echo json_encode(array_values($timeInData)); ?>;
+  const timeOutData = <?php echo json_encode(array_values($timeOutData)); ?>;
+  const labels = <?php echo json_encode(array_values($labels)); ?>;
+
+  const ctx = document.getElementById('average-attendance-chart').getContext('2d');
+  const attendanceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
       datasets: [{
-        label: "Attendance",
-        data: <?php echo json_encode($attendanceData); ?>,
-        backgroundColor: "rgba(54,162,235,0.2)",
-        borderColor: "rgba(54,162,235,1)",
-        borderWidth: 1
+        label: 'Average Time In',
+        data: timeInData,
+        borderColor: 'blue',
+        fill: false
+      }, {
+        label: 'Average Time Out',
+        data: timeOutData,
+        borderColor: 'green',
+        fill: false
       }]
-    };
-
-    // Attendance options
-    var attendanceOptions = {
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Average Employee Attendance'
+      },
       scales: {
-        y: {
-          beginAtZero: true
-        }
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Month'
+          }
+        }],
+        yAxes: [{
+          type: 'time',
+          time: {
+            displayFormats: {
+              hour: 'HH:mm'
+            }
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Time'
+          }
+        }]
       }
-    };
-
-    // Create attendance chart
-    var ctx = document.getElementById("attendanceChart").getContext("2d");
-    var attendanceChart = new Chart(ctx, {
-      type: "bar",
-      data: attendanceData,
-      options: attendanceOptions
-    });
-
-    // Department data
-    var departmentData = {
-      labels: <?php echo json_encode($departmentLabels); ?>,
-      datasets: [{
-        label: "Employees",
-        data: <?php echo json_encode($departmentData); ?>,
-        backgroundColor: [
-          "rgba(255,99,132,0.2)",
-          "rgba(54,162,235,0.2)",
-          "rgba(255,206,86,0.2)",
-          "rgba(75,192,192,0.2)",
-          "rgba(153,102,255,0.2)",
-          "rgba(255,159,64,0.2)"
-        ],
-        borderColor: [
-      "rgba(255,99,132,1)",
-      "rgba(54,162,235,1)",
-      "rgba(255,206,86,1)",
-      "rgba(75,192,192,1)",
-      "rgba(153,102,255,1)",
-      "rgba(255,159,64,1)"
-    ],
-    borderWidth: 1
-    }]
-    };
-
-    // Department options
-    var departmentOptions = {
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: 'Employees by Department'
-        }
-      }
-    };
-
-    // Create department chart
-    var ctx = document.getElementById("departmentChart").getContext("2d");
-    var departmentChart = new Chart(ctx, {
-      type: "pie",
-      data: departmentData,
-      options: departmentOptions
-    });
-
-    // Animate sections on scroll
-    window.addEventListener("scroll", function() {
-      var sections = document.querySelectorAll(".section");
-      sections.forEach(function(section) {
-        var sectionTop = section.offsetTop;
-        var sectionHeight = section.offsetHeight;
-        var windowTop = window.pageYOffset;
-        var windowHeight = window.innerHeight;
-        if (windowTop + windowHeight > sectionTop + sectionHeight / 2) {
-          section.classList.add("visible");
-        }
-      });
-    });
+    }
+  });
 </script>
+
+</div>
+    </div>
+
   </div>
 </div>
 </body>
