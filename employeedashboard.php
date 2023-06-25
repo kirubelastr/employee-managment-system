@@ -103,12 +103,53 @@ align-items: stretch;
   require_once "connection.php";
   $userID = $_SESSION['user_type']; // assuming the logged-in user's ID is stored in a session variable
 
-  // Select the yearly vacation days for the user
-  $sql = "SELECT yearlyvacationdays FROM employee WHERE employeeID = '$userID'";
-  $query = $conn->query($sql);
-  $row = $query->fetch_assoc();
-  $yearlyVacationDays = $row['yearlyvacationdays'];
+// Select the yearly vacation days for the user
+$sql = "SELECT yearlyvacationdays FROM employee WHERE employee = '$userID'";
+$query = $conn->query($sql);
+$row = $query->fetch_assoc();
+$yearlyVacationDays = $row['yearlyvacationdays'];
 
+// Get the salary data for the manager
+$salary_data = array();
+$salary_query = "SELECT * FROM salary WHERE employeeID = '$userID' ORDER BY datefrom ASC";
+$salary_result = $conn->query($salary_query);
+if ($salary_result->num_rows > 0) {
+    while($salary_row = $salary_result->fetch_assoc()) {
+        $datefrom = new DateTime($salary_row['datefrom']);
+        $month_year = $datefrom->format('M Y');
+        $net_salary = $salary_row['net'];
+        $salary_data[$month_year] = $net_salary;
+    }
+}
+
+// Display the salary graph for the manager
+echo "<h2>Salary Graph for employee with ID: " .$userID. "</h2>";
+echo "<div id='chart_div'></div>";
+
+// Load the Google Charts API
+echo '<script type="text/javascript" src="javascript/loader.js"></script>';
+
+// Generate the JavaScript code to display the salary graph
+echo '<script type="text/javascript">
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ["Month/Year", "Net Salary"],';
+foreach ($salary_data as $month_year => $net_salary) {
+    echo '["' .$month_year. '", ' .$net_salary. '],';
+}
+echo ']);
+    var options = {
+        title: "Salary Graph",
+        hAxis: {title: "Month/Year"},
+        vAxis: {title: "Net Salary"},
+        legend: {position: "none"}
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+    chart.draw(data, options);
+}
+</script>';
 ?>
 
   <h1>Dashboard</h1>
@@ -162,7 +203,7 @@ Yearly Vacation Days: <?php echo $yearlyVacationDays; ?>
   <canvas id="average-attendance-chart"></canvas>
  
 </div>
-
+<div class="container">
 <script src="javascript/chart.js"></script>
 <script>
   const timeInData = <?php echo json_encode(array_values($timeInData)); ?>;
@@ -214,7 +255,7 @@ Yearly Vacation Days: <?php echo $yearlyVacationDays; ?>
     }
   });
 </script>
-
+</div>
 </div>
     </div>
 

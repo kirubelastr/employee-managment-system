@@ -60,22 +60,23 @@ require_once "../connection.php";
                 background-color: #ddd;
                 border-left-color: #09f;
             }
-            .rightofsidebar{
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: baseline;
-            }
-            .container {
-                max-width: 100%;
-                height: auto;
-                margin: 10px;
-                padding: 20px;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            }
+           
+.rightofsidebar{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.container {
+ max-width: auto;
+ height: auto;
+ margin: 10px;
+ padding: 20px;
+ background-color: #fff;
+ box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
             h3 {
                 margin-top: 0;
             }

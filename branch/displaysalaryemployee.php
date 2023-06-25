@@ -69,7 +69,7 @@ require_once "../connection.php";
                 align-items: baseline;
             }
             .container {
-                max-width: 600px;
+                max-width: auto;
                 height: auto;
                 margin: 10px;
                 padding: 20px;
@@ -216,5 +216,45 @@ require_once "../connection.php";
     <a href="aprovebranchleave.php">aprove branch leave</a>
   </div>
 <div class="rightofsidebar">
+    <div class="container">
+        <h1>employee salary under this branch </h1>
+        <?php
+$sql = "SELECT salary.*, branch.branchname, department.departmentname 
+FROM salary 
+JOIN employee ON salary.employeeID = employee.employeeID
+JOIN branch ON employee.branchID = branch.branchID 
+JOIN department ON employee.departmentID = department.departmentID
+WHERE employee.branchID IN (SELECT branchID FROM branchmanager WHERE managerID = ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $_SESSION['user_type']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+echo "<table>";
+echo "<tr><th>Employee ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th><th>Branch Name</th><th>Department Name</th></tr>";
+$total_net_salary = 0;
+while ($row = $result->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($row['employeeID']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['datefrom']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['dateto']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['workdays']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['salary']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['allowance']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['deduction']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['net']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['branchname']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['departmentname']) . "</td>";
+    echo "</tr>";
+    $total_net_salary += $row['net'];
+}
+echo "</table>";
+
+echo "Total Net Salary: " .$total_net_salary;
+$conn->close();
+?>
+
+
+    </div>
     
   </div></div></body></html>

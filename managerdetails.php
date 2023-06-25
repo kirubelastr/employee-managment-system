@@ -87,7 +87,7 @@ session_start();
   align-items: baseline;
 }
 .container {
- max-width: 600px;
+ max-width: auto;
  height: auto;
  margin: 10px;
  padding: 20px;
@@ -387,8 +387,8 @@ if ($manager_result->num_rows > 0) {
       
       <?php
           // Retrieve allowance information from database
-  $allowanceID = $_SESSION['user_type'];
-  $sql_allowance = "SELECT * FROM allowance WHERE managerID = '$allowanceID'";
+  $managerID = $_SESSION['user_type'];
+  $sql_allowance = "SELECT * FROM allowance WHERE managerID = '$managerID'";
   $result_allowance = $conn->query($sql_allowance);
   
   // Check if any results were returned

@@ -416,7 +416,7 @@ if ($manager_result->num_rows > 0) {
         $conn->query($insert_query);
     }
 }
-}
+
     echo "<h2>Employee Salaries</h2>";
     echo "<table>";
     echo "<tr><th>Employee ID</th><th>Date From</th><th>Date To</th><th>Work Days</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Salary</th></tr>";
@@ -497,6 +497,7 @@ table tr:last-child td:first-child {
   text-align: left;
 }
 </style>';
+}$conn->close();
 ?>
 
   </div>

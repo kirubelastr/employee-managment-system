@@ -271,8 +271,8 @@ session_start();
       
       <?php
           // Retrieve allowance information from database
-  $allowanceID = $_SESSION['user_type'];
-  $sql_allowance = "SELECT * FROM allowance WHERE employeeID = '$allowanceID'";
+  $employeeID = $_SESSION['user_type'];
+  $sql_allowance = "SELECT * FROM allowance WHERE employeeID = '$employeeID'";
   $result_allowance = $conn->query($sql_allowance);
   
   // Check if any results were returned
@@ -290,8 +290,8 @@ session_start();
   }
   
   // Retrieve deduction information from database
-  $managerID = $_SESSION['user_type'];
-  $sql_deduction = "SELECT * FROM deduction WHERE employeeID = '$managerID'";
+  $employeeID = $_SESSION['user_type'];
+  $sql_deduction = "SELECT * FROM deduction WHERE employeeID = '$employeeID'";
   $result_deduction = $conn->query($sql_deduction);
   
   // Check if any results were returned
