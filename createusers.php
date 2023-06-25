@@ -1,5 +1,4 @@
 <?php
-// Require the connection file to connect to the database
 require_once "connection.php";
 
 // Check if the create form has been submitted
@@ -19,6 +18,21 @@ if (isset($_POST['create'])) {
         // Hash the password
         $hashedPassword = md5($password);
 
+        // Validate the password
+        function validate_password($password) {
+            $uppercase = preg_match('@[A-Z]@', $password);
+            $lowercase = preg_match('@[a-z]@', $password);
+            $number    = preg_match('@[0-9]@', $password);
+            $symbol    = preg_match('@[^\w]@', $password);
+
+            if(!$uppercase || !$lowercase || !$number || !$symbol || strlen($password) < 8) {
+
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         // Check if employeeID is set
         if (!empty($employeeID)) {
             // Get the employee's email from the employee table
@@ -34,14 +48,18 @@ if (isset($_POST['create'])) {
                 $employee_row = $employee_result->fetch_assoc();
                 $username = $employee_row['email'];
 
-                // Insert the user into the logins table
-                $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
-                $insert_stmt = $conn->prepare($insert_sql);
-                $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
-                $insert_stmt->execute();
+                // Insert the user into the logins table if password is valid
+                if (validate_password($password)) {
+                    $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
+                    $insert_stmt = $conn->prepare($insert_sql);
+                    $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
+                    $insert_stmt->execute();
 
-                // Display a success message
-                echo "<script>alert('User created successfully!!');</script>";
+                    // Display a success message
+                    echo "<script>alert('User created successfully!!');</script>";
+                } else {
+                    echo "<script>alert('Error: Password is not strong enough!');</script>";
+                }
             } else {
                 // Display an error message
                 echo "<script>alert('Error: Invalid employee ID!!');</script>";
@@ -60,15 +78,19 @@ if (isset($_POST['create'])) {
                 $manager_row = $manager_result->fetch_assoc();
                 $username = $manager_row['email'];
 
-                // Insert the user into the logins table
-                $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
-                $insert_stmt = $conn->prepare($insert_sql);
-                $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
-                $insert_stmt->execute();
+                // Insert the user into the logins table if password is valid
+                if (validate_password($password)) {
+                    $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
+                    $insert_stmt = $conn->prepare($insert_sql);
+                    $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
+                    $insert_stmt->execute();
 
-                // Display a success message
-                
-                echo "<script>alert('User created successfully!!');</script>";
+                    // Display a success message
+                    
+                    echo "<script>alert('User created successfully!!');</script>";
+                } else {
+                    echo "<script>alert('Error: Password is not strong enough!');</script>";
+                }
             } else {
                 // Display an error message
                  echo "<script>alert('Error: Invalid manager ID!!');</script>";
@@ -76,7 +98,6 @@ if (isset($_POST['create'])) {
         }
     }
 }
-
 // Check if the update form has been submitted
 if (isset($_POST['update'])) {
     // Get the form data
@@ -88,6 +109,22 @@ if (isset($_POST['update'])) {
     // Hash the password
      $hashedPassword = md5($password);
 
+     // Define the password requirements
+     $requirements = "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number and one special character.";
+
+     // Validate the password
+     if (strlen($password) < 8 || !preg_match("#[0-9]+#", $password) || !preg_match("#[a-z]+#", $password) || !preg_match("#[A-Z]+#", $password) || !preg_match("#\W+#", $password)) {
+         echo "<script>alert('$requirements');</script>";
+         exit;
+     }
+
+     // Check if the password contains text
+     if (!preg_match("/[a-zA-Z]/", $password)) {
+         $requirements = "Password must contain at least one letter.";
+         echo "<script>alert('$requirements');</script>";
+         exit;
+     }
+
     // Update the user in the logins table
     $update_sql = "UPDATE login SET username=?, password=?, role=? WHERE userID=?";
     $update_stmt = $conn->prepare($update_sql);
@@ -97,6 +134,7 @@ if (isset($_POST['update'])) {
     // Display a success message
     echo "<script>alert('User updated successfully!');</script>";
 }
+
 
 // Check if the delete form has been submitted
 if (isset($_POST['delete'])) {
@@ -144,7 +182,7 @@ if (isset($_POST['delete'])) {
     }
 .sidebar {
   width: 200px;
-  height: auto;
+  height: 100vh;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
@@ -173,24 +211,6 @@ if (isset($_POST['delete'])) {
 .sidebar a:hover {
   background-color: #ddd;
   border-left-color: red;
-}
-
-.rightofsidebar{
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: baseline;
-}
-.container {
- min-width: 600px;
- max-width: 600px;
- height: auto;
- margin: 10px;
- padding: 20px;
- background-color: #fff;
- box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .form-container {
@@ -290,9 +310,8 @@ textarea {
 input[type="submit"]:hover {
       background-color:#0077cc ;
 }
+</style>
 
-
-  </style>
 </head>
 <body>
 <div class="page-container">
@@ -312,16 +331,16 @@ input[type="submit"]:hover {
     <a href="branchmanager.php">branch</a>
     <a href="everymonth.php">salary</a>
   </div>
-  <div class="rightofsidebar">
-    <div class="container">
+
   <div class="form-container">
 <form method="post">
-   <!-- The create form -->
+   
+<!-- The create form -->
 <form method="post">
     <h2>Create User</h2>
 
     <label for="employeeID">Employee:</label>
-    <select name="employeeID" id="employeeID" onchange="onEmployeeChange()">
+    <select name="employeeID" id="employeeID">
         <option value="">--Select Employee--</option>
         <?php
         // Query to get all employees from the employee table
@@ -344,7 +363,7 @@ input[type="submit"]:hover {
     </select><br>
 
     <label for="managerID">Manager:</label>
-    <select name="managerID" id="managerID" onchange="onManagerChange()">
+    <select name="managerID" id="managerID">
         <option value="">--Select Manager--</option>
         <?php
         // Query to get all managers from the manager table
@@ -383,30 +402,6 @@ input[type="submit"]:hover {
     <input type="submit" name="create" value="Create User">
 </form>
 
-<script>
-function onEmployeeChange() {
-    var employeeSelect = document.getElementById('employeeID');
-    var managerSelect = document.getElementById('managerID');
-    var userTypeSelect = document.getElementById('createUserType');
-
-    if (employeeSelect.value !== '') {
-        // Employee is selected, automatically select employee user type and clear manager selection
-        userTypeSelect.value = 'employee';
-        managerSelect.value = '';
-    }
-}
-
-function onManagerChange() {
-    var employeeSelect = document.getElementById('employeeID');
-    var managerSelect = document.getElementById('managerID');
-
-    if (managerSelect.value !== '') {
-        // Manager is selected, clear employee selection
-        employeeSelect.value = '';
-    }
-}
-</script>
-
 <!-- The update form -->
 <form method="post" id="updateForm">
     <h2>Update User</h2>
@@ -429,8 +424,6 @@ function onManagerChange() {
     <input type="submit" name="update" value="Update User">
 </form>
     </div>
-    </div>
-    <div class="container">
     <div class="form-container">
 <!-- The HTML table -->
 <table>
@@ -485,10 +478,9 @@ function editUser(loginID, username, userType) {
 }
 </script>
 
-    </div>
+
     </div>
   </div>
 </body>
 </html>
-
 

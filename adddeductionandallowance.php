@@ -136,7 +136,7 @@ body {
     }
 .sidebar {
   width: 200px;
-  height: 100vh;
+  height: auto;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
@@ -372,8 +372,8 @@ form {
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
   <!-- Add a select element to let the user choose between employee and manager ID -->
-  <label for="idType">ID Type:</label>
-  <select name="idType" id="idType">
+  <label for="idTypes">ID Type:</label>
+  <select name="idTypes" id="idTypes">
     <option value="employee">Employee</option>
     <option value="manager">Manager</option>
   </select>
@@ -426,7 +426,7 @@ form {
 
   <!-- Add JavaScript to show or hide the employee and manager select elements based on the selected option -->
   <script>
-  document.getElementById('idType').addEventListener('change', function() {
+  document.getElementById('idTypes').addEventListener('change', function() {
     // Get the selected ID type
     var idType = this.value;
 

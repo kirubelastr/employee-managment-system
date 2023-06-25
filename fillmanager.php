@@ -105,13 +105,10 @@ if ($result_check_email->num_rows > 0) {
            $ePension=$basesalary*0.07; 
            $deductionAmount=$ePension+$dAmount; 
             // Insert data into deduction table
-            $sql = "INSERT INTO deduction (employeeID, taxRate, deductionAmount, Pension,deductionType)
-                VALUES ($employeeID, $taxRate, $deductionAmount, $employeePension,'pension and tax')";
+            $sql = "INSERT INTO deduction (managerID, taxRate, deductionAmount, Pension,deductionType)
+                VALUES ('$new_value', $taxRate, $deductionAmount, $employeePension,'pension and tax')";
             $conn->query($sql);
-        // Error inserting data
-        echo '<script>
-        alert("error inserting the data.");
-        </script>';
+        }// Error inserting data
         $conn->close();
         echo '<script>
         window.location.href = "manager.php";
@@ -126,5 +123,5 @@ if ($result_check_email->num_rows > 0) {
        window.location.href = "manager.php";
    </script>';
     }}
-}}
+}
 ?>
