@@ -221,7 +221,7 @@ require_once "../connection.php";
             <option value="Dire Dawa">Dire Dawa</option>
           </select>
 
-        <label style="margin-top: -10px;"for="city">city:</label>
+        <label style="margin-top: -10px;"for="city">city(sub city):</label>
         <input type="text" id="city" name="city"required>
           
         <label style="margin-top: -10px;"for="street">street:</label>
@@ -233,27 +233,17 @@ require_once "../connection.php";
             <?php
               require_once "../connection.php";
              // Query the branchmanager table
-              $sql = "SELECT branchID FROM branchmanager WHERE managerID = ?";
-              $stmt = $conn->prepare($sql);
-              $stmt->bind_param("s", $_SESSION['user_type']);
-              $stmt->execute();
-              $result = $stmt->get_result();
-              $branchIDs = array();
-              while ($row = $result->fetch_assoc()) {
-                  $branchIDs[] = $row['branchID'];
-              }
-
-              // Query the branch table
-              $sql = "SELECT branchID, branchname FROM branch WHERE branchID IN (" . implode(",", $branchIDs) . ")";
-              $result = $conn->query($sql);
-
-              // Generate branch select element
-              echo '<label for="branch">Branch:</label>';
-              echo '<select name="branchID" id="branch" onchange="updatePositionSelect()" required>';
-              while ($row = $result->fetch_assoc()) {
-                  echo '<option value="' . $row['branchID'] . '">' . $row['branchname'] . '</option>';
-              }
-              echo '</select>';
+             $sql = "SELECT branchID,managerID,branchname FROM branch";
+             $result = $conn->query($sql);
+             // Generate branch select element
+             echo '<label for="branch">branch:</label>';
+             echo '<select  name="branchID" id="branch" onchange="updatePositionSelect()"required>';
+             while ($row = $result->fetch_assoc()) {
+                 if ($_SESSION['user_type'] == $row['branchname']) {
+                     echo '<option value="' . $row['branchID'] . $row['managerID'] . '">' . $row['branchname'] . '</option>';
+                 }
+             }
+             echo '</select>';
 
               
               // Query department table

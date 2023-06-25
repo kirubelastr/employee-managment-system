@@ -216,7 +216,7 @@ input[type="submit"]:hover {
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>employee</h3>
     <a href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a class="active"href="employeeattendance.php">attendance</a>

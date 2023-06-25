@@ -91,7 +91,7 @@ align-items: stretch;
 
   <div class="content-container">
 <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>employee</h3>
     <a class="active"href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>

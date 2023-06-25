@@ -78,6 +78,22 @@ session_start();
   width: 50%;
 }
 
+.rightofsidebar{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.container {
+ max-width: 600px;
+ height: auto;
+ margin: 10px;
+ padding: 20px;
+ background-color: #fff;
+ box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
  .form-container {
    flex: 1;
    padding: 20px;
@@ -200,7 +216,9 @@ session_start();
     <a href="branch/displaysalaryemployee.php">view employee salary</a>
     <a href="branch/aprovebranchleave.php">aprove branch leave</a>
   </div>
-    <div class="form-container">
+  <div class="rightofsidebar">
+  <div class="container">
+
     <?php
 require_once "connection.php";
 
@@ -270,13 +288,40 @@ if ($result_manager->num_rows > 0) {
             w.print();
         }
         </script>";
-                // Retrieve login information from database
-                $userID = $row_manager['userID'];
-                $sql_login = "SELECT username FROM login WHERE userID = '$userID'";
-                $result_login = $conn->query($sql_login);
-                $row_login = $result_login->fetch_assoc();
-                echo "<tr><td>User ID:</td><<td>".$row_login["username"]."</td></tr>";
-        
+                // Get the managerID from the session user_type
+$managerID = $_SESSION['user_type'];
+
+// Query to get the userID from the manager table where managerID is set in session user_type
+$manager_sql = "SELECT userID FROM manager WHERE managerID=?";
+$manager_stmt = $conn->prepare($manager_sql);
+$manager_stmt->bind_param("s", $managerID);
+$manager_stmt->execute();
+$manager_result = $manager_stmt->get_result();
+
+// Check if there is any row in the result
+if ($manager_result->num_rows > 0) {
+    // Get the userID from the row
+    $manager_row = $manager_result->fetch_assoc();
+    $userID = $manager_row['userID'];
+
+    // Query to get the username from the login table where userID is equal to userID from manager table
+    $login_sql = "SELECT username FROM login WHERE userID=?";
+    $login_stmt = $conn->prepare($login_sql);
+    $login_stmt->bind_param("i", $userID);
+    $login_stmt->execute();
+    $login_result = $login_stmt->get_result();
+
+    // Check if there is any row in the result
+    if ($login_result->num_rows > 0) {
+        // Get the username from the row
+        $login_row = $login_result->fetch_assoc();
+        $username = $login_row['username'];
+
+        // Output the username in a table row
+        echo "<tr><td>User ID:</td><td>$username</td></tr>";
+    }
+}
+
                 // Retrieve department information from database
                 $departmentID = $row_manager['departmentID'];
                 $sql_department = "SELECT departmentname FROM department WHERE departmentID = '$departmentID'";
@@ -287,49 +332,7 @@ if ($result_manager->num_rows > 0) {
         }
         ?>
     </div>
-    <div class="form-container">
-        
-        <?php
-        // Retrieve allowance information from database
-$allowanceID = $_SESSION['user_type'];
-$sql_allowance = "SELECT * FROM allowance WHERE allowanceID = '$allowanceID'";
-$result_allowance = $conn->query($sql_allowance);
-
-// Check if any results were returned
-if ($result_allowance->num_rows > 0) {
-    // Output data of each row
-    while($row_allowance = $result_allowance->fetch_assoc()) {
-        echo "<table>";
-        echo "<tr><td>Allowance ID:</td><td>".$row_allowance["allowanceID"]."</td>";
-        echo "<td>Allowance Type:</td><td>".$row_allowance["allowancetype"]."</td></tr>";
-        echo "<tr><td>Allowance Amount:</td><td>".$row_allowance["allowanceamount"]."</td></tr>";
-        echo "</table>";
-    }
-} else {
-    echo "No allowance data found";
-}
-
-// Retrieve deduction information from database
-$deductionID = $_SESSION['user_type'];
-$sql_deduction = "SELECT * FROM deduction WHERE deductionID = '$deductionID'";
-$result_deduction = $conn->query($sql_deduction);
-
-// Check if any results were returned
-if ($result_deduction->num_rows > 0) {
-    // Output data of each row
-    while($row_deduction = $result_deduction->fetch_assoc()) {
-        echo "<table>";
-        echo "<tr><td>Deduction ID:</td><td>".$row_deduction["deductionID"]."</td>";
-        echo "<td>Deduction Type:</td><td>".$row_deduction["deductiontype"]."</td></tr>";
-        echo "<tr><td>Deduction Amount:</td><td>".$row_deduction["deductionamount"]."</td></tr>";
-        echo "</table>";
-    }
-} else {
-    echo "No deduction data found";
-}
-$conn->close();
-        ?>
-        
+    </div></div>
     <!-- Modal window for displaying manager photo -->
     <div id="photo-modal" class="modal">
       <span class="close">×</span>
@@ -380,7 +383,49 @@ $conn->close();
       cursor:pointer;
     }
     </style>
-
+<div class="container">
+      
+      <?php
+          // Retrieve allowance information from database
+  $allowanceID = $_SESSION['user_type'];
+  $sql_allowance = "SELECT * FROM allowance WHERE managerID = '$allowanceID'";
+  $result_allowance = $conn->query($sql_allowance);
+  
+  // Check if any results were returned
+  if ($result_allowance->num_rows > 0) {
+      // Output data of each row
+      while($row_allowance = $result_allowance->fetch_assoc()) {
+          echo "<table>";
+          echo "<tr><td>Allowance ID:</td><td>".$row_allowance["allowanceID"]."</td>";
+          echo "<td>Allowance Type:</td><td>".$row_allowance["allowanceType"]."</td></tr>";
+          echo "<tr><td>Allowance Amount:</td><td>".$row_allowance["allowanceAmount"]."</td></tr>";
+          echo "</table>";
+      }
+  } else {
+      echo "No allowance data found";
+  }
+  
+  // Retrieve deduction information from database
+  $managerID = $_SESSION['user_type'];
+  $sql_deduction = "SELECT * FROM deduction WHERE managerID = '$managerID'";
+  $result_deduction = $conn->query($sql_deduction);
+  
+  // Check if any results were returned
+  if ($result_deduction->num_rows > 0) {
+      // Output data of each row
+      while($row_deduction = $result_deduction->fetch_assoc()) {
+          echo "<table>";
+          echo "<tr><td>Deduction ID:</td><td>".$row_deduction["deductionID"]."</td>";
+          echo "<td>Deduction Type:</td><td>".$row_deduction["deductionType"]."</td></tr>";
+          echo "<tr><td>Deduction Amount:</td><td>".$row_deduction["deductionAmount"]."</td></tr>";
+          echo "</table>";
+      }
+  } else {
+      echo "No deduction data found";
+  }
+  
+          ?>
+      </div>
     <!-- JavaScript for displaying manager photo in modal window -->
     <script>
     // Get the modal

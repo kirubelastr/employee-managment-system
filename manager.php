@@ -220,7 +220,7 @@ input[type="submit"]:hover {
             <option value="Dire Dawa">Dire Dawa</option>
           </select>
 
-          <label style="margin-top: -10px;"for="city">city:</label>
+          <label style="margin-top: -10px;"for="city">city(sub city):</label>
         <input type="text" id="city" name="city"required>
           
         <label style="margin-top: -10px;"for="street">street:</label>

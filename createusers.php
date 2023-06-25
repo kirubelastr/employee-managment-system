@@ -55,6 +55,14 @@ if (isset($_POST['create'])) {
                     $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
                     $insert_stmt->execute();
 
+                    $userID = $conn->insert_id;
+
+                    $employee_sql = "UPDATE UPDATE employee SET userID=? WHERE employeeID=?";
+                    $employee_stmt = $conn->prepare($employee_sql);
+                    $employee_stmt->bind_param("ii", $employeeID, $userID);
+                    $employee_stmt->execute();
+
+
                     // Display a success message
                     echo "<script>alert('User created successfully!!');</script>";
                 } else {
@@ -68,7 +76,7 @@ if (isset($_POST['create'])) {
             // Get the manager's email from the manager table
             $manager_sql = "SELECT * FROM manager WHERE managerID=?";
             $manager_stmt = $conn->prepare($manager_sql);
-            $manager_stmt->bind_param("i", $managerID);
+            $manager_stmt->bind_param("s", $managerID);
             $manager_stmt->execute();
             $manager_result = $manager_stmt->get_result();
 
@@ -80,10 +88,21 @@ if (isset($_POST['create'])) {
 
                 // Insert the user into the logins table if password is valid
                 if (validate_password($password)) {
-                    $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
-                    $insert_stmt = $conn->prepare($insert_sql);
-                    $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
-                    $insert_stmt->execute();
+                  // Insert the new user into the login table
+                        $insert_sql = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
+                        $insert_stmt = $conn->prepare($insert_sql);
+                        $insert_stmt->bind_param("sss", $username, $hashedPassword, $userType);
+                        $insert_stmt->execute();
+
+                        // Get the ID of the newly inserted user
+                        $userID = $conn->insert_id;
+
+                        // Update the manager table with the specified managerID and userID
+                        $manager_sql = "UPDATE manager SET userID=? WHERE managerID=?";
+                        $manager_stmt = $conn->prepare($manager_sql);
+                        $manager_stmt->bind_param("is", $userID, $managerID);
+                        $manager_stmt->execute();
+
 
                     // Display a success message
                     
@@ -115,6 +134,7 @@ if (isset($_POST['update'])) {
      // Validate the password
      if (strlen($password) < 8 || !preg_match("#[0-9]+#", $password) || !preg_match("#[a-z]+#", $password) || !preg_match("#[A-Z]+#", $password) || !preg_match("#\W+#", $password)) {
          echo "<script>alert('$requirements');</script>";
+         echo "<script>window.location.href='createusers.php';</script>";
          exit;
      }
 
@@ -122,6 +142,7 @@ if (isset($_POST['update'])) {
      if (!preg_match("/[a-zA-Z]/", $password)) {
          $requirements = "Password must contain at least one letter.";
          echo "<script>alert('$requirements');</script>";
+         echo "<script>window.location.href='createusers.php';</script>";
          exit;
      }
 
@@ -133,6 +154,7 @@ if (isset($_POST['update'])) {
 
     // Display a success message
     echo "<script>alert('User updated successfully!');</script>";
+    echo "<script>window.location.href='createusers.php';</script>";
 }
 
 
@@ -149,6 +171,7 @@ if (isset($_POST['delete'])) {
 
     // Display a success message
     echo "<script>alert('User deleted successfully!!');</script>";
+    echo "<script>window.location.href='createusers.php';</script>";
     
 }
 ?>

@@ -6,7 +6,7 @@ session_start();
 <head>
   <title>employee Data Input Form</title>
   <style>
-   body {
+  body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -59,7 +59,25 @@ session_start();
    background-color: #ddd;
    border-left-color: green;
  }
- 
+ .manager-media {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manager-photo-container {
+  width: 50%;
+}
+
+.manager-photo {
+  max-width: 100%;
+}
+
+.manager-file-container {
+  width: 50%;
+}
+
  .form-container {
    flex: 1;
    padding: 20px;
@@ -85,18 +103,6 @@ session_start();
         flex-direction: column;
       }
     }
-    .form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width iframe */
-.form-container iframe {
-  width: 100%;
-  height: 200px;
-}
-
 /* Style the submit button */
 .form-container .btn {
   background-color: #4CAF50;
@@ -174,7 +180,6 @@ session_start();
        background-color:#0077cc ;
  }
  
-
   </style>
 </head>
 <body>
@@ -183,7 +188,7 @@ session_start();
 
   <div class="content-container">
   <div class="sidebar">
-    <h3>Sidebar</h3>
+    <h3>employee</h3>
     <a  href="employeedashboard.php">Home</a>
     <a href="employeeleave.php">leave</a>
     <a href="employeeattendance.php">attendance</a>
@@ -214,7 +219,9 @@ session_start();
                 echo "<tr><td>Last Name:</td><td>".$row_employee["lastname"]."</td></tr>";
                 echo "<tr><td>Date of Birth:</td><td>".$row_employee["dateofbirth"]."</td></tr>";
                 echo "<tr><td>Gender:</td><td>".$row_employee["gender"]."</td></tr>";
-                echo "<tr><td>Address:</td><td>".$row_employee["address"]."</td></tr>";
+                echo "<tr><td>state:</td><td>".$row_employee["state"]."</td></tr>";
+                echo "<tr><td>city(sub city):</td><td>".$row_employee["city"]."</td></tr>";
+                echo "<tr><td>street:</td><td>".$row_employee["street"]."</td></tr>";
                 echo "<tr><td>Primary Phone:</td><td>".$row_employee["primary_phone"]."</td></tr>";
                 echo "<tr><td>Secondary Phone:</td><td>".$row_employee["secondary_phone"]."</td></tr>";
                 echo "<tr><td>Date of Join:</td><td>".$row_employee["dateofjoin"]."</td></tr>";
@@ -259,9 +266,50 @@ session_start();
             echo "No results found.";
         }
         
-        // Close database connection
-        $conn->close();
         ?>
+        <div class="container">
+      
+      <?php
+          // Retrieve allowance information from database
+  $allowanceID = $_SESSION['user_type'];
+  $sql_allowance = "SELECT * FROM allowance WHERE employeeID = '$allowanceID'";
+  $result_allowance = $conn->query($sql_allowance);
+  
+  // Check if any results were returned
+  if ($result_allowance->num_rows > 0) {
+      // Output data of each row
+      while($row_allowance = $result_allowance->fetch_assoc()) {
+          echo "<table>";
+          echo "<tr><td>Allowance ID:</td><td>".$row_allowance["allowanceID"]."</td>";
+          echo "<td>Allowance Type:</td><td>".$row_allowance["allowanceType"]."</td></tr>";
+          echo "<tr><td>Allowance Amount:</td><td>".$row_allowance["allowanceAmount"]."</td></tr>";
+          echo "</table>";
+      }
+  } else {
+      echo "No allowance data found";
+  }
+  
+  // Retrieve deduction information from database
+  $managerID = $_SESSION['user_type'];
+  $sql_deduction = "SELECT * FROM deduction WHERE employeeID = '$managerID'";
+  $result_deduction = $conn->query($sql_deduction);
+  
+  // Check if any results were returned
+  if ($result_deduction->num_rows > 0) {
+      // Output data of each row
+      while($row_deduction = $result_deduction->fetch_assoc()) {
+          echo "<table>";
+          echo "<tr><td>Deduction ID:</td><td>".$row_deduction["deductionID"]."</td>";
+          echo "<td>Deduction Type:</td><td>".$row_deduction["deductionType"]."</td></tr>";
+          echo "<tr><td>Deduction Amount:</td><td>".$row_deduction["deductionAmount"]."</td></tr>";
+          echo "</table>";
+      }
+  } else {
+      echo "No deduction data found";
+  }
+  
+          ?>
+      </div>
         <!-- Modal window for displaying manager photo -->
         <div id="photo-modal" class="modal">
           <span class="close">×</span>
