@@ -57,7 +57,7 @@ if (isset($_POST['create'])) {
 
                     $userID = $conn->insert_id;
 
-                    $employee_sql = "UPDATE UPDATE employee SET userID=? WHERE employeeID=?";
+                    $employee_sql = "UPDATE employee SET userID=? WHERE employeeID=?";
                     $employee_stmt = $conn->prepare($employee_sql);
                     $employee_stmt->bind_param("ii", $employeeID, $userID);
                     $employee_stmt->execute();

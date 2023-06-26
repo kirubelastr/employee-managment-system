@@ -497,7 +497,7 @@ table tr:last-child td:first-child {
   text-align: left;
 }
 </style>';
-}$conn->close();
+}
 ?>
 
   </div>

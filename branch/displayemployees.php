@@ -255,9 +255,10 @@ $result = $stmt->get_result();
         <th>Branch</th>
         <th>Department</th>
         <th>Edit</th>
+        <th>Delete</th>
     </tr>
     <?php while ($row = $result->fetch_assoc()): ?>
-    <tr>
+    <tr data-employee-id="<?= $row['employeeID'] ?>">
         <td><?= $row['employeeID'] ?></td>
         <td><?= $row['firstname'] ?></td>
         <td><?= $row['middlename'] ?></td>
@@ -277,15 +278,16 @@ $result = $stmt->get_result();
         <td><?= $row['basesalary'] ?></td>
         <td><?= $row['branchname'] ?></td>
         <td><?= $row['departmentname'] ?></td>
-<td><button onclick="editRow(this)">Edit</button></td>
-</tr>
+        <td><button onclick="editRow(this)">Edit</button></td>
+        <td><button onclick="deleteRow(this)">Delete</button></td>
+        </tr>
 <?php endwhile; ?>
 </table>
 
 <script>
 function editRow(button) {
     let row = button.parentNode.parentNode;
-    let cells = row.querySelectorAll("td:not(:last-child)");
+    let cells = row.querySelectorAll("td:not(:last-child):not(:nth-last-child(2))");
     cells.forEach(cell => {
         let input = document.createElement("input");
         input.type = "text";
@@ -344,5 +346,30 @@ cell.removeChild(input);
 button.textContent="Edit";
 button.onclick=editRow;
 }
+
+
+function deleteRow(button) {
+let row=button.parentNode.parentNode;
+
+// Get employee ID from row
+let employeeID=row.getAttribute('data-employee-id');
+
+// Check for constraints and delete constraints row that contains the employee's ID before deleting the employee row
+let xhr=new XMLHttpRequest();
+xhr.open("POST","delete_employee.php");
+xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+xhr.onloadend=function(){
+if(xhr.status==200){
+alert(xhr.responseText);
+row.parentNode.removeChild(row);
+}
+else{
+alert('An error occurred while deleting the employee');
+}
+}
+xhr.send(`employeeID=${employeeID}`);
+}
 </script>
+
 </div></div></body></html>

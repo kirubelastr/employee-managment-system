@@ -21,10 +21,8 @@ if (isset($_POST['employeeID'])) {
 
     // Assuming you have a database connection established
     try {
-        $sql = "UPDATE employee SET firstname=?, middlename=?, lastname=?, dateofbirth=?, gender=?, state=?, city=?, street=?, primary_phone=?, secondary_phone=?, dateofjoin=?, education_status=?, email=?, employment_status=?, yearlyvacationdays=?, basesalary=? WHERE employeeID=?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssssissidi", $firstname, $middlename, $lastname, $dateofbirth, $gender, $state, $city, $street, $primary_phone, $secondary_phone, $dateofjoin, $education_status, $email, $employment_status, $yearlyvacationdays, $basesalary, $employeeID);
-        if ($stmt->execute()) {
+        $sql = "UPDATE employee SET firstname='$firstname', middlename='$middlename', lastname='$lastname', dateofbirth='$dateofbirth', gender='$gender', state='$state', city='$city', street='$street', primary_phone='$primary_phone', secondary_phone='$secondary_phone', dateofjoin='$dateofjoin', education_status='$education_status', email='$email', employment_status='$employment_status', yearlyvacationdays=$yearlyvacationdays, basesalary=$basesalary WHERE employeeID=$employeeID";
+        if ($conn->query($sql) === TRUE) {
             echo "Employee updated successfully";
         } else {
             if ($conn->errno === 1452) {
@@ -36,6 +34,7 @@ if (isset($_POST['employeeID'])) {
     } catch (Exception $e) {
         echo "Error updating employee: " . htmlspecialchars($e->getMessage());
     }
+    $conn->close();
 }
 ?>
 

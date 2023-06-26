@@ -122,9 +122,16 @@ if ($salary_result->num_rows > 0) {
     }
 }
 
-// Display the salary graph for the manager
+// Get the last salary for the employee
+$last_salary_query = "SELECT net FROM salary WHERE employeeID = '$userID' ORDER BY datefrom DESC LIMIT 1";
+$last_salary_result = $conn->query($last_salary_query);
+$last_salary_row = $last_salary_result->fetch_assoc();
+$last_salary = $last_salary_row['net'];
+
+// Display the salary graph and last salary for the manager
 echo "<h2>Salary Graph for employee with ID: " .$userID. "</h2>";
 echo "<div id='chart_div'></div>";
+echo "<p>Last Salary: $" .number_format($last_salary, 2). "</p>";
 
 // Load the Google Charts API
 echo '<script type="text/javascript" src="javascript/loader.js"></script>';
@@ -151,6 +158,7 @@ echo ']);
 }
 </script>';
 ?>
+
 
   <h1>Dashboard</h1>
   <?php
