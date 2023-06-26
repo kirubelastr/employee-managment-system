@@ -104,7 +104,7 @@ align-items: stretch;
   $userID = $_SESSION['user_type']; // assuming the logged-in user's ID is stored in a session variable
 
 // Select the yearly vacation days for the user
-$sql = "SELECT yearlyvacationdays FROM employee WHERE employee = '$userID'";
+$sql = "SELECT yearlyvacationdays FROM employee WHERE employeeID = '$userID'";
 $query = $conn->query($sql);
 $row = $query->fetch_assoc();
 $yearlyVacationDays = $row['yearlyvacationdays'];
